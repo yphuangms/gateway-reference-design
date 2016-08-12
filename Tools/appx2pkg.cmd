@@ -47,16 +47,12 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
 ) else (
     dir /b "%FILE_PATH%\Dependencies\*.appx" > "%FILE_PATH%\appx_deplist.txt"
 )
-dir /b "%IOTADK_ROOT%\Templates\AppInstall\*.cmd" > "%FILE_PATH%\appx_scriptlist.txt"
+
 dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt"
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
 call :CREATE_PKGFILE
 
-
-REM Cleanup temp files
-REM del "%FILE_PATH%\appx_deplist.txt"
-del "%FILE_PATH%\appx_scriptlist.txt"
 
 endlocal
 exit /b 0
@@ -75,25 +71,24 @@ call :PRINT_TEXT "   <Components>"
 call :PRINT_TEXT "      <OSComponent>"
 call :PRINT_TEXT "         <Files>"
 REM Printing script files inclusion
-for /f "useback delims=" %%A in ("%FILE_PATH%\appx_scriptlist.txt") do (
-    call :PRINT_TEXT "            <File Source="AppInstall\%%A" "
-    echo                   DestinationDir="$(runtime.root)\AppInstall" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
-    call :PRINT_TEXT "                  Name="%%A" />"
-)
-call :PRINT_TEXT "            <File Source="AppInstall\%LONG_NAME%.appx" "
-echo                   DestinationDir="$(runtime.root)\AppInstall" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+call :PRINT_TEXT "            <File Source="AppxConfig.cmd" "
+echo                   DestinationDir="$(runtime.root)\OEMApps\%COMP_NAME%.%SUB_NAME%" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+call :PRINT_TEXT "                  Name="AppxConfig.cmd" />"
+
+call :PRINT_TEXT "            <File Source="%LONG_NAME%.appx" "
+echo                   DestinationDir="$(runtime.root)\OEMApps\%COMP_NAME%.%SUB_NAME%" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 call :PRINT_TEXT "                  Name="%LONG_NAME%.appx" />"
 
 REM Printing Certificates
 for /f "useback delims=" %%A in ("%FILE_PATH%\appx_cerlist.txt") do (
-    call :PRINT_TEXT "            <File Source="AppInstall\%%A" "
-    echo                   DestinationDir="$(runtime.root)\AppInstall" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+    call :PRINT_TEXT "            <File Source="%%A" "
+    echo                   DestinationDir="$(runtime.root)\OEMApps\%COMP_NAME%.%SUB_NAME%" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
     call :PRINT_TEXT "                  Name="%%A" />"
 )
 REM Printing Dependencies
 for /f "useback delims=" %%A in ("%FILE_PATH%\appx_deplist.txt") do (
-    call :PRINT_TEXT "            <File Source="AppInstall\%%A" "
-    echo                   DestinationDir="$(runtime.root)\AppInstall" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+    call :PRINT_TEXT "            <File Source="%%A" "
+    echo                   DestinationDir="$(runtime.root)\OEMApps\%COMP_NAME%.%SUB_NAME%" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
     call :PRINT_TEXT "                  Name="%%A" />"
 )
 
