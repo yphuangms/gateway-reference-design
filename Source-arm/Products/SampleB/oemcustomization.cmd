@@ -12,13 +12,9 @@ if exist C:\OEMInstall\Provisioning\ProvSetA.ppkg (
     rmdir /S /Q C:\OEMInstall
 )
 
-if exist C:\AppInstall\AppInstall.cmd (
-    REM Enable Application Installation for onetime only, after this the files are deleted.
-    call C:\Appinstall\AppInstall.cmd > %temp%\AppInstallLog.txt
-    if %errorlevel%== 0 (
-        REM Cleanup Application Installation Files. Change dir to root so that the dirs can be deleted
-        cd \
-        rmdir /S /Q C:\AppInstall
-    )
+if exist C:\OEMTools\InstallAppx.cmd (
+    REM Run the Appx Installer. This will install the appx present in C:\OEMApps\
+    call C:\OEMTools\InstallAppx.cmd
 )
+
 

@@ -7,7 +7,8 @@ pushd %~dp0
 SETLOCAL
 
 if [%1] == [] (
-    set APP_DIR=C:\AppInstall\
+    echo Error: Input folder not specified. exiting.
+    exit /b 1
 ) else (
     set APP_DIR=%1
 )
