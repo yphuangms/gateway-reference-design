@@ -17,6 +17,11 @@
                     <FeatureID>OEM_IoTCoreDefaultApp</FeatureID>
                 </FeatureIDs>
             </PackageFile>
+            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.IoTOnboardingTask.cab">
+                <FeatureIDs>
+                    <FeatureID>OEM_IoTOnboardingTask</FeatureID>
+                </FeatureIDs>
+            </PackageFile>			
         </OEM>			
         <OEMFeatureGroups/>
     </Features>
