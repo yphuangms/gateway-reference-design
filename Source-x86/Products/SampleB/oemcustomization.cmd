@@ -4,10 +4,10 @@ REM OEM Customization Script file
 REM Enable Administrator User
 net user Administrator p@ssw0rd /active:yes
 
-if exist C:\OEMInstall\Provisioning\ProvSetA.ppkg (
+if exist C:\OEMInstall\Provisioning\Enroll.ppkg (
     REM Applying Provisioning packages in order
-    provtool C:\OEMInstall\Provisioning\ProvSetA.ppkg
-    provtool C:\OEMInstall\Provisioning\ProvSetB.ppkg
+    provtool C:\OEMInstall\Provisioning\Enroll.ppkg
+    provtool C:\OEMInstall\Provisioning\ProSKU.ppkg
     REM Cleaning up Provisioning folder
     rmdir /S /Q C:\OEMInstall
 )
