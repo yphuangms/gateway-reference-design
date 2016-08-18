@@ -43,7 +43,23 @@
           <FeatureID>OEMCommon_ALL</FeatureID>
         </FeatureIDs>
       </PackageFile>
-
+	  
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Provisioning.Enroll.cab">
+        <FeatureIDs>
+          <!-- This feature id brings in Enrollment provisioning package  -->
+          <FeatureID>OEM_ProvEnroll</FeatureID>
+          <!-- OEMCommon_ALL not included  -->
+        </FeatureIDs>
+      </PackageFile>
+	  
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Provisioning.ProSKU.cab">
+        <FeatureIDs>
+          <!-- This feature id brings in ProSKU provisioning package -->
+          <FeatureID>OEM_ProvProSKU</FeatureID>
+          <!-- OEMCommon_ALL not included -->
+        </FeatureIDs>
+      </PackageFile>	  
+	  	  
       <!-- Packages with Product specific contents included -->
       <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Custom.Cmd.cab">
         <FeatureIDs>
