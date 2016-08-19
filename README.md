@@ -14,3 +14,10 @@ This branch contains the active development contents, mostly addressing the upco
 ##10586 Branch
 This branch supports the Windows IoT Core Release 1511 (version 10.0.10586.x).
 
+#Useful Links
+
+* IoTCore Kits :You can download the IoTCore Kits package from the below links. This requires MSDN subscription
+	* [Version 1607](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=70177)
+	* [Version 1511](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=67415)
+* [Windows ADK](http://go.microsoft.com/fwlink/?LinkId=526803)
+* [Windows WDK](http://developer.microsoft.com/windows/hardware/windows-driver-kit)
