@@ -16,6 +16,7 @@ This branch supports the Windows IoT Core Release 1511 (version 10.0.10586.x).
 
 #Useful Links
 
+* [Manufacturing Guide](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/iot/index)
 * IoTCore Kits :You can download the IoTCore Kits package from the below links. This requires MSDN subscription
 	* [Version 1607](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=70177)
 	* [Version 1511](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=67415)
