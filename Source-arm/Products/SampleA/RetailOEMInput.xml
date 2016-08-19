@@ -42,9 +42,6 @@
       <Feature>IOT_UAP_OOBE</Feature>
       <Feature>IOT_APP_TOOLKIT</Feature>
       <!-- for Connectivity -->
-      <Feature>IOT_WEBB_EXTN</Feature>
-      <Feature>IOT_POWERSHELL</Feature>
-      <Feature>IOT_NETCMD</Feature>
       <Feature>IOT_SSH</Feature>
       <Feature>IOT_SIREP</Feature>
       <Feature>IOT_ENABLE_ADMIN</Feature>
