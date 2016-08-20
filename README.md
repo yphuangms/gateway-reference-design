@@ -14,13 +14,22 @@ This branch contains the active development contents, mostly addressing the upco
 ##10586 Branch
 This branch supports the Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
 
+
 #References
 
-* [Manufacturing Guide](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/iot/index)
+## User Guides
+* [IoT Core Manufacturing Guide](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/iot/index)
+	* [Windows ADK IoT Core Add-Ons Overview](https://go.microsoft.com/fwlink/p/?LinkId=735029)
+	* [IoT Core Add-Ons command-line options](https://msdn.microsoft.com/windows/hardware/commercialize/manufacture/iot/iot-core-adk-addons-command-line-options)
+	* [IoT Core feature list](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/manufacture/iot/iot-core-feature-list)
 * [Learn how to build on Windows 10 IoT Core](https://developer.microsoft.com/en-us/windows/iot/Docs)
-* [IoT Core OS Packages Version 1607](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=70177)
-* [Windows ADK Version 1607](https://go.microsoft.com/fwlink/p/?LinkId=526740)
-* [Windows WDK](http://developer.microsoft.com/windows/hardware/windows-driver-kit)
-* [IoTCore OS Packages Version 1511](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=67415)
-* [Windows ADK Version 1511](https://go.microsoft.com/fwlink/p/?LinkId=823089)
+	* [Windows Device Portal](https://developer.microsoft.com/en-us/windows/iot/docs/deviceportal)
 
+## Downloads
+
+* [IoT Core OS Packages Version 1607](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=70177)
+* [Windows Assessment and Deployment Kit - ADK Version 1607](https://go.microsoft.com/fwlink/p/?LinkId=526740)
+* [Windows Driver Kit - WDK](https://go.microsoft.com/fwlink/p/?LinkId=526733)
+* [IoTCore OS Packages Version 1511](https://msdn.microsoft.com/en-us/subscriptions/downloads/default.aspx#FileId=67415)
+* [Windows Assessment and Deployment Kit - ADK Version 1511](https://go.microsoft.com/fwlink/p/?LinkId=823089)
+* [Windows 10 IoT Core Dashboard](https://developer.microsoft.com/en-us/windows/iot/docs/iotdashboard)
