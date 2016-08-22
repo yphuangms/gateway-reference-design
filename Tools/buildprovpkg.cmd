@@ -42,6 +42,7 @@ if /I [%1] == [All] (
         if exist "%PRODUCTS_DIR%\%%i\prov\customizations.xml" (
             echo. Processing %%i
             call createprovpkg.cmd %PRODUCTS_DIR%\%%i\prov\customizations.xml %PRODUCTS_DIR%\%%i\prov\%%iProv.ppkg > %PKGLOG_DIR%\%%i.prov.log
+			if errorlevel 1 ( echo. Error : Failed to create %%iProv.ppkg. See %PKGLOG_DIR%\%%i.prov.log for details )
         ) else (
             echo. Skipping %%i
         )
@@ -62,7 +63,7 @@ if exist "%COMMON_PKG%\%1\customizations.xml" (
     echo. Processing %1
     cd %COMMON_PKG%\%1
     call createprovpkg.cmd customizations.xml %1.ppkg > %PKGLOG_DIR%\%1.prov.log
-    if not errorlevel 0 ( echo. Error : Failed to create provisioning package. See %PKGLOG_DIR%\%1.prov.log )
+    if errorlevel 1 ( echo. Error : Failed to create %1.ppkg. See %PKGLOG_DIR%\%1.prov.log )
 ) else (
     echo. Skipping %1
 )
