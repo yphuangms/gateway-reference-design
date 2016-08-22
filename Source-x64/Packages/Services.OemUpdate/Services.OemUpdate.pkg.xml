@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="urn:Microsoft.WindowsPhone/PackageSchema.v8.00"
+         Owner="$(OEMNAME)"
+         OwnerType="OEM"
+         ReleaseType="Production"
+         Platform="$(BSPARCH)"
+         Component="Services"
+         SubComponent="OemUpdate">
+    <Components>
+		<!-- USBUpdate service  -->
+		<Service Name="OemUpdate"
+		         Start="Auto"
+		         Type="Win32OwnProcess"
+		         ErrorControl="Normal"
+		         DisplayName="IoTCore USB Update"
+		         Description="Monitors USB devices and processes updates if it finds cab files" >
+			<Executable Source="OemUpdate.exe"
+			            Name="OemUpdate.exe" />
+			 <FailureActions ResetPeriod="86400">
+				<Action Type="RestartService"
+				        Delay="1000"/>
+				<Action Type="RestartService"
+				        Delay="1000"/>
+				<Action Type="RestartService"
+				        Delay="1000"/>
+				<Action Type="None"
+				        Delay="0"/>
+			  </FailureActions>						
+		</Service>
+    </Components>
+</Package>

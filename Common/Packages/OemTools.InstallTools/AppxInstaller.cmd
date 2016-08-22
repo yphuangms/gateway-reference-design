@@ -7,7 +7,8 @@ pushd %~dp0
 SETLOCAL
 
 if [%1] == [] (
-    set APP_DIR=C:\AppInstall\
+    echo Error: Input folder not specified. exiting.
+    exit /b 1
 ) else (
     set APP_DIR=%1
 )
@@ -24,6 +25,7 @@ echo Appx Name :%AppxName%
 
 if not defined forceinstall ( set forceinstall=0 )
 if not defined launchapp ( set launchapp=0)
+if not defined appxtype ( set appxtype=headed )
 if not exist .\logs ( mkdir logs ) else ( del /Q .\logs\*.* )
 
 REM
@@ -71,7 +73,7 @@ for /f "tokens=2,5 delims=:_" %%A in (.\logs\packageid.txt) do (
 set AppxID=%AppxID: =%
 echo Launching %AppxID%
 REM Trigger IoTStartup
-iotstartup.exe add headed %AppxID%
+iotstartup.exe add %appxtype% %AppxID%
 exit /b
 
 :SUB_CHECKERROR

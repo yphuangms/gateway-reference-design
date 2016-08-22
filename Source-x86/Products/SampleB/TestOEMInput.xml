@@ -73,7 +73,7 @@
       <Feature>MBM_DRIVERS</Feature>
       <Feature>CustomMBM_Drivers</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxMain</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
       <Feature>OEM_ProvManual</Feature>
     </OEM>

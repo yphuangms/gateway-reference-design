@@ -13,11 +13,12 @@
              Packages are copied to OEM folder
              Provisioning to be triggered in OEMCustomisation.cmd file by calling provtool.
              Advantange of this approach is that we can control the order of applying the provisioning packages
+			 Using the existing Enroll and ProSKU ppkgs are example here.
         -->
-        <File Source="ProvSetA.ppkg"
-                DestinationDir="$(runtime.root)\OEMInstall\Provisioning" Name="ProvSetA.ppkg"/>
-        <File Source="ProvSetB.ppkg"
-                DestinationDir="$(runtime.root)\OEMInstall\Provisioning" Name="ProvSetB.ppkg"/>
+        <File Source="$(COMDIR)\Packages\Provisioning.Enroll\Provisioning.Enroll.ppkg"
+                DestinationDir="$(runtime.root)\OEMInstall\Provisioning" Name="Enroll.ppkg"/>
+        <File Source="$(COMDIR)\Packages\Provisioning.ProSKU\Provisioning.ProSKU.ppkg"
+                DestinationDir="$(runtime.root)\OEMInstall\Provisioning" Name="ProSKU.ppkg"/>
        </Files>
        </OSComponent>
     </Components>

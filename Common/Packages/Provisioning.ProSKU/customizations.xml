@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WindowsCustomizations>
+  <PackageConfig xmlns="urn:schemas-Microsoft-com:Windows-ICD-Package-Config.v1.0">
+    <ID>{d0c44c87-8f6a-4411-b521-8eea97439b65}</ID>
+    <Name>ProSKU</Name>
+    <Version>1.0</Version>
+    <OwnerType>OEM</OwnerType>
+    <Rank>0</Rank>
+  </PackageConfig>
+  <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
+    <Customizations>
+      <Common>
+	  <!-- Uncomment this to include the license file
+        <EditionUpgrade>
+          <UpgradeEditionWithLicense>C:\Program Files (x86)\Microsoft IoT\iotuapcommercial.xml</UpgradeEditionWithLicense>
+        </EditionUpgrade>
+       -->		
+        <Policies>
+          <Update>
+            <ActiveHoursEnd>22</ActiveHoursEnd>
+            <ActiveHoursStart>7</ActiveHoursStart>
+            <AllowAutoUpdate>Auto-install and restart without end-user control</AllowAutoUpdate>
+            <AllowNonMicrosoftSignedUpdate>Yes</AllowNonMicrosoftSignedUpdate>
+            <AllowUpdateService>Yes</AllowUpdateService>
+            <RequireDeferUpgrade>Do not pause updates</RequireDeferUpgrade>
+            <ScheduledInstallDay>Sunday</ScheduledInstallDay>
+            <ScheduledInstallTime>3</ScheduledInstallTime>
+          </Update>
+        </Policies>
+      </Common>
+    </Customizations>
+  </Settings>
+</WindowsCustomizations>

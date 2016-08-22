@@ -1,6 +1,7 @@
-:: Run setenv before running this script
-:: This script creates the folder structure and copies the template files for a new package
 @echo off
+REM Run setenv before running this script
+REM This script creates the folder structure and copies the template files for a new package
+
 
 goto START
 
@@ -49,45 +50,43 @@ if NOT DEFINED SRC_DIR (
 )
 SET "NEWPKG_DIR=%SRC_DIR%\Packages\%COMP_NAME%.%SUB_NAME%"
 
-:: Error Checks
+REM Error Checks
 if /i EXIST %NEWPKG_DIR% (
     echo Error : %COMP_NAME%.%SUB_NAME% already exists
     goto End
 )
 
-:: Start processing command
+REM Start processing command
 echo Creating %COMP_NAME%.%SUB_NAME% package
 
 mkdir "%NEWPKG_DIR%"
 
 if [%FILE_TYPE%] == [.appx] (
-    :: Create Appx Package using template files
-    mkdir "%NEWPKG_DIR%\AppInstall"
+    REM Create Appx Package using template files
     echo. Creating package xml file
     call appx2pkg.cmd %1 %COMP_NAME%.%SUB_NAME%
     REM Copy the files to the package directory
     move "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" "%NEWPKG_DIR%\%COMP_NAME%.%SUB_NAME%.pkg.xml" >nul
     if exist "%FILE_PATH%\Dependencies\%ARCH%" (
-        copy "%FILE_PATH%\Dependencies\%ARCH%\*.appx" "%NEWPKG_DIR%\AppInstall\" >nul
+        copy "%FILE_PATH%\Dependencies\%ARCH%\*.appx" "%NEWPKG_DIR%\" >nul
     ) else (
-        copy "%FILE_PATH%\Dependencies\*.appx" "%NEWPKG_DIR%\AppInstall\" >nul
+        copy "%FILE_PATH%\Dependencies\*.appx" "%NEWPKG_DIR%\" >nul
     )
 
-    copy "%FILE_PATH%\*.cer" "%NEWPKG_DIR%\AppInstall\" >nul
-    copy "%FILE_PATH%\%FILE_NAME%.appx" "%NEWPKG_DIR%\AppInstall\%FILE_NAME%.appx" >nul
-    copy "%IOTADK_ROOT%\Templates\AppInstall\*.cmd" "%NEWPKG_DIR%\AppInstall" >nul
+    copy "%FILE_PATH%\*.cer" "%NEWPKG_DIR%\" >nul
+    copy "%FILE_PATH%\%FILE_NAME%.appx" "%NEWPKG_DIR%\%FILE_NAME%.appx" >nul
     REM Update AppxConfig.cmd
-    echo set AppxName=%FILE_NAME%> %NEWPKG_DIR%\AppInstall\AppxConfig.cmd
+    echo set AppxName=%FILE_NAME%> %NEWPKG_DIR%\AppxConfig.cmd
     for /f "useback delims=" %%i in ("%FILE_PATH%\appx_cerlist.txt") do (
-        set certslist=!certslist!%%~ni
+        set certslist=!certslist!%%~ni 
     )
-    echo set certslist=!certslist! >> %NEWPKG_DIR%\AppInstall\AppxConfig.cmd
+    echo set certslist=!certslist! >> %NEWPKG_DIR%\AppxConfig.cmd
     for /f "useback delims=" %%i in ("%FILE_PATH%\appx_deplist.txt") do (
-        set dependencylist=!dependencylist!%%~ni
+        set dependencylist=!dependencylist!%%~ni 
     )
-    echo set dependencylist=!dependencylist! >> %NEWPKG_DIR%\AppInstall\AppxConfig.cmd
-    echo set forceinstall=0 >> %NEWPKG_DIR%\AppInstall\AppxConfig.cmd
-    echo set launchapp=1 >> %NEWPKG_DIR%\AppInstall\AppxConfig.cmd
+    echo set dependencylist=!dependencylist! >> %NEWPKG_DIR%\AppxConfig.cmd
+    echo set forceinstall=0 >> %NEWPKG_DIR%\AppxConfig.cmd
+    echo set launchapp=1 >> %NEWPKG_DIR%\AppxConfig.cmd
     del "%FILE_PATH%\appx_cerlist.txt"
     del "%FILE_PATH%\appx_deplist.txt"
 )

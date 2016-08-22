@@ -43,9 +43,6 @@
       <Feature>IOT_UAP_OOBE</Feature>
       <Feature>IOT_APP_TOOLKIT</Feature>
       <!-- for Connectivity -->
-      <Feature>IOT_WEBB_EXTN</Feature>
-      <Feature>IOT_POWERSHELL</Feature>
-      <Feature>IOT_NETCMD</Feature>
       <Feature>IOT_SSH</Feature>
       <Feature>IOT_SIREP</Feature>
       <Feature>IOT_NANORDPSERVER</Feature>
@@ -58,7 +55,7 @@
       <Feature>CustomMBMx64_DRIVERS</Feature>
       <Feature>MBMx64_DRIVERS</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxTextGlowClock</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
       <Feature>OEM_ProvAuto</Feature>
     </OEM>

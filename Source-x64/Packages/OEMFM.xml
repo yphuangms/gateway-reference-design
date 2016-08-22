@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FeatureManifest 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+<FeatureManifest
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns="http://schemas.microsoft.com/embedded/2004/10/ImageUpdate">
     <BasePackages/>
     <Features>
@@ -10,6 +10,21 @@
             <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.TextGlowClock.cab">
                 <FeatureIDs>
                     <FeatureID>OEM_AppxTextGlowClock</FeatureID>
+                </FeatureIDs>
+            </PackageFile>
+            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.IoTCoreDefaultApp.cab">
+                <FeatureIDs>
+                    <FeatureID>OEM_IoTCoreDefaultApp</FeatureID>
+                </FeatureIDs>
+            </PackageFile>
+            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.IoTOnboardingTask.cab">
+                <FeatureIDs>
+                    <FeatureID>OEM_IoTOnboardingTask</FeatureID>
+                </FeatureIDs>
+            </PackageFile>
+            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Services.OemUpdate.cab">
+                <FeatureIDs>
+                    <FeatureID>OEM_SvcOemUpdate</FeatureID>
                 </FeatureIDs>
             </PackageFile>
         </OEM>
