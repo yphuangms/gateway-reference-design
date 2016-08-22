@@ -10,9 +10,11 @@
   <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
     <Customizations>
       <Common>
+	  <!-- Uncomment this to include the license file
         <EditionUpgrade>
           <UpgradeEditionWithLicense>C:\Program Files (x86)\Microsoft IoT\iotuapcommercial.xml</UpgradeEditionWithLicense>
         </EditionUpgrade>
+       -->		
         <Policies>
           <Update>
             <ActiveHoursEnd>22</ActiveHoursEnd>
