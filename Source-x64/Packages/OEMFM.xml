@@ -22,11 +22,7 @@
                     <FeatureID>OEM_IoTOnboardingTask</FeatureID>
                 </FeatureIDs>
             </PackageFile>
-            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Services.OemUpdate.cab">
-                <FeatureIDs>
-                    <FeatureID>OEM_SvcOemUpdate</FeatureID>
-                </FeatureIDs>
-            </PackageFile>
+
         </OEM>
         <OEMFeatureGroups/>
     </Features>
