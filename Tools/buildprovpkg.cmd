@@ -31,7 +31,7 @@ if [%1] == [] goto Usage
 if /I [%1] == [All] (
     echo Creating all provisioning packages under %COMMON_PKG%
     cd %COMMON_PKG%
-    dir Provisioning.* /b /AD  > %PKGLOG_DIR%\commonprovlist.txt
+    dir /b /AD  > %PKGLOG_DIR%\commonprovlist.txt
     for /f "delims=" %%i in (%PKGLOG_DIR%\commonprovlist.txt) do (
         call :SUB_PROCESSLIST %%i
     )
@@ -44,13 +44,16 @@ if /I [%1] == [All] (
             call createprovpkg.cmd %PRODUCTS_DIR%\%%i\prov\customizations.xml %PRODUCTS_DIR%\%%i\prov\%%iProv.ppkg > %PKGLOG_DIR%\%%i.prov.log
 			if errorlevel 1 ( echo. Error : Failed to create %%iProv.ppkg. See %PKGLOG_DIR%\%%i.prov.log for details )
         ) else (
-            echo. Skipping %%i
+            REM echo. Skipping %%i
         )
     )
     del %PKGLOG_DIR%\commonprovlist.txt
 ) else if /I [%1] == [Clean] (
 	del %COMMON_DIR%\*.ppkg /S /Q
+	del %COMMON_DIR%\*.cat /S /Q
 	del %SRC_DIR%\*.ppkg /S /Q
+	del %SRC_DIR%\*.cat /S /Q
+	echo. All directories cleaned.
 ) else (
     call :SUB_PROCESSLIST %%i
 )
@@ -65,6 +68,6 @@ if exist "%COMMON_PKG%\%1\customizations.xml" (
     call createprovpkg.cmd customizations.xml %1.ppkg > %PKGLOG_DIR%\%1.prov.log
     if errorlevel 1 ( echo. Error : Failed to create %1.ppkg. See %PKGLOG_DIR%\%1.prov.log )
 ) else (
-    echo. Skipping %1
+    REM echo. Skipping %1
 )
 exit /b
