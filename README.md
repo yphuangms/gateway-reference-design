@@ -28,7 +28,7 @@ This branch supports the Windows 10 IoT Core Release 1511 (version 10.0.10586.x)
 ## Downloads
 
 * IoT Core OS Packages 
-	* [Version 1607](https://msdn.microsoft.com/subscriptions/downloads/default.aspx#FileId=70177)
+	* [Version 1607](https://www.microsoft.com/en-us/download/details.aspx?id=53898) ** Now available for free**
 	* [Version 1511](https://msdn.microsoft.com/subscriptions/downloads/default.aspx#FileId=67415)
 * [Windows Assessment and Deployment Kit](https://developer.microsoft.com/windows/hardware/windows-assessment-deployment-kit#winADK) 
 	* [ADK Version 1607](https://go.microsoft.com/fwlink/p/?LinkId=526740)
