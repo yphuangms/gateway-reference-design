@@ -11,8 +11,8 @@ This branch supports the lastest Windows 10 IoT Core release available ( current
 ##Develop Branch
 This branch contains the active development contents, mostly addressing the upcoming release features. 
 
-##10586 Branch
-This branch supports the Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
+##Older Versions 
+* [10586_v1.0 release](https://github.com/ms-iot/iot-adk-addonkit/releases/tag/v1.0) for Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
 
 
 #References
