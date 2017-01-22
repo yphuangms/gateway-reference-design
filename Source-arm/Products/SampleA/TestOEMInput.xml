@@ -38,6 +38,7 @@
     <Microsoft>
       <Feature>IOT_EFIESP</Feature>
       <Feature>IOT_DMAP_DRIVER</Feature>
+	  <Feature>IOT_GENERIC_POP</Feature>
       <Feature>IOT_CP210x_MAKERDRIVER</Feature>
       <Feature>IOT_FTSER2K_MAKERDRIVER</Feature>
       <!-- Following two required for Appx Installation -->
