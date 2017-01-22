@@ -12,6 +12,7 @@
     <PackageFile Path="%PKGBLD_DIR%" Name="SV.PlatExtensions.UpdateOS.cab"/>
     <!-- MBR BCD Settings -->
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Microsoft-IoTUAP-RPi2-BCD-Package.cab" />
+    <!-- Device Info/ Device Targeting Info : Include IOT_GENERIC_POP in OEMInput xml file -->
     <!-- Mandatory device drivers -->
     <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcm2836sdhc.cab"/>
     <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.rpisdhc.cab"/>
@@ -21,8 +22,7 @@
     <!-- Device specific customisations if any -->
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Microsoft-IoTUAP-RPi2-Customization-Package.cab" />
   </BasePackages>
-  
-    <DeviceLayoutPackages>
+  <DeviceLayoutPackages>
     <!-- MBR 4GB layout  -->
     <PackageFile SOC="RPi2" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.MBR4GB.cab"/>
     <!-- MBR 2GB layout - select this by specifying the SOC field in the OEMInput xml file -->
