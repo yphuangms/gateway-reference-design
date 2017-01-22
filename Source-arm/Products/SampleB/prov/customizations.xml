@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WindowsCustomizations>
   <PackageConfig xmlns="urn:schemas-Microsoft-com:Windows-ICD-Package-Config.v1.0">
-    <ID>{6d25ff81-23ed-4d35-968f-3fc2408ceac7}</ID>
+    <ID>{6d25ff81-23ed-4d35-968f-3fc2408ceade}</ID>
     <Name>ProductBProv</Name>
     <Version>1.0</Version>
     <OwnerType>OEM</OwnerType>
