@@ -10,17 +10,16 @@
     <!--PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.ModelA.BootFirmware.cab"/-->
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.BootFirmware.cab"/>
     <!-- Drivers required for boot/reading partitions for UpdateOS -->
-    <!--PackageFile Path="%PKGBLD_DIR%" Name="SV.PlatExtensions.UpdateOS.cab"/-->
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="SV.PlatExtensions.UpdateOS.cab"/>
+    <PackageFile Path="%PKGBLD_DIR%" Name="SV.PlatExtensions.UpdateOS.cab"/>
     <!-- MBR BCD Settings -->
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Microsoft-IoTUAP-RPi2-BCD-Package.cab" />
     <!-- Device Info/ Device Targeting Info : Include IOT_GENERIC_POP in OEMInput xml file -->
     <!-- Mandatory device drivers -->
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.bcm2836sdhc.cab"/>
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi.rpisdhc.cab"/>
+    <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcm2836sdhc.cab"/>
+    <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.rpisdhc.cab"/>
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.dwcUsbOtg.cab"/>
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.LAN9500N630F.cab"/>
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.rpiq.cab"/>
+    <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.rpiq.cab"/>
     <!-- Device specific customisations if any -->
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Microsoft-IoTUAP-RPi2-Customization-Package.cab" />
   </BasePackages>
@@ -41,37 +40,37 @@
     <MSFeatureGroups />
     <OEM>
       <!-- Optional Device Drivers -->
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.bcm2836pwm.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcm2836pwm.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.Audio.Wav.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.rpiwav.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.SerPL011.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.SerPL011.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.GPIO.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcmgpio.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.I2C.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcmi2c.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.SPI.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcmspi.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.AUX.SPI.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcmauxspi.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
@@ -91,12 +90,12 @@
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi.VCHIQ.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.vchiq.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi.MiniUART.cab">
+      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.piminiuart.cab">
         <FeatureIDs>
           <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
@@ -108,7 +107,7 @@
       </PackageFile>
       <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi.BtwSerialH5Bus.cab">
         <FeatureIDs>
-          <FeatureID>RPI_BTWSERIALH5BUS_DRIVER</FeatureID>
+          <FeatureID>ModelA_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
     </OEM>

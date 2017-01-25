@@ -11,8 +11,8 @@ This branch supports the lastest Windows 10 IoT Core release available ( current
 ##Develop Branch
 This branch contains the active development contents, mostly addressing the upcoming release features. 
 
-##10586 Branch
-This branch supports the Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
+##Older Versions 
+* [10586_v1.0 release](https://github.com/ms-iot/iot-adk-addonkit/releases/tag/v1.0) for Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
 
 
 #References
@@ -35,3 +35,14 @@ This branch supports the Windows 10 IoT Core Release 1511 (version 10.0.10586.x)
 	* [ADK Version 1511](https://go.microsoft.com/fwlink/p/?LinkId=823089)
 * [Windows Driver Kit - WDK](https://go.microsoft.com/fwlink/p/?LinkId=526733)
 * [Windows 10 IoT Core Dashboard](https://developer.microsoft.com/windows/iot/docs/iotdashboard)
+
+## BSPs
+* Raspberry Pi BSP
+  The drivers required for the Raspberry Pi are available in the github project : [ms-iot/bsp](https://github.com/ms-iot/bsp).
+  Steps to create the drivers :
+  1. check out ms-iot/bsp project
+  2. Build the bcm2386 solution
+  3. Go to the tools folder and run 
+     binexport Release/debug <target folder> eg. binexport release c:\rpibsp
+  4. In IoTCoreShell, run C:\rpibsp\build.cmd
+  The required cabs will be created in the output folder.
