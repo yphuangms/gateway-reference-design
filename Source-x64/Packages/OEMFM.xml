@@ -17,7 +17,6 @@
                     <FeatureID>OEM_IoTOnboardingTask</FeatureID>
                 </FeatureIDs>
             </PackageFile>
-
         </OEM>
         <OEMFeatureGroups/>
     </Features>

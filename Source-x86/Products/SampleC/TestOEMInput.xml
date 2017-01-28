@@ -74,6 +74,7 @@
       <!-- Include OEM features -->
       <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
+      <Feature>OEM_ProvAuto</Feature>
     </OEM>
   </Features>
   <Product>Windows 10 IoT Core</Product>

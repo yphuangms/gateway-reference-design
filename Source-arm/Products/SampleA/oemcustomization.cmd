@@ -6,4 +6,3 @@ if exist C:\OEMTools\InstallAppx.cmd (
     REM Run the Appx Installer. This will install the appx present in C:\OEMApps\
     call C:\OEMTools\InstallAppx.cmd
 )
-

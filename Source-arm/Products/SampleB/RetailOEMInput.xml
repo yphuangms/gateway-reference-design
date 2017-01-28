@@ -27,8 +27,7 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
-    <!-- Using CustomRPi2 BSP -->
-    <AdditionalFM>%BSPSRC_DIR%\CustomRpi2\Packages\CustomRPi2FM.xml</AdditionalFM>
+    <AdditionalFM>%BSPSRC_DIR%\CustomMBM\Packages\CustomMBMFM.xml</AdditionalFM>
     <!-- Including OEM feature manifest -->
     <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM>
     <AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
@@ -46,8 +45,10 @@
       <!-- for Connectivity -->
       <Feature>IOT_SSH</Feature>
       <Feature>IOT_SIREP</Feature>
-      <!-- <Feature>IOT_ENABLE_ADMIN</Feature> Enabling this in OEMCustomization Command -->
+      <Feature>IOT_NANORDPSERVER</Feature>
+      <Feature>IOT_SHELL_HOTKEY_SUPPORT</Feature>
       <Feature>IOT_APPLICATIONS</Feature>
+      <!-- <Feature>IOT_ENABLE_ADMIN</Feature> Enabling this in OEMCustomization Command -->
     </Microsoft>
     <OEM>
       <!-- Include BSP Features -->
@@ -56,7 +57,7 @@
       <!-- Include OEM features -->
       <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
-      <Feature>OEM_ProvManual</Feature>
+      <Feature>OEM_ProvAuto</Feature>
     </OEM>
   </Features>
   <Product>Windows 10 IoT Core</Product>

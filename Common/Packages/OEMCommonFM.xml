@@ -11,15 +11,6 @@
     <OEM>
       <!-- Feature definitions below -->
 
-      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Provisioning.Manual.cab">
-        <FeatureIDs>
-          <!-- This feature id brings in provisioning packages for manual installation via Custom.Cmd -->
-          <!-- Depends on OEM_CustomCmd -->
-          <FeatureID>OEM_ProvManual</FeatureID>
-          <!-- OEMCommon_ALL includes ProvAuto, so this is not included -->
-        </FeatureIDs>
-      </PackageFile>
-
       <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Settings.HotKey.cab">
         <FeatureIDs>
           <!-- This feature id sets the HotKey for "Home" -->
@@ -75,15 +66,6 @@
       </PackageFile>
 
     </OEM>
-    <OEMFeatureGroups>
-    <!-- Feature Constraints below -->
-    <!-- This ensures that only one of the Provisioning package is included -->
-      <FeatureGroup Constraint="ZeroOrOne">
-        <FeatureIDs>
-          <FeatureID>OEM_ProvAuto</FeatureID>
-          <FeatureID>OEM_ProvManual</FeatureID>
-        </FeatureIDs>
-      </FeatureGroup>
-    </OEMFeatureGroups>
+    <OEMFeatureGroups/>
   </Features>
 </FeatureManifest>

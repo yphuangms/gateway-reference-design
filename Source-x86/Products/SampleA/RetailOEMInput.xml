@@ -37,21 +37,24 @@
       <Feature>IOT_EFIESP</Feature>
       <Feature>IOT_EFIESP_BCD</Feature>
       <Feature>IOT_DMAP_DRIVER</Feature>
+      <Feature>IOT_GENERIC_POP</Feature>
       <Feature>IOT_POWER_SETTINGS</Feature>
+
       <!-- Following two required for Appx Installation -->
       <Feature>IOT_UAP_OOBE</Feature>
       <Feature>IOT_APP_TOOLKIT</Feature>
       <!-- for Connectivity -->
       <Feature>IOT_SSH</Feature>
       <Feature>IOT_SIREP</Feature>
-      <Feature>IOT_APPLICATIONS</Feature>
+      <Feature>IOT_BERTHA</Feature>
+      <Feature>IOT_ALLJOYN_APP</Feature>
       <Feature>IOT_ENABLE_ADMIN</Feature>
+      <Feature>IOT_APPLICATIONS</Feature>
     </Microsoft>
     <OEM>
       <!-- Inclide BSP Features -->
       <Feature>MBM_DRIVERS</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
       <Feature>OEM_ProvAuto</Feature>
     </OEM>

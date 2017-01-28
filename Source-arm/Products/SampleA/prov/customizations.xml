@@ -2,7 +2,7 @@
 <WindowsCustomizations>
   <PackageConfig xmlns="urn:schemas-Microsoft-com:Windows-ICD-Package-Config.v1.0">
     <ID>{6d25ff81-23ed-4d35-968f-3fc2408ceac7}</ID>
-    <Name>ProductAProv</Name>
+    <Name>SampleAProv</Name>
     <Version>1.0</Version>
     <OwnerType>OEM</OwnerType>
     <Rank>0</Rank>
@@ -10,9 +10,6 @@
   <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
     <Customizations>
       <Common>
-        <StartupApp>
-          <Default>IoTCoreDefaultApp_1w720vyc4ccym!App</Default>
-        </StartupApp>	  
         <Policies>
           <Connectivity>
             <AllowBluetooth>Yes</AllowBluetooth>
