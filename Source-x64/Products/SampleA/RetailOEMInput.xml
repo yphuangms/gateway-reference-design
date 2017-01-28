@@ -53,7 +53,7 @@
       <!-- Include BSP Features -->
       <Feature>MBMx64_DRIVERS</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxTextGlowClock</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
       <Feature>OEM_ProvAuto</Feature>
       <Feature>IOT_ENABLE_ADMIN</Feature>

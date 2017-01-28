@@ -51,7 +51,7 @@
       <!-- Include BSP Features -->
       <Feature>ModelA_DRIVERS</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxTextGlowClock</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
     </OEM>
   </Features>

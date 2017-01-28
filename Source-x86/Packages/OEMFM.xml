@@ -7,16 +7,6 @@
     <Features>
         <OEM>
             <!-- Feature definitions below -->
-            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.Main.cab">
-                <FeatureIDs>
-                    <FeatureID>OEM_AppxMain</FeatureID>
-                </FeatureIDs>
-            </PackageFile>
-            <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.TextGlowClock.cab">
-                <FeatureIDs>
-                    <FeatureID>OEM_AppxTextGlowClock</FeatureID>
-                </FeatureIDs>
-            </PackageFile>
             <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Appx.IoTCoreDefaultApp.cab">
                 <FeatureIDs>
                     <FeatureID>OEM_IoTCoreDefaultApp</FeatureID>
@@ -27,7 +17,6 @@
                     <FeatureID>OEM_IoTOnboardingTask</FeatureID>
                 </FeatureIDs>
             </PackageFile>
-
         </OEM>
         <OEMFeatureGroups/>
     </Features>

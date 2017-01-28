@@ -74,7 +74,7 @@
       <Feature>RPI2_DRIVERS</Feature>
       <Feature>RPI3_DRIVERS</Feature>
       <!-- Include OEM features
-      <Feature>OEM_AppxMain</Feature><Feature>OEM_CustomCmd</Feature><Feature>OEM_ProvAuto</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature><Feature>OEM_CustomCmd</Feature><Feature>OEM_ProvAuto</Feature>
         -->
     </OEM>
   </Features>
