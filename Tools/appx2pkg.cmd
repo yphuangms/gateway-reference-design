@@ -50,7 +50,7 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
     dir /b "%FILE_PATH%\Dependencies\*.appx" > "%FILE_PATH%\appx_deplist.txt"
 )
 
-dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt"
+dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
 call :CREATE_PKGFILE
@@ -88,6 +88,7 @@ call :PRINT_TEXT "      </OSComponent>"
 call :PRINT_TEXT "   </Components>"
 call :PRINT_TEXT "</Package>"
 )
+exit /b 0
 
 :CREATE_CUSTFILE
 if not exist "%FILE_PATH%\appx_deplist.txt" (
@@ -109,16 +110,19 @@ call :PRINT_TO_CUSTFILE "  <Settings xmlns="urn:schemas-microsoft-com:windows-pr
 call :PRINT_TO_CUSTFILE "    <Customizations>"
 call :PRINT_TO_CUSTFILE "      <Common>"
 REM Printing Certificates
-call :PRINT_TO_CUSTFILE "        <Certificates>"
-call :PRINT_TO_CUSTFILE "          <RootCertificates>"
-for /f "useback delims=" %%A in ("%FILE_PATH%\appx_cerlist.txt") do (
-    call :PRINT_TO_CUSTFILE "            <RootCertificate CertificateName="%%~nA" Name="%%~nA">"
-    call :PRINT_TO_CUSTFILE "              <CertificatePath>%%A</CertificatePath>"
-    call :PRINT_TO_CUSTFILE "            </RootCertificate>"
+for %%B in ("%FILE_PATH%\appx_cerlist.txt") do if %%~zB gtr 0 (
+    call :PRINT_TO_CUSTFILE "        <Certificates>"
+    call :PRINT_TO_CUSTFILE "          <RootCertificates>"
+    for /f "useback delims=" %%A in ("%FILE_PATH%\appx_cerlist.txt") do (
+        call :PRINT_TO_CUSTFILE "            <RootCertificate CertificateName="%%~nA" Name="%%~nA">"
+        call :PRINT_TO_CUSTFILE "              <CertificatePath>%%A</CertificatePath>"
+        call :PRINT_TO_CUSTFILE "            </RootCertificate>"
+    )
+    call :PRINT_TO_CUSTFILE "          </RootCertificates>"
+    call :PRINT_TO_CUSTFILE "        </Certificates>"
+) else (
+  echo. No Certificates. Skipping Certificate section.
 )
-call :PRINT_TO_CUSTFILE "          </RootCertificates>"
-call :PRINT_TO_CUSTFILE "        </Certificates>"
-
 REM Printing APP Install
 call :PRINT_TO_CUSTFILE "        <UniversalAppInstall>"
 call :PRINT_TO_CUSTFILE "          <UserContextApp>"
