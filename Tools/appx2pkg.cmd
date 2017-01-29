@@ -44,13 +44,15 @@ REM Start processing command
 REM Get Appx dependencies
 if exist "%FILE_PATH%\Dependencies\%ARCH%" (
     set DEP_PATH=Dependencies\%ARCH%
-    dir /b "%FILE_PATH%\Dependencies\%ARCH%\*.appx" > "%FILE_PATH%\appx_deplist.txt"
+    dir /b "%FILE_PATH%\Dependencies\%ARCH%\*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
 ) else (
     set DEP_PATH=Dependencies
-    dir /b "%FILE_PATH%\Dependencies\*.appx" > "%FILE_PATH%\appx_deplist.txt"
+    dir /b "%FILE_PATH%\Dependencies\*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
 )
 
 dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
+dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
+
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
 call :CREATE_PKGFILE
@@ -64,6 +66,7 @@ del %PRODSRC_DIR%\uuid.txt
 call :CREATE_CUSTFILE
 
 del "%FILE_PATH%\appx_cerlist.txt"
+del "%FILE_PATH%\appx_license.txt"
 del "%FILE_PATH%\appx_deplist.txt"
 
 endlocal
@@ -83,6 +86,18 @@ call :PRINT_TEXT "            <File Source="%COMP_NAME%.%SUB_NAME%.ppkg" "
 echo                   DestinationDir="$(runtime.windows)\Provisioning\Packages" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 call :PRINT_TEXT "                  Name="%COMP_NAME%.%SUB_NAME%.ppkg" />"
 
+REM Print license file if present
+for %%B in ("%FILE_PATH%\appx_license.txt") do if %%~zB gtr 0 (
+    for /f "useback delims=" %%A in ("%FILE_PATH%\appx_license.txt") do (
+        call :PRINT_TEXT "            <File Source="%%A" "
+        echo                   DestinationDir="$(runtime.clipAppLicenseInstall)" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+        call :PRINT_TEXT "                  Name="%%A" />"
+    )
+
+) else (
+  echo. No License file. Skipping License section.
+)
+
 call :PRINT_TEXT "         </Files>"
 call :PRINT_TEXT "      </OSComponent>"
 call :PRINT_TEXT "   </Components>"
@@ -91,10 +106,6 @@ call :PRINT_TEXT "</Package>"
 exit /b 0
 
 :CREATE_CUSTFILE
-if not exist "%FILE_PATH%\appx_deplist.txt" (
-    echo. error, file not found :%FILE_PATH%\appx_deplist.txt
-    exit /b 1
-)
 
 REM Printing the headers
 call :PRINT_TO_CUSTFILE "<?xml version="1.0" encoding="utf-8" ?>"
@@ -129,11 +140,15 @@ call :PRINT_TO_CUSTFILE "          <UserContextApp>"
 call :PRINT_TO_CUSTFILE "            <Application PackageFamilyName="%SUB_NAME%_SIGNATURE" Name="%SUB_NAME%_SIGNATURE">"
 call :PRINT_TO_CUSTFILE "              <ApplicationFile>%LONG_NAME%.appx</ApplicationFile>"
 REM Printing Dependencies
-call :PRINT_TO_CUSTFILE "              <DependencyAppxFiles>"
-for /f "useback delims=" %%A in ("%FILE_PATH%\appx_deplist.txt") do (
-    call :PRINT_TO_CUSTFILE "                <Dependency Name="%%A">%DEP_PATH%\%%A</Dependency>"
+for %%B in ("%FILE_PATH%\appx_deplist.txt") do if %%~zB gtr 0 (
+    call :PRINT_TO_CUSTFILE "              <DependencyAppxFiles>"
+    for /f "useback delims=" %%A in ("%FILE_PATH%\appx_deplist.txt") do (
+        call :PRINT_TO_CUSTFILE "                <Dependency Name="%%A">%DEP_PATH%\%%A</Dependency>"
+    )
+    call :PRINT_TO_CUSTFILE "              </DependencyAppxFiles>"
+) else (
+  echo. No Dependencies found. Skipping Dependencies section.
 )
-call :PRINT_TO_CUSTFILE "              </DependencyAppxFiles>"
 call :PRINT_TO_CUSTFILE "              <DeploymentOptions>Force target application shutdown</DeploymentOptions>"
 call :PRINT_TO_CUSTFILE "            </Application>"
 call :PRINT_TO_CUSTFILE "          </UserContextApp>"
