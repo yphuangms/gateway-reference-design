@@ -55,7 +55,7 @@ if exist %PRODSRC_DIR%\prov\customizations.xml (
 )
 
 echo Creating Image...
-call imggen.cmd "%PRODBLD_DIR%\Flash.FFU" "%PRODSRC_DIR%\%2OEMInput.xml" "%MSPACKAGE%" %BSP_ARCH%
+call imggen.cmd "%PRODBLD_DIR%\Flash.ffu" "%PRODSRC_DIR%\%2OEMInput.xml" "%MSPACKAGE%" %BSP_ARCH%
 
 if errorlevel 1 goto Error
 
