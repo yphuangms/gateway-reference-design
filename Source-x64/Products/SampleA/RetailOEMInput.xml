@@ -50,8 +50,6 @@
       <Feature>IOT_ALLJOYN_APP</Feature>
       <Feature>IOT_ENABLE_ADMIN</Feature>
       <Feature>IOT_APPLICATIONS</Feature>
-      <Feature>IOT_NANORDPSERVER</Feature>
-      <Feature>IOT_SHELL_HOTKEY_SUPPORT</Feature>      
     </Microsoft>
     <OEM>
       <!-- Include BSP Features -->
