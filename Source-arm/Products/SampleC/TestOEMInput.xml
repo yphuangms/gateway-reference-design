@@ -54,7 +54,13 @@
       <Feature>IOT_DISABLE_UMCI</Feature>
       <Feature>IOT_ENABLE_TESTSIGNING</Feature>
       <Feature>IOT_TOOLKIT</Feature>
-      <!-- RS1 Additions -->
+      <!-- Debug Features -->
+      <Feature>IOT_KDSERIAL_SETTINGS</Feature>
+      <Feature>IOT_UMDFDBG_SETTINGS</Feature>
+      <Feature>IOT_WDTF</Feature>
+      <Feature>IOT_CRT140</Feature>
+      <Feature>IOT_DIRECTX_TOOLS</Feature>
+      <Feature>PRODUCTION_CORE</Feature>
       <Feature>IOT_NANORDPSERVER</Feature>
       <Feature>IOT_SHELL_HOTKEY_SUPPORT</Feature>
       <Feature>IOT_APPLICATIONS</Feature>
@@ -64,8 +70,9 @@
       <!-- Include BSP Features -->
       <Feature>ModelA_Drivers</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxTextGlowClock</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
+      <Feature>OEM_ProvAuto</Feature>
     </OEM>
   </Features>
   <Product>Windows 10 IoT Core</Product>

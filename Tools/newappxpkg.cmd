@@ -77,6 +77,7 @@ if [%FILE_TYPE%] == [.appx] (
     )
 
     copy "%FILE_PATH%\*.cer" "%NEWPKG_DIR%\" >nul
+    copy "%FILE_PATH%\*License*.xml" "%NEWPKG_DIR%\" >nul
     copy "%FILE_PATH%\%FILE_NAME%.appx" "%NEWPKG_DIR%\%FILE_NAME%.appx" >nul
 )
 

@@ -50,7 +50,7 @@
       <Feature>RPi2_DRIVERS</Feature>
       <Feature>RPi3_DRIVERS</Feature>
       <!-- Include OEM features
-      <Feature>OEM_AppxMain</Feature><Feature>OEM_CustomCmd</Feature><Feature>OEM_ProvAuto</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature><Feature>OEM_CustomCmd</Feature><Feature>OEM_ProvAuto</Feature>
       -->
     </OEM>
   </Features>

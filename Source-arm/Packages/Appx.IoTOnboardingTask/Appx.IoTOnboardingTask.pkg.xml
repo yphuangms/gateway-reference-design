@@ -5,24 +5,9 @@
    <Components> 
       <OSComponent> 
          <Files> 
-            <File Source="AppxConfig.cmd"  
-                  DestinationDir="$(runtime.root)\OEMApps\Appx.IoTOnboardingTask" 
-                  Name="AppxConfig.cmd" /> 
-            <File Source="IoTOnboardingTask_1.0.0.0_ARM.appx"  
-                  DestinationDir="$(runtime.root)\OEMApps\Appx.IoTOnboardingTask" 
-                  Name="IoTOnboardingTask_1.0.0.0_ARM.appx" /> 
-            <File Source="IoTOnboardingTask_1.0.0.0_ARM.cer"  
-                  DestinationDir="$(runtime.root)\OEMApps\Appx.IoTOnboardingTask" 
-                  Name="IoTOnboardingTask_1.0.0.0_ARM.cer" /> 
-            <File Source="Microsoft.NET.Native.Framework.1.3.appx"  
-                  DestinationDir="$(runtime.root)\OEMApps\Appx.IoTOnboardingTask" 
-                  Name="Microsoft.NET.Native.Framework.1.3.appx" /> 
-            <File Source="Microsoft.NET.Native.Runtime.1.4.appx"  
-                  DestinationDir="$(runtime.root)\OEMApps\Appx.IoTOnboardingTask" 
-                  Name="Microsoft.NET.Native.Runtime.1.4.appx" /> 
-            <File Source="Microsoft.VCLibs.ARM.14.00.appx"  
-                  DestinationDir="$(runtime.root)\OEMApps\Appx.IoTOnboardingTask" 
-                  Name="Microsoft.VCLibs.ARM.14.00.appx" /> 
+            <File Source="Appx.IoTOnboardingTask.ppkg"  
+                  DestinationDir="$(runtime.windows)\Provisioning\Packages" 
+                  Name="Appx.IoTOnboardingTask.ppkg" /> 
          </Files> 
       </OSComponent> 
    </Components> 
