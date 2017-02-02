@@ -42,7 +42,7 @@ set APPX=%1
 set STARTUP_OPTIONS=fga bgt none
 echo.%STARTUP_OPTIONS% | findstr /C:"%2" >nul && (
     set STARTUP=%2
-	shift
+    shift
 ) || (
     echo. Startup not defined: Chosing None
     set STARTUP=none
@@ -85,9 +85,12 @@ if [%FILE_TYPE%] == [.appx] (
     ) else if exist "%FILE_PATH%\Dependencies" (
         mkdir "%NEWPKG_DIR%\Dependencies"
         copy "%FILE_PATH%\Dependencies\*.appx" "%NEWPKG_DIR%\Dependencies\" >nul 2>nul
+    ) else if exist "%FILE_PATH%\%ARCH%" (
+        mkdir "%NEWPKG_DIR%\%ARCH%"
+        copy "%FILE_PATH%\%ARCH%\*.appx" "%NEWPKG_DIR%\%ARCH%\" >nul 2>nul
     ) else (
-		copy "%FILE_PATH%\*%ARCH%*.appx" "%NEWPKG_DIR%\" >nul 2>nul
-	)
+        copy "%FILE_PATH%\*%ARCH%*.appx" "%NEWPKG_DIR%\" >nul 2>nul
+    )
 
     copy "%FILE_PATH%\*.cer" "%NEWPKG_DIR%\" >nul 2>nul
     copy "%FILE_PATH%\*License*.xml" "%NEWPKG_DIR%\" >nul 2>nul

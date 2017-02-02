@@ -5,7 +5,7 @@
 goto START
 
 :Usage
-echo Usage: appx2pkg input.appx [fga/bgt/none] [CompName.SubCompName] 
+echo Usage: appx2pkg input.appx [fga/bgt/none] [CompName.SubCompName]
 echo    input.appx.............. Required, input .appx file
 echo    fga/bgt/none............ Optional, Startup ForegroundApp / Startup BackgroundTask / No startup
 echo    CompName.SubCompName.... Optional, default is Appx.input
@@ -34,7 +34,7 @@ for /f "tokens=1,2,3 delims=_" %%i in ("%LONG_NAME%") do (
 set STARTUP_OPTIONS=fga bgt none
 echo.%STARTUP_OPTIONS% | findstr /C:"%2" >nul && (
     set STARTUP=%2
-	shift
+    shift
 ) || (
     echo. Startup not defined: Chosing None
     set STARTUP=none
@@ -58,6 +58,9 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
 ) else if exist "%FILE_PATH%\Dependencies" (
     set DEP_PATH=Dependencies
     dir /b "%FILE_PATH%\Dependencies\*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
+) else if exist "%FILE_PATH%\%ARCH%" (
+    set DEP_PATH=%ARCH%
+    dir /b "%FILE_PATH%\%ARCH%\*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
 ) else (
     set DEP_PATH=.
     dir /b "%FILE_PATH%\*%ARCH%*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
@@ -65,14 +68,14 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
 
 dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
 dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
-if exist "%FILE_PATH%\AUMIDs.txt" ( 
+if exist "%FILE_PATH%\AUMIDs.txt" (
 for /f "tokens=1,2 delims=!" %%i in (%FILE_PATH%\AUMIDs.txt) do (
-	set PACKAGE_FNAME=%%i
-	set ENTRY=%%j
-	) 
-) else ( 
-    set PACKAGE_FNAME=%SUB_NAME% 
-	set ENTRY=App
+    set PACKAGE_FNAME=%%i
+    set ENTRY=%%j
+    )
+) else (
+    set PACKAGE_FNAME=%SUB_NAME%
+    set ENTRY=App
 )
 echo Package Family Name : %PACKAGE_FNAME%
 
@@ -161,16 +164,16 @@ REM Print startup configuration
 if [%STARTUP%] == [fga] (
     call :PRINT_TO_CUSTFILE "        <StartupApp>"
     call :PRINT_TO_CUSTFILE "          <Default>"
-	echo            %PACKAGE_FNAME%^^!%ENTRY% >> "%FILE_PATH%\customizations.xml"
-	call :PRINT_TO_CUSTFILE "          </Default>"
+    echo            %PACKAGE_FNAME%^^!%ENTRY% >> "%FILE_PATH%\customizations.xml"
+    call :PRINT_TO_CUSTFILE "          </Default>"
     call :PRINT_TO_CUSTFILE "        </StartupApp>"
 ) else if [%STARTUP%] == [bgt] (
     call :PRINT_TO_CUSTFILE "        <StartupBackgroundTasks>"
     call :PRINT_TO_CUSTFILE "          <ToAdd>"
     call :PRINT_TO_CUSTFILE "            <Add PackageName="
     echo             "%PACKAGE_FNAME%^!%ENTRY%" >> "%FILE_PATH%\customizations.xml"
-	call :PRINT_TO_CUSTFILE "            ></Add>"
-    call :PRINT_TO_CUSTFILE "          </ToAdd>"    
+    call :PRINT_TO_CUSTFILE "            ></Add>"
+    call :PRINT_TO_CUSTFILE "          </ToAdd>"
     call :PRINT_TO_CUSTFILE "        </StartupBackgroundTasks>"
 ) else (
     echo. No Startup configuration, skipping Startup section
