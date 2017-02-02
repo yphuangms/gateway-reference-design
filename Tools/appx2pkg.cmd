@@ -5,12 +5,13 @@
 goto START
 
 :Usage
-echo Usage: appx2pkg input.appx [CompName.SubCompName]
+echo Usage: appx2pkg input.appx [fga/bgt/none] [CompName.SubCompName] 
 echo    input.appx.............. Required, input .appx file
+echo    fga/bgt/none............ Optional, Startup ForegroundApp / Startup BackgroundTask / No startup
 echo    CompName.SubCompName.... Optional, default is Appx.input
 echo    [/?].................... Displays this usage string.
 echo    Example:
-echo        appx2pkg C:\test\sample_1.0.0.0_arm.appx
+echo        appx2pkg C:\test\sample_1.0.0.0_arm.appx none
 exit /b 1
 
 :START
@@ -30,6 +31,15 @@ for /f "tokens=1,2,3 delims=_" %%i in ("%LONG_NAME%") do (
     set FILE_ARCH=%%k
 )
 
+set STARTUP_OPTIONS=fga bgt none
+echo.%STARTUP_OPTIONS% | findstr /C:"%2" >nul && (
+    set STARTUP=%2
+	shift
+) || (
+    echo. Startup not defined: Chosing None
+    set STARTUP=none
+)
+
 if [%2] == [] (
     set COMP_NAME=Appx
     set SUB_NAME=%FILE_NAME%
@@ -45,13 +55,26 @@ REM Get Appx dependencies
 if exist "%FILE_PATH%\Dependencies\%ARCH%" (
     set DEP_PATH=Dependencies\%ARCH%
     dir /b "%FILE_PATH%\Dependencies\%ARCH%\*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
-) else (
+) else if exist "%FILE_PATH%\Dependencies" (
     set DEP_PATH=Dependencies
     dir /b "%FILE_PATH%\Dependencies\*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
+) else (
+    set DEP_PATH=.
+    dir /b "%FILE_PATH%\*%ARCH%*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
 )
 
 dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
 dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
+if exist "%FILE_PATH%\AUMIDs.txt" ( 
+for /f "tokens=1,2 delims=!" %%i in (%FILE_PATH%\AUMIDs.txt) do (
+	set PACKAGE_FNAME=%%i
+	set ENTRY=%%j
+	) 
+) else ( 
+    set PACKAGE_FNAME=%SUB_NAME% 
+	set ENTRY=App
+)
+echo Package Family Name : %PACKAGE_FNAME%
 
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
@@ -134,10 +157,29 @@ for %%B in ("%FILE_PATH%\appx_cerlist.txt") do if %%~zB gtr 0 (
 ) else (
   echo. No Certificates. Skipping Certificate section.
 )
+REM Print startup configuration
+if [%STARTUP%] == [fga] (
+    call :PRINT_TO_CUSTFILE "        <StartupApp>"
+    call :PRINT_TO_CUSTFILE "          <Default>"
+	echo            %PACKAGE_FNAME%^^!%ENTRY% >> "%FILE_PATH%\customizations.xml"
+	call :PRINT_TO_CUSTFILE "          </Default>"
+    call :PRINT_TO_CUSTFILE "        </StartupApp>"
+) else if [%STARTUP%] == [bgt] (
+    call :PRINT_TO_CUSTFILE "        <StartupBackgroundTasks>"
+    call :PRINT_TO_CUSTFILE "          <ToAdd>"
+    call :PRINT_TO_CUSTFILE "            <Add PackageName="
+    echo             "%PACKAGE_FNAME%^!%ENTRY%" >> "%FILE_PATH%\customizations.xml"
+	call :PRINT_TO_CUSTFILE "            ></Add>"
+    call :PRINT_TO_CUSTFILE "          </ToAdd>"    
+    call :PRINT_TO_CUSTFILE "        </StartupBackgroundTasks>"
+) else (
+    echo. No Startup configuration, skipping Startup section
+)
+
 REM Printing APP Install
 call :PRINT_TO_CUSTFILE "        <UniversalAppInstall>"
 call :PRINT_TO_CUSTFILE "          <UserContextApp>"
-call :PRINT_TO_CUSTFILE "            <Application PackageFamilyName="%SUB_NAME%_SIGNATURE" Name="%SUB_NAME%_SIGNATURE">"
+call :PRINT_TO_CUSTFILE "            <Application PackageFamilyName="%PACKAGE_FNAME%" Name="%PACKAGE_FNAME%">"
 call :PRINT_TO_CUSTFILE "              <ApplicationFile>%LONG_NAME%.appx</ApplicationFile>"
 REM Printing Dependencies
 for %%B in ("%FILE_PATH%\appx_deplist.txt") do if %%~zB gtr 0 (

@@ -3,9 +3,10 @@
 goto START
 
 :Usage
-echo Usage: buildprovpkg [CompName.SubCompName]/[ProductName]/[All]/Clean
+echo Usage: buildprovpkg [CompName.SubCompName]/[ProductName]/[Dir]/[All]/Clean
 echo    CompName.SubCompName...... Package Name under Packages directory
 echo    ProductName............... Product Name under Products directory
+echo    Dir....................... Dir path containing customizations.xml
 echo    All....................... All prov packages under \Packages directory and \Products directory are built
 echo    Clean..................... Removes all ppkg files
 echo        One of the above should be specified
@@ -65,6 +66,9 @@ if exist "%COMMON_PKG%\%1\customizations.xml" (
 ) else if exist "%PRODUCTS_DIR%\%1\prov\customizations.xml" (
     set CUSTOMXMLPATH=%PRODUCTS_DIR%\%1\prov
     set PPKGNAME=%1Prov
+) else if exist "%1\customizations.xml" (
+    set CUSTOMXMLPATH=%1
+    set PPKGNAME=Prov
 ) else (
     if [%2] == [Report] ( echo. Skipping %1 : customizations.xml not found )
     exit /b
