@@ -74,7 +74,7 @@ for /f "tokens=1,2 delims=!" %%i in (%FILE_PATH%\AUMIDs.txt) do (
     set ENTRY=%%j
     )
 ) else (
-    set PACKAGE_FNAME=%SUB_NAME%
+    set PACKAGE_FNAME=%FILE_NAME%
     set ENTRY=App
 )
 echo Package Family Name : %PACKAGE_FNAME%
