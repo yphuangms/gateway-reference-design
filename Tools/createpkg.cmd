@@ -40,6 +40,7 @@ set EXTN=%INPUT:~-8%
 
 if [%EXTN%] == [.pkg.xml] (
     set INPUT_FILE=%~nx1
+    set INPUT=%INPUT:.pkg.xml=%
     cd /D %~dp1
 ) else (
     set INPUT_FILE=%1.pkg.xml
@@ -62,6 +63,14 @@ if not defined RELEASE_DIR (
 )
 
 echo Creating %INPUT_FILE% Package with version %PKG_VER% for %PRODUCT%
+
+REM check if customizations.xml is present, if so create provisioning package
+if exist "customizations.xml" (
+    if not exist "%INPUT%.ppkg" (
+        echo  Creating %INPUT%.ppkg...
+        call createprovpkg.cmd customizations.xml %INPUT%.ppkg
+   )
+)
 
 call pkggen.exe "%INPUT_FILE%" /config:"%PKG_CONFIG_XML%" /output:"%PKGBLD_DIR%" /version:%PKG_VER% /build:fre /cpu:%BSP_ARCH% /variables:"_RELEASEDIR=%RELEASE_DIR%\;PROD=%PRODUCT%;PRJDIR=%SRC_DIR%;COMDIR=%COMMON_DIR%;BSPVER=%PKG_VER%;BSPARCH=%BSP_ARCH%;OEMNAME=%OEM_NAME%" /onecore
 
