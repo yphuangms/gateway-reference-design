@@ -6,12 +6,13 @@ REM This script creates the folder structure and copies the template files for a
 goto START
 
 :Usage
-echo Usage: newappxpkg filename.appx [CompName.SubCompName]
+echo Usage: newappxpkg filename.appx [fga/bgt/none] [CompName.SubCompName]
 echo    filename.appx........... Required, Input appx package. Expects dependencies in a sub folder
+echo    fga/bgt/none............ Optional, Startup ForegroundApp / Startup BackgroundTask / No startup
 echo    CompName.SubCompName.... Optional, default is Appx.filename
 echo    [/?]............ Displays this usage string.
 echo    Example:
-echo        newappxpkg C:\test\MainAppx_1.0.0.0_arm.appx Appx.Main
+echo        newappxpkg C:\test\MainAppx_1.0.0.0_arm.appx fga Appx.Main
 echo Existing packages are
 dir /b /AD %SRC_DIR%\Packages
 
@@ -37,6 +38,16 @@ if [%FILE_TYPE%] == [.appx] (
     echo. Unsupported filetype.
     goto Usage
 )
+set APPX=%1
+set STARTUP_OPTIONS=fga bgt none
+echo.%STARTUP_OPTIONS% | findstr /C:"%2" >nul && (
+    set STARTUP=%2
+    shift
+) || (
+    echo. Startup not defined: Chosing None
+    set STARTUP=none
+)
+
 if not [%2] == [] (
     for /f "tokens=1,2 delims=." %%i in ("%2") do (
         set COMP_NAME=%%i
@@ -44,14 +55,14 @@ if not [%2] == [] (
     )
 )
 
-if NOT DEFINED SRC_DIR (
+if not defined SRC_DIR (
     echo Environment not defined. Call setenv
     goto End
 )
-SET "NEWPKG_DIR=%SRC_DIR%\Packages\%COMP_NAME%.%SUB_NAME%"
+set "NEWPKG_DIR=%SRC_DIR%\Packages\%COMP_NAME%.%SUB_NAME%"
 
 REM Error Checks
-if /i EXIST %NEWPKG_DIR% (
+if /i exist %NEWPKG_DIR% (
     echo Error : %COMP_NAME%.%SUB_NAME% already exists
     goto End
 )
@@ -64,20 +75,25 @@ mkdir "%NEWPKG_DIR%"
 if [%FILE_TYPE%] == [.appx] (
     REM Create Appx Package using template files
     echo. Creating package xml files
-    call appx2pkg.cmd %1 %COMP_NAME%.%SUB_NAME%
+    call appx2pkg.cmd %APPX% %STARTUP% %COMP_NAME%.%SUB_NAME%
     REM Copy the files to the package directory
     move "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" "%NEWPKG_DIR%\%COMP_NAME%.%SUB_NAME%.pkg.xml" >nul
     move "%FILE_PATH%\customizations.xml" "%NEWPKG_DIR%\customizations.xml" >nul
     if exist "%FILE_PATH%\Dependencies\%ARCH%" (
         mkdir "%NEWPKG_DIR%\Dependencies\%ARCH%"
         copy "%FILE_PATH%\Dependencies\%ARCH%\*.appx" "%NEWPKG_DIR%\Dependencies\%ARCH%\" >nul
-    ) else (
+    ) else if exist "%FILE_PATH%\Dependencies" (
         mkdir "%NEWPKG_DIR%\Dependencies"
-        copy "%FILE_PATH%\Dependencies\*.appx" "%NEWPKG_DIR%\Dependencies\" >nul
+        copy "%FILE_PATH%\Dependencies\*.appx" "%NEWPKG_DIR%\Dependencies\" >nul 2>nul
+    ) else if exist "%FILE_PATH%\%ARCH%" (
+        mkdir "%NEWPKG_DIR%\%ARCH%"
+        copy "%FILE_PATH%\%ARCH%\*.appx" "%NEWPKG_DIR%\%ARCH%\" >nul 2>nul
+    ) else (
+        copy "%FILE_PATH%\*%ARCH%*.appx" "%NEWPKG_DIR%\" >nul 2>nul
     )
 
-    copy "%FILE_PATH%\*.cer" "%NEWPKG_DIR%\" >nul
-    copy "%FILE_PATH%\*License*.xml" "%NEWPKG_DIR%\" >nul
+    copy "%FILE_PATH%\*.cer" "%NEWPKG_DIR%\" >nul 2>nul
+    copy "%FILE_PATH%\*License*.xml" "%NEWPKG_DIR%\" >nul 2>nul
     copy "%FILE_PATH%\%FILE_NAME%.appx" "%NEWPKG_DIR%\%FILE_NAME%.appx" >nul
 )
 
@@ -86,7 +102,7 @@ goto End
 
 :Error
 endlocal
-echo "newappxpkg %1 %2" failed with error %ERRORLEVEL%
+echo "newappxpkg %APPX% %STARTUP% %2" failed with error %ERRORLEVEL%
 exit /b 1
 
 :End
