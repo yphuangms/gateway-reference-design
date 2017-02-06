@@ -59,7 +59,7 @@ if not defined PRODUCT (
 )
 
 if not defined RELEASE_DIR (
-    set RELEASE_DIR=%BLD_DIR%
+    set RELEASE_DIR=%CD%
 )
 
 echo Creating %INPUT_FILE% Package with version %PKG_VER% for %PRODUCT%
