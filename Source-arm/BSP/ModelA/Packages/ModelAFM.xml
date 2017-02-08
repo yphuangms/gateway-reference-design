@@ -11,17 +11,16 @@
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.BootFirmware.cab"/>
     <!-- Drivers required for boot/reading partitions for UpdateOS -->
     <PackageFile Path="%PKGBLD_DIR%" Name="SV.PlatExtensions.UpdateOS.cab"/>
-    <!-- MBR BCD Settings -->
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Microsoft-IoTUAP-RPi2-BCD-Package.cab" />
+    <!-- MBR BCD Settings : Include IOT_EFIESP_BCD_MBR -->
     <!-- Device Info/ Device Targeting Info : Include IOT_GENERIC_POP in OEMInput xml file -->
     <!-- Mandatory device drivers -->
     <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.bcm2836sdhc.cab"/>
     <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.rpisdhc.cab"/>
     <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.dwcUsbOtg.cab"/>
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi2.LAN9500N630F.cab"/>
+    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="RASPBERRYPI.RPi.LAN9500N650F.cab"/>
     <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.rpiq.cab"/>
     <!-- Device specific customisations if any -->
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Microsoft-IoTUAP-RPi2-Customization-Package.cab" />
+    <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.RPi.Customization.cab" />
   </BasePackages>
   <DeviceLayoutPackages>
     <!-- MBR 4GB layout  -->
