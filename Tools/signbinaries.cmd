@@ -3,15 +3,16 @@
 goto :START
 
 :Usage
-echo Usage: signbinaries [bsp/ppkg/all] [dir]
+echo Usage: signbinaries [bsp/all/ext] [dir]
 echo    bsp  .................. Signs all sys/dll files
-echo    ppkg .................. Signs all ppkg files
-echo    all  .................. Signs all files
+echo    all  .................. Signs all dll/sys/ppkg files
+echo    ext  .................. Signs all .ext files (say cab / dll / sys / ppkg )
 echo    dir  .................. Directory where the files are present
-echo    [/?]...................... Displays this usage string.
+echo    [/?] .................. Displays this usage string.
 echo    Example:
 echo        signbinaries bsp
 echo        signbinaries all
+echo        signbinaries cab
 
 exit /b 1
 
@@ -28,9 +29,9 @@ if /i [%1] == [all] (
     set SIGNFILES=dll sys ppkg
 ) else if /i [%1] == [bsp] (
     set SIGNFILES=sys dll
-) else if /i [%1] == [ppkg] (
-    set SIGNFILES=ppkg
-) else goto Usage
+) else (
+    set SIGNFILES=%1
+)
 if exist "%PKGLOG_DIR%\signbinaries.log" (del "%PKGLOG_DIR%\signbinaries.log")
 
 for %%A in (%SIGNFILES%) do (
