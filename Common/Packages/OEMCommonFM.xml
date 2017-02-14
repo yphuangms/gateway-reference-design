@@ -17,22 +17,6 @@
         </FeatureIDs>
       </PackageFile>
 
-      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.ImageSettings.CrashControl.cab">
-        <FeatureIDs>
-          <!-- This feature id sets the Crashdump settings -->
-          <FeatureID>OEMCommon_CrashControl</FeatureID>
-          <FeatureID>OEMCommon_ALL</FeatureID>
-        </FeatureIDs>
-      </PackageFile>
-
-      <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.ImageSettings.VideoMode.cab">
-        <FeatureIDs>
-          <!-- This feature id sets the headless/headed mode. Default is headed-->
-          <FeatureID>OEMCommon_VideoMode</FeatureID>
-          <FeatureID>OEMCommon_ALL</FeatureID>
-        </FeatureIDs>
-      </PackageFile>
-	  
       <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Provisioning.Enroll.cab">
         <FeatureIDs>
           <!-- This feature id brings in Enrollment provisioning package  -->
@@ -40,15 +24,15 @@
           <!-- OEMCommon_ALL not included  -->
         </FeatureIDs>
       </PackageFile>
-	  
+
       <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Provisioning.ProSKU.cab">
         <FeatureIDs>
           <!-- This feature id brings in ProSKU provisioning package -->
           <FeatureID>OEM_ProvProSKU</FeatureID>
           <!-- OEMCommon_ALL not included -->
         </FeatureIDs>
-      </PackageFile>	  
-	  	  
+      </PackageFile>
+
       <!-- Packages with Product specific contents included -->
       <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.Custom.Cmd.cab">
         <FeatureIDs>

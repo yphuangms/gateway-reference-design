@@ -9,7 +9,7 @@
   <Components>
     <OSComponent>
         <RegKeys>
-            <RegKey KeyName="$(hklm.system)\ControlSet001\Control\SystemInformation">
+            <RegKey KeyName="$(hklm.control)\SystemInformation">
             <!-- System Information Registry settings -->
                 <RegValue
                     Name="SystemProductName"

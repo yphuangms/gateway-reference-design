@@ -239,4 +239,6 @@ _Pvt_Extensions
 Build/
 *.ppkg
 *.cat
+bspdrivers/
+
 
