@@ -23,7 +23,7 @@ if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
 if [%2] == [] goto Usage
-if not exist "%2%" goto Usage
+if not exist "%2" goto Usage
 
 if /i [%1] == [all] (
     set SIGNFILES=dll sys ppkg
