@@ -27,10 +27,10 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Using custom device layout -->
-    <AdditionalFM>%BSPSRC_DIR%\ModelA\Packages\ModelAFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\ModelAFM.xml</AdditionalFM>
     <!-- Including OEM feature manifest -->
-    <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM>
-    <AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
   </AdditionalFMs>
   <Features>
     <Microsoft>

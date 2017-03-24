@@ -37,13 +37,18 @@ if /I [%1] == [all] (
     call signbinaries.cmd bsp %BSPSRC_DIR%
     echo Building all bsp packages
     call buildpkg %BSPSRC_DIR%
-	
+    dir /b /AD %BSPSRC_DIR% > %PKGLOG_DIR%\bsplist.txt
+    for /f "delims=" %%i in (%PKGLOG_DIR%\bsplist.txt) do (
+       echo.  Running FeatureMerger for %%i
+       call buildfm.cmd bsp %%i  > %PKGLOG_DIR%\buildfm_bsp_%%i.log
+    )
 ) else if exist "%BSPSRC_DIR%\%1" (
     echo Sign %1 bsp binaries...
     call signbinaries.cmd bsp %BSPSRC_DIR%\%1
-	echo Building %1 bsp packages
+    echo Building %1 bsp packages
     call buildpkg %BSPSRC_DIR%\%1
-	
+    echo Running feature merger
+    call buildfm bsp %1 > %PKGLOG_DIR%\buildfm_bsp_%1.log
 ) else (
     echo. %1 not found.
     echo. Available BSPs are

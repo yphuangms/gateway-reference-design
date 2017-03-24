@@ -12,7 +12,7 @@ echo    [/?].............. Displays this usage string.
 echo    Example:
 echo        newbsp CustomRPi2
 echo Existing BSPs are
-dir /b /AD %SRC_DIR%\BSP
+dir /b /AD %BSPSRC_DIR%
 
 exit /b 1
 
