@@ -159,7 +159,7 @@ exit /b
 REM Printing the headers
 call :PRINT_TEXT "<?xml version="1.0" encoding="utf-8" ?>"
 call :PRINT_TEXT "<Package xmlns="urn:Microsoft.WindowsPhone/PackageSchema.v8.00""
-echo          Owner="$(OEMNAME)" OwnerType="OEM" ReleaseType="Production" >> "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+echo          Owner="$(OEMNAME)" OwnerType="OEM" ReleaseType="Production">> "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 call :PRINT_TEXT "         Platform="%BSP_ARCH%" Component="%COMP_NAME%" SubComponent="%SUB_NAME%">"
 call :PRINT_TEXT "   <Components>"
 call :PRINT_TEXT "      <Driver InfSource="%FILE_NAME%.inf">"
@@ -180,9 +180,16 @@ if exist "%OUTPUT_PATH%\inf_filelist.txt" (
             )
         )
         echo.   Placing %%A in !LOCATION!
-        call :PRINT_TEXT "           <File Source="%%B\%%A" "
-        echo                  DestinationDir="!LOCATION!" >> "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
-        call :PRINT_TEXT "                 Name="%%A" EmbeddedSigningCategory="-oem" />"
+        call :PRINT_TEXT "           <File Source="%%B\%%A""
+        echo                  DestinationDir="!LOCATION!">> "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+        for /f "tokens=2 delims=." %%i in ("%%A") do (
+            call :FIND_TEXT "%SIGNFILES%" %%i
+            if errorlevel 1 (
+                call :PRINT_TEXT "                 Name="%%A" EmbeddedSigningCategory="-oem" />"
+            ) else (
+                call :PRINT_TEXT "                 Name="%%A" />"
+            )
+        )
     )
     call :PRINT_TEXT "         </Files>"
 ) else (
@@ -197,7 +204,7 @@ exit /b 0
 
 :PRINT_TEXT
 for /f "useback tokens=*" %%a in ('%1') do set TEXT=%%~a
-echo !TEXT! >> "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+echo !TEXT!>> "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 exit /b
 
 :FIND_TEXT
@@ -207,6 +214,7 @@ if %1 NEQ !TESTLINE! ( exit /b 1)
 exit /b 0
 
 :INIT_CONFIG
+set SIGNFILES=dll sys
 set TOKENLIST=[SourceDisksFiles] [SourceDisksFiles.%BSP_ARCH%] [DestinationDirs]
 REM Add DirID and the corresponding location here for extending support for more DirIDs
 set DIRIDLIST= 10 11 12 24
