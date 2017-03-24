@@ -32,6 +32,9 @@ set PKG_CONFIG_XML=%KITSROOT%Tools\bin\i386\pkggen.cfg.xml
 
 set ARCH=%1
 set BSP_ARCH=%1
+set ARCH_CAP=%ARCH:arm=ARM%
+set ARCH_CAP=%ARCH_CAP:x=X%
+
 set HIVE_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 set WIM_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 
@@ -42,6 +45,7 @@ set SIGN_WITH_TIMESTAMP=0
 
 
 REM Local project settings
+set MSPKG_DIR=%KITSROOT%MSPackages\Retail\%BSP_ARCH%\fre
 set COMMON_DIR=%IOTADK_ROOT%\Common
 set SRC_DIR=%IOTADK_ROOT%\Source-%1
 set PKGSRC_DIR=%SRC_DIR%\Packages
@@ -51,6 +55,9 @@ set BLD_DIR=%IOTADK_ROOT%\Build\%BSP_ARCH%
 set PKGBLD_DIR=%BLD_DIR%\pkgs
 set PKGLOG_DIR=%PKGBLD_DIR%\logs
 set TOOLS_DIR=%IOTADK_ROOT%\Tools
+
+REM Set the location of the BSP packages, currently set to the build folder. Can be overridden to point to actual location.
+set BSPPKG_DIR=%PKGBLD_DIR%
 
 call setversion.cmd
 

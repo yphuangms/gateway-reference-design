@@ -31,27 +31,27 @@
     <MSFeatureGroups />
     <OEM>
       <!-- Optional Device Drivers -->
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBMx64.GPIO.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBMx64.GPIO.cab">
         <FeatureIDs>
           <FeatureID>ModelA_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBMx64.UART.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBMx64.UART.cab">
         <FeatureIDs>
           <FeatureID>ModelA_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBMx64.I2C.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBMx64.I2C.cab">
         <FeatureIDs>
           <FeatureID>ModelA_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBMx64.SPI.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBMx64.SPI.cab">
         <FeatureIDs>
           <FeatureID>ModelA_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBMx64.GRFX.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBMx64.GRFX.cab">
         <FeatureIDs>
           <FeatureID>ModelA_DRIVERS</FeatureID>
         </FeatureIDs>
