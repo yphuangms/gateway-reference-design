@@ -61,7 +61,7 @@ if /I [%1] == [All] (
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
 
     echo Running FeatureMerger for OEM packages
-    call buildoemfm.cmd > %PKGLOG_DIR%\oemfm.log
+    call buildfm.cmd oem > %PKGLOG_DIR%\oemfm.log
     
     echo Running FeatureMerger for BSP packages
     dir /b /AD %BSPSRC_DIR% > %PKGLOG_DIR%\bsplist.txt
