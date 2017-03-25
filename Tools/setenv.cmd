@@ -37,9 +37,6 @@ set HIVE_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 set WIM_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 
 if [%1] == [x64] ( set BSP_ARCH=amd64)
-set ARCH_CAP=%BSP_ARCH:arm=ARM%
-set ARCH_CAP=%ARCH_CAP:x=X%
-set ARCH_CAP=%ARCH_CAP:amd=AMD%
 
 REM The following variables ensure the package is appropriately signed
 set SIGN_OEM=1
@@ -58,7 +55,7 @@ set PKGBLD_DIR=%BLD_DIR%\pkgs
 set PKGLOG_DIR=%PKGBLD_DIR%\logs
 set TOOLS_DIR=%IOTADK_ROOT%\Tools
 
-REM Set the location of the BSP packages, currently set to the build folder. Can be overridden to point to actual location.
+REM Set the location of the BSP packages, currently set to the build folder. Override this to point to actual location.
 set BSPPKG_DIR=%PKGBLD_DIR%
 
 call setversion.cmd

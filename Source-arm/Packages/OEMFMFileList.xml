@@ -2,7 +2,8 @@
 <FMCollectionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/embedded/2004/10/ImageUpdate" Product="IoTUAP" >
   <IsBuildFeatureEnabled>true</IsBuildFeatureEnabled>
   <FMs>
-    <FM ID="BSP" Path="$(FMDirectory)\BSPFM.xml" ReleaseType="Production" OwnerName="OEM_NAME" OwnerType="OEM" CPUType="ARCH" Critical="true"/>
+    <FM ID="OEMCOMMON" Path="$(FMDirectory)\OEMCommonFM.xml" ReleaseType="Production" OwnerName="OEM_NAME" OwnerType="OEM" CPUType="ARM" Critical="true"/>
+    <FM ID="OEMFM" Path="$(FMDirectory)\OEMFM.xml" ReleaseType="Production" OwnerName="OEM_NAME" OwnerType="OEM" CPUType="ARM" Critical="true"/>
  </FMs>
 
   <SupportedResolutions>

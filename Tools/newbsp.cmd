@@ -1,6 +1,3 @@
-:: Run setenv before running this script
-:: This script creates the folder structure and copies the template files for a new product
-:: usage : newbsp <bsp name>
 @echo off
 
 goto START
@@ -27,7 +24,6 @@ if not defined SRC_DIR (
     echo Environment not defined. Call setenv
     goto End
 )
-:: Error Checks
 set NEWBSP=%1
 set NEWBSP_DIR=%BSPSRC_DIR%\%NEWBSP%
 set TEMPLATE_DIR=%IOTADK_ROOT%\Templates\BSP
@@ -36,7 +32,6 @@ if /i exist %NEWBSP_DIR% (
     goto Usage
 )
 
-:: Start processing command
 echo Creating %1 BSP
 
 mkdir "%NEWBSP_DIR%"
