@@ -32,13 +32,15 @@ set PKG_CONFIG_XML=%KITSROOT%Tools\bin\i386\pkggen.cfg.xml
 
 set ARCH=%1
 set BSP_ARCH=%1
-set ARCH_CAP=%ARCH:arm=ARM%
-set ARCH_CAP=%ARCH_CAP:x=X%
 
 set HIVE_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 set WIM_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 
 if [%1] == [x64] ( set BSP_ARCH=amd64)
+set ARCH_CAP=%BSP_ARCH:arm=ARM%
+set ARCH_CAP=%ARCH_CAP:x=X%
+set ARCH_CAP=%ARCH_CAP:amd=AMD%
+
 REM The following variables ensure the package is appropriately signed
 set SIGN_OEM=1
 set SIGN_WITH_TIMESTAMP=0
