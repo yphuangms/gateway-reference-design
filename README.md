@@ -15,7 +15,7 @@ This branch contains the active development contents, mostly addressing the upco
 * [10586_v1.0 release](https://github.com/ms-iot/iot-adk-addonkit/releases/tag/v1.0) for Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
 
 
-#References
+# References
 
 ## User Guides
 * [IoT Core Manufacturing Guide](https://msdn.microsoft.com/windows/hardware/commercialize/manufacture/iot/iot-core-manufacturing-guide)
