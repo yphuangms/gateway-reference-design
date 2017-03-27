@@ -3,15 +3,15 @@ This project contains command line scripts for package creation and image creati
 
 This project has adopted the [Microsoft Open Source Code of Conduct](http://microsoft.github.io/codeofconduct). For more information see the [Code of Conduct FAQ](http://microsoft.github.io/codeofconduct/faq.md) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-#Branch Overview
+# Branch Overview
 
-##Master Branch
+## Master Branch
 This branch supports the lastest Windows 10 IoT Core release available ( currently 1607, version number 10.0.14393.x )
 
-##Develop Branch
+## Develop Branch
 This branch contains the active development contents, mostly addressing the upcoming release features.
 
-##Older Versions
+## Older Versions
 * [10586_v1.0 release](https://github.com/ms-iot/iot-adk-addonkit/releases/tag/v1.0) for Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
 
 
