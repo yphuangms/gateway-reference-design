@@ -27,9 +27,10 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
-    <AdditionalFM>%BSPSRC_DIR%\CustomMBMx64\Packages\CustomMBMx64FM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\CustomMBMx64FM.xml</AdditionalFM>
     <!-- Including OEM feature manifest 
-    <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM><AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
     -->
     <!-- Including the test features -->
     <AdditionalFM>%AKROOT%\FMFiles\amd64\IoTUAPNonProductionPartnerShareFM.xml</AdditionalFM>

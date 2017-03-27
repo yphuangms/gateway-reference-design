@@ -11,7 +11,7 @@ echo    fga/bgt/none............ Optional, Startup ForegroundApp / Startup Backg
 echo    CompName.SubCompName.... Optional, default is Appx.input
 echo    [/?].................... Displays this usage string.
 echo    Example:
-echo        appx2pkg C:\test\sample_1.0.0.0_arm.appx none
+echo        appx2pkg none C:\test\sample_1.0.0.0_arm.appx 
 exit /b 1
 
 :START

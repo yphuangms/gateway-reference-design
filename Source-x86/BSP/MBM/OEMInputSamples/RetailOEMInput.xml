@@ -27,9 +27,10 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
-    <AdditionalFM>%BSPSRC_DIR%\MBM\Packages\MBMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\MBMFM.xml</AdditionalFM>
     <!-- Including OEM feature manifest
-    <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM><AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
     -->
   </AdditionalFMs>
   <Features>

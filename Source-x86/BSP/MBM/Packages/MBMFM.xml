@@ -32,27 +32,27 @@
     <MSFeatureGroups />
     <OEM>
       <!-- Optional Device Drivers -->
-      <PackageFile Path="%PKGBLD_DIR%" Name="Intel.MBM.GPIO.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBM.GPIO.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="%PKGBLD_DIR%" Name="Intel.MBM.UART.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBM.UART.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="%PKGBLD_DIR%" Name="Intel.MBM.I2C.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBM.I2C.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="%PKGBLD_DIR%" Name="Intel.MBM.SPI.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBM.SPI.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="%PKGBLD_DIR%" Name="Intel.MBM.GRFX.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBM.GRFX.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>

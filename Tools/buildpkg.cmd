@@ -41,11 +41,11 @@ if /I [%1] == [All] (
     call buildprovpkg.cmd all
 
     echo Signing all binaries
-	REM call signbinaries.cmd ppkg %COMMON_DIR%
-	REM signing bsp only, not ppkgs
-	call signbinaries.cmd bsp %SRC_DIR%
-	
-	echo Building all packages under %COMMON_DIR%\Packages
+    REM call signbinaries.cmd ppkg %COMMON_DIR%
+    REM signing bsp only, not ppkgs
+    call signbinaries.cmd bsp %SRC_DIR%
+    
+    echo Building all packages under %COMMON_DIR%\Packages
     dir %COMMON_DIR%\Packages\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
 
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
@@ -60,6 +60,15 @@ if /I [%1] == [All] (
 
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
 
+    echo Running FeatureMerger for OEM packages
+    call buildfm.cmd oem > %PKGLOG_DIR%\oemfm.log
+    
+    echo Running FeatureMerger for BSP packages
+    dir /b /AD %BSPSRC_DIR% > %PKGLOG_DIR%\bsplist.txt
+    for /f "delims=" %%i in (%PKGLOG_DIR%\bsplist.txt) do (
+       echo.  Running FeatureMerger for %%i
+       call buildfm.cmd bsp %%i  > %PKGLOG_DIR%\buildfm_bsp_%%i.log
+    )
 
 ) else if /I [%1] == [Clean] (
     call buildprovpkg.cmd clean
@@ -90,8 +99,8 @@ if /I [%1] == [All] (
                 goto Usage
             ) else (
                 if !RESULT! NEQ "" (
-				   echo Signing all binaries in !RESULT!
-				   call signbinaries.cmd bsp !RESULT!
+                   echo Signing all binaries in !RESULT!
+                   call signbinaries.cmd bsp !RESULT!
                    dir "!RESULT!\*.pkg.xml" /S /B > %PKGLOG_DIR%\packagelist.txt
                 )
             )
@@ -103,6 +112,7 @@ if /I [%1] == [All] (
 )
 if exist %PKGLOG_DIR%\packagelist.txt ( del %PKGLOG_DIR%\packagelist.txt )
 if exist %PKGLOG_DIR%\packagedir.txt ( del %PKGLOG_DIR%\packagedir.txt )
+if exist %PKGLOG_DIR%\bsplist.txt ( del %PKGLOG_DIR%\bsplist.txt )
 endlocal
 popd
 exit /b

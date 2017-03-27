@@ -27,15 +27,16 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
-    <AdditionalFM>%BSPSRC_DIR%\CustomRPi2\Packages\CustomRPi2FM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\CustomRPi2FM.xml</AdditionalFM>
     <!-- Including OEM feature manifest
-    <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM><AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
     -->
   </AdditionalFMs>
   <Features>
     <Microsoft>
       <Feature>IOT_EFIESP</Feature>
-	  <Feature>IOT_EFIESP_BCD_MBR</Feature>	  
+      <Feature>IOT_EFIESP_BCD_MBR</Feature>   
       <Feature>IOT_GENERIC_POP</Feature>
       <Feature>IOT_DMAP_DRIVER</Feature>
       <!-- Following two required for Appx Installation -->
