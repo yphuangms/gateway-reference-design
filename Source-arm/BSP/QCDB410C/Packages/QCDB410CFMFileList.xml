@@ -3,7 +3,7 @@
   <IsBuildFeatureEnabled>true</IsBuildFeatureEnabled>
   <FMs>
     <FM ID="QCDB410C" Path="$(FMDirectory)\QCDB410CFM.xml" ReleaseType="Production" OwnerName="OEM_NAME" OwnerType="OEM" CPUType="ARM" Critical="true"/>
-    <FM ID="QCDB410CTEST" Path="$(FMDirectory)\QCDB410CFMTest.xml" ReleaseType="Production" OwnerName="OEM_NAME" OwnerType="OEM" CPUType="ARM" Critical="true"/>
+    <FM ID="QCDB410CTEST" Path="$(FMDirectory)\QCDB410CTestFM.xml" ReleaseType="Production" OwnerName="OEM_NAME" OwnerType="OEM" CPUType="ARM" Critical="true"/>
 
  </FMs>
 
