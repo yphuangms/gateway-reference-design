@@ -68,16 +68,14 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
 
 dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
 dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
-if exist "%FILE_PATH%\AUMIDs.txt" (
-for /f "tokens=1,2 delims=!" %%i in (%FILE_PATH%\AUMIDs.txt) do (
-    set PACKAGE_FNAME=%%i
-    set ENTRY=%%j
-    )
-) else (
-    set PACKAGE_FNAME=%FILE_NAME%
-    set ENTRY=App
+
+call %TOOLS_DIR%\GetAppxInfo.exe "%FILE_PATH%\%LONG_NAME%.appx" > "%FILE_PATH%\appx_info.txt" 2>nul
+for /f "tokens=2,3 delims=:,! skip=3" %%i in (%FILE_PATH%\appx_info.txt) do (
+	set PACKAGE_FNAME=%%i
+	set ENTRY=%%j
 )
-echo Package Family Name : %PACKAGE_FNAME%
+
+echo. PackageFamilyName : %PACKAGE_FNAME% AppId : %ENTRY%
 
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
@@ -94,6 +92,7 @@ call :CREATE_CUSTFILE
 del "%FILE_PATH%\appx_cerlist.txt"
 del "%FILE_PATH%\appx_license.txt"
 del "%FILE_PATH%\appx_deplist.txt"
+del "%FILE_PATH%\appx_info.txt"
 
 endlocal
 exit /b 0
