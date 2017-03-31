@@ -7,44 +7,59 @@ goto START
 :Usage
 echo Usage: appx2pkg input.appx [fga/bgt/none] [CompName.SubCompName]
 echo    input.appx.............. Required, input .appx file
-echo    fga/bgt/none............ Optional, Startup ForegroundApp / Startup BackgroundTask / No startup
-echo    CompName.SubCompName.... Optional, default is Appx.input
+echo    fga/bgt/none............ Required, Startup ForegroundApp / Startup BackgroundTask / No startup
+echo    CompName.SubCompName.... Optional, default is Appx.AppxName
 echo    [/?].................... Displays this usage string.
 echo    Example:
-echo        appx2pkg none C:\test\sample_1.0.0.0_arm.appx 
+echo        appx2pkg C:\test\sample_1.0.0.0_arm.appx none
 exit /b 1
 
 :START
 
 setlocal ENABLEDELAYEDEXPANSION
+set STARTUP_OPTIONS=fga bgt none
 
 if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
+if [%2] == [] goto Usage
+
 if not [%~x1] == [.appx] goto Usage
 set LONG_NAME=%~n1
+set FILE_NAME=%~n1
 set "FILE_PATH=%~dp1"
 
-for /f "tokens=1,2,3 delims=_" %%i in ("%LONG_NAME%") do (
-    set FILE_NAME=%%i
-    set FILE_Version=%%j
-    set FILE_ARCH=%%k
+call %TOOLS_DIR%\GetAppxInfo.exe "%1" > "%FILE_PATH%\appx_info.txt" 2>nul
+for /f "tokens=1,2,3 delims=:,!, " %%i in (%FILE_PATH%\appx_info.txt) do (
+    set APPX_%%i=%%j
+    if [%%i] == [AppUserModelId] (
+        set PACKAGE_FNAME=%%j
+        set ENTRY=%%k
+    )
+)
+echo. PackageFamilyName : %PACKAGE_FNAME% AppId : %ENTRY%
+for /f "tokens=1,2,3,4 delims=." %%A in ("%APPX_Version%") do (
+    set PROV_VERSION=%%A%%B.%%C%%D
+)
+echo. Provisioning package version : %PROV_VERSION%
+
+for %%A in (%STARTUP_OPTIONS%) do (
+    if [%%A] == [%2] (
+        set STARTUP=%2
+    )
+)
+if not defined STARTUP (
+    echo. Error : Invalid Startup option.
+    goto Usage
 )
 
-set STARTUP_OPTIONS=fga bgt none
-echo.%STARTUP_OPTIONS% | findstr /C:"%2" >nul && (
-    set STARTUP=%2
-    shift
-) || (
-    echo. Startup not defined: Chosing None
-    set STARTUP=none
-)
-
-if [%2] == [] (
+if [%3] == [] (
     set COMP_NAME=Appx
-    set SUB_NAME=%FILE_NAME%
+    for /f "tokens=1 delims=_" %%i in ("%FILE_NAME%") do (
+        set SUB_NAME=%%i
+    )
 ) else (
-    for /f "tokens=1,2 delims=." %%i in ("%2") do (
+    for /f "tokens=1,2 delims=." %%i in ("%3") do (
         set COMP_NAME=%%i
         set SUB_NAME=%%j
     )
@@ -69,13 +84,6 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
 dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
 dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
 
-call %TOOLS_DIR%\GetAppxInfo.exe "%FILE_PATH%\%LONG_NAME%.appx" > "%FILE_PATH%\appx_info.txt" 2>nul
-for /f "tokens=2,3 delims=:,! skip=3" %%i in (%FILE_PATH%\appx_info.txt) do (
-	set PACKAGE_FNAME=%%i
-	set ENTRY=%%j
-)
-
-echo. PackageFamilyName : %PACKAGE_FNAME% AppId : %ENTRY%
 
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
@@ -138,7 +146,7 @@ call :PRINT_TO_CUSTFILE "<WindowsCustomizations>"
 call :PRINT_TO_CUSTFILE "  <PackageConfig xmlns="urn:schemas-Microsoft-com:Windows-ICD-Package-Config.v1.0">"
 call :PRINT_TO_CUSTFILE "    <ID>{%NEWGUID%}</ID>"
 call :PRINT_TO_CUSTFILE "    <Name>%SUB_NAME%Prov</Name>"
-call :PRINT_TO_CUSTFILE "    <Version>1.0</Version>"
+call :PRINT_TO_CUSTFILE "    <Version>%PROV_VERSION%</Version>"
 call :PRINT_TO_CUSTFILE "    <OwnerType>OEM</OwnerType>"
 call :PRINT_TO_CUSTFILE "    <Rank>0</Rank>"
 call :PRINT_TO_CUSTFILE "  </PackageConfig>"
