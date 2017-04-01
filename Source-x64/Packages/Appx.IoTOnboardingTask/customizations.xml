@@ -17,6 +17,13 @@
             </RootCertificate>
           </RootCertificates>
         </Certificates>
+        <StartupBackgroundTasks>
+          <ToAdd>
+            <Add PackageName=
+            "IoTOnboardingTask-uwp_1w720vyc4ccym!App"
+            ></Add>
+          </ToAdd>
+        </StartupBackgroundTasks>
         <UniversalAppInstall>
           <UserContextApp>
             <Application PackageFamilyName="IoTOnboardingTask-uwp_1w720vyc4ccym" Name="IoTOnboardingTask-uwp_1w720vyc4ccym">

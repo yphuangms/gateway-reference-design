@@ -10,9 +10,6 @@
   <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
     <Customizations>
       <Common>
-        <StartupApp>
-          <Default>IoTCoreDefaultApp_1w720vyc4ccym!App</Default>
-        </StartupApp>	  
         <Policies>
           <Connectivity>
             <AllowBluetooth>Yes</AllowBluetooth>
