@@ -17,12 +17,20 @@ if [%1] == [-?] goto USAGE
 if [%1] == [] goto USAGE
 
 set SUPPORTED_ARCH=arm x86 x64
-echo.%SUPPORTED_ARCH% | findstr /C:"%1" >nul && (
-    echo Configuring for %1 architecture
-) || (
+
+for %%A in (%SUPPORTED_ARCH%) do (
+    if /I [%%A] == [%1] (
+        set FOUND=%1
+    )
+)
+
+if not defined FOUND (
     echo.Error: %1 not supported
     goto USAGE
+) else (
+    echo Configuring for %1 architecture
 )
+set FOUND=
 
 REM Environment configurations
 set PATH=%KITSROOT%tools\bin\i386;%PATH%
@@ -36,7 +44,7 @@ set BSP_ARCH=%1
 set HIVE_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 set WIM_ROOT=%KITSROOT%CoreSystem\%WDK_VERSION%\%BSP_ARCH%
 
-if [%1] == [x64] ( set BSP_ARCH=amd64)
+if /I [%1] == [x64] ( set BSP_ARCH=amd64)
 
 REM The following variables ensure the package is appropriately signed
 set SIGN_OEM=1
