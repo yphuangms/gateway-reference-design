@@ -42,12 +42,15 @@ This branch contains the active development contents, mostly addressing the upco
 
   The drivers required for the Raspberry Pi are available in the github project : [ms-iot/bsp](https://github.com/ms-iot/bsp)
 
+  
   Steps to create the drivers :
+  
     1. check out ms-iot/bsp project
     2. Build the bcm2386 solution
     3. Go to the tools folder and run
         binexport Release/debug <target folder> eg. binexport release c:\rpibsp
     4. In IoTCoreShell, run C:\rpibsp\build.cmd
+    
   The required cabs will be created in the output folder.
 
   You can also download the prebuilt binaries available in the release : [rpibsp.zip](https://github.com/ms-iot/iot-adk-addonkit/releases/download/RPiBSP/rpibsp.zip)
