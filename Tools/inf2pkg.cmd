@@ -35,7 +35,7 @@ if [%2] == [] (
     set COMP_NAME=Drivers
     set SUB_NAME=%FILE_NAME%
 ) else (
-    for /f "tokens=1,2 delims=." %%i in ("%2") do (
+    for /f "tokens=1,* delims=." %%i in ("%2") do (
         set COMP_NAME=%%i
         set SUB_NAME=%%j
     )
