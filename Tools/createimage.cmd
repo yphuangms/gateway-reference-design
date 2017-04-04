@@ -49,10 +49,7 @@ if exist %PRODSRC_DIR%\oemcustomization.cmd (
 )
 
 if exist %PRODSRC_DIR%\prov\customizations.xml (
-    if not exist %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg (
-    REM Create the provisioning ppkg
-        call createprovpkg.cmd %PRODSRC_DIR%\prov\customizations.xml %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg
-    )
+    call createprovpkg.cmd %PRODSRC_DIR%\prov\customizations.xml %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg
 	call buildpkg.cmd Provisioning.Auto
 )
 

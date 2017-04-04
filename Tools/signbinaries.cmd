@@ -10,10 +10,9 @@ echo    ext  .................. Signs all .ext files (say cab / dll / sys / ppkg
 echo    dir  .................. Directory where the files are present
 echo    [/?] .................. Displays this usage string.
 echo    Example:
-echo        signbinaries bsp
-echo        signbinaries all
-echo        signbinaries cab
-
+echo        signbinaries bsp %BSPSRC_DIR%
+echo        signbinaries all %BSPSRC_DIR%
+ 
 exit /b 1
 
 :START
