@@ -10,6 +10,9 @@
   <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
     <Customizations>
       <Common>
+        <ApplicationManagement>
+          <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
+        </ApplicationManagement>
         <Certificates>
           <RootCertificates>
             <RootCertificate CertificateName="IoTOnboardingTask_1.0.0.0_x86" Name="IoTOnboardingTask_1.0.0.0_x86">

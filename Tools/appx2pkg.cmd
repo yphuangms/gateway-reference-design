@@ -37,11 +37,11 @@ for /f "tokens=1,2,3 delims=:,!, " %%i in (%FILE_PATH%\appx_info.txt) do (
         set ENTRY=%%k
     )
 )
-echo. PackageFamilyName : %PACKAGE_FNAME% AppId : %ENTRY%
-for /f "tokens=1,2,3,4 delims=." %%A in ("%APPX_Version%") do (
-    set PROV_VERSION=%%A%%B.%%C%%D
-)
+if not defined PROV_VERSION ( set PROV_VERSION=1.0)
+if not defined PROV_RANK ( set PROV_RANK=0)
+
 echo. Provisioning package version : %PROV_VERSION%
+echo.                      rank    : %PROV_RANK%
 
 for %%A in (%STARTUP_OPTIONS%) do (
     if [%%A] == [%2] (
@@ -148,11 +148,15 @@ call :PRINT_TO_CUSTFILE "    <ID>{%NEWGUID%}</ID>"
 call :PRINT_TO_CUSTFILE "    <Name>%SUB_NAME%Prov</Name>"
 call :PRINT_TO_CUSTFILE "    <Version>%PROV_VERSION%</Version>"
 call :PRINT_TO_CUSTFILE "    <OwnerType>OEM</OwnerType>"
-call :PRINT_TO_CUSTFILE "    <Rank>0</Rank>"
+call :PRINT_TO_CUSTFILE "    <Rank>%PROV_RANK%</Rank>"
 call :PRINT_TO_CUSTFILE "  </PackageConfig>"
 call :PRINT_TO_CUSTFILE "  <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">"
 call :PRINT_TO_CUSTFILE "    <Customizations>"
 call :PRINT_TO_CUSTFILE "      <Common>"
+call :PRINT_TO_CUSTFILE "        <ApplicationManagement>"
+call :PRINT_TO_CUSTFILE "          <AllowAllTrustedApps>Yes</AllowAllTrustedApps>"
+call :PRINT_TO_CUSTFILE "        </ApplicationManagement>"
+
 REM Printing Certificates
 for %%B in ("%FILE_PATH%\appx_cerlist.txt") do if %%~zB gtr 0 (
     call :PRINT_TO_CUSTFILE "        <Certificates>"
