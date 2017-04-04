@@ -37,7 +37,8 @@ This branch contains the active development contents, mostly addressing the upco
 * [Windows 10 IoT Core Dashboard](https://developer.microsoft.com/windows/iot/docs/iotdashboard)
 
 ## BSPs
-* Raspberry Pi BSP
+
+### Raspberry Pi BSP
 
   The drivers required for the Raspberry Pi are available in the github project : [ms-iot/bsp](https://github.com/ms-iot/bsp)
 
@@ -51,4 +52,31 @@ This branch contains the active development contents, mostly addressing the upco
 
   You can also download the prebuilt binaries available in the release : [rpibsp.zip](https://github.com/ms-iot/iot-adk-addonkit/releases/download/RPiBSP/rpibsp.zip)
 
+### Intel BSPs
+  
+  See below links for the Intel platforms.
+  
+* Baytrail BSP
+
+    * [IO Drivers](https://downloadcenter.intel.com/download/25618)
+    * [Graphics Drivers](https://downloadcenter.intel.com/download/25606)
+
+* ApolloLake BSP
+
+See [ApolloLake BSP drivers](http://www.intel.com/content/www/us/en/embedded/products/apollo-lake/mr2-best-known-configuration.html)
+
+* Joule BSP
+
+See [Joule BSP drivers](https://downloadcenter.intel.com/)
+
+### Qualcomm BSP
+
+Contact [Qualcomm](mailto:pahwang@qti.qualcomm.com) for the BSPs.
+
+
+
+
+    
+  
+  
 
