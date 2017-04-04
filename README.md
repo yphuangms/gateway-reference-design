@@ -56,18 +56,12 @@ This branch contains the active development contents, mostly addressing the upco
   
   See below links for the Intel platforms.
   
-* Baytrail BSP
+* Bay Trail [IO Drivers](https://downloadcenter.intel.com/download/25618), [Graphics Drivers](https://downloadcenter.intel.com/download/25606)
 
-    * [IO Drivers](https://downloadcenter.intel.com/download/25618)
-    * [Graphics Drivers](https://downloadcenter.intel.com/download/25606)
+* [ApolloLake](http://www.intel.com/content/www/us/en/embedded/products/apollo-lake/mr2-best-known-configuration.html)
 
-* ApolloLake BSP
+* [Joule](https://downloadcenter.intel.com/)
 
-See [ApolloLake BSP drivers](http://www.intel.com/content/www/us/en/embedded/products/apollo-lake/mr2-best-known-configuration.html)
-
-* Joule BSP
-
-See [Joule BSP drivers](https://downloadcenter.intel.com/)
 
 ### Qualcomm BSP
 
