@@ -6,13 +6,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 # Branch Overview
 
 ## Master Branch
-This branch supports the lastest Windows 10 IoT Core release available ( currently 1607, version number 10.0.14393.x )
+This branch supports the lastest Windows 10 IoT Core release available ( currently 1703, version number 10.0.15063.x )
 
 ## Develop Branch
 This branch contains the active development contents, mostly addressing the upcoming release features.
 
 ## Older Versions
 * [10586_v1.0 release](https://github.com/ms-iot/iot-adk-addonkit/releases/tag/v1.0) for Windows 10 IoT Core Release 1511 (version 10.0.10586.x).
+* [10393_v2.0 release](https://github.com/ms-iot/iot-adk-addonkit/releases/tag/v2.0) for Windows 10 IoT Core Release 1607 (version 10.0.14393.x).
 
 
 # References
