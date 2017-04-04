@@ -28,10 +28,9 @@
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
     <AdditionalFM>%BLD_DIR%\MergedFMs\CustomMBMFM.xml</AdditionalFM>
-    <!-- Including OEM feature manifest 
+    <!-- Including OEM feature manifest -->
     <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
     <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
-    -->
     <!-- Including the test features -->
     <AdditionalFM>%AKROOT%\FMFiles\x86\IoTUAPNonProductionPartnerShareFM.xml</AdditionalFM>
   </AdditionalFMs>
@@ -65,18 +64,20 @@
       <Feature>IOT_DIRECTX_TOOLS</Feature>
       <Feature>PRODUCTION_CORE</Feature>
       <Feature>PRODUCTION</Feature>
+      <!-- Sample Apps, remove this when you introduce OEM Apps -->
+      <Feature>IOT_BERTHA</Feature>
+      <Feature>IOT_ALLJOYN_APP</Feature>
       <Feature>IOT_NANORDPSERVER</Feature>
       <Feature>IOT_SHELL_HOTKEY_SUPPORT</Feature>
       <Feature>IOT_APPLICATIONS</Feature>
-      <Feature>IOT_ENABLE_ADMIN</Feature>
     </Microsoft>
     <OEM>
       <!-- Include BSP Features -->
       <Feature>MBM_DRIVERS</Feature>
       <Feature>CustomMBM_Drivers</Feature>
-      <!-- Include OEM features 
-      <Feature>OEM_IoTCoreDefaultApp</Feature><Feature>OEM_CustomCmd</Feature><Feature>OEM_ProvAuto</Feature>
-      -->
+      <!-- Include OEM features -->
+      <Feature>OEM_CustomCmd</Feature>
+      <Feature>OEM_ProvAuto</Feature>
     </OEM>
   </Features>
   <Product>Windows 10 IoT Core</Product>

@@ -28,10 +28,9 @@
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
     <AdditionalFM>%BLD_DIR%\MergedFMs\QCDB410CFM.xml</AdditionalFM>
-    <!-- Including OEM feature manifest
+    <!-- Including OEM feature manifest -->
     <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
     <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
-    -->
   </AdditionalFMs>
   <Features>
     <Microsoft>
@@ -45,9 +44,9 @@
       <!-- Following two required for Appx Installation -->
       <Feature>IOT_UAP_OOBE</Feature>
       <Feature>IOT_APP_TOOLKIT</Feature>
-      <!-- for Connectivity -->
-      <Feature>IOT_SSH</Feature>
-      <Feature>IOT_ENABLE_ADMIN</Feature>
+      <!-- Sample Apps, remove this when you introduce OEM Apps -->
+      <Feature>IOT_BERTHA</Feature>
+      <Feature>IOT_ALLJOYN_APP</Feature>
     </Microsoft>
     <OEM>
       <!-- Include BSP Features -->
@@ -55,6 +54,9 @@
       <Feature>SBC</Feature>
       <Feature>QCDB410C_DEVICE_TARGETINGINFO</Feature>
       <Feature>QCDB410C_DEVICE_INFO</Feature>
+      <!-- Include OEM features -->
+      <Feature>OEM_CustomCmd</Feature>
+      <Feature>OEM_ProvAuto</Feature>  
     </OEM>
   </Features>
   <Product>Windows 10 IoT Core</Product>
