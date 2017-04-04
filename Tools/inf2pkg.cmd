@@ -214,7 +214,7 @@ if %1 NEQ !TESTLINE! ( exit /b 1)
 exit /b 0
 
 :INIT_CONFIG
-set SIGNFILES=dll sys
+if not defined SIGNFILES ( set SIGNFILES=dll sys )
 set TOKENLIST=[SourceDisksFiles] [SourceDisksFiles.%BSP_ARCH%] [DestinationDirs]
 REM Add DirID and the corresponding location here for extending support for more DirIDs
 set DIRIDLIST= 10 11 12 24
