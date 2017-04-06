@@ -27,10 +27,10 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
-    <AdditionalFM>%BSPSRC_DIR%\MBM\Packages\MBMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\MBMFM.xml</AdditionalFM>
     <!-- Including OEM feature manifest -->
-    <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM>
-    <AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
     <!-- Including the test features -->
     <AdditionalFM>%AKROOT%\FMFiles\x86\IoTUAPNonProductionPartnerShareFM.xml</AdditionalFM>
   </AdditionalFMs>
@@ -41,6 +41,7 @@
       <Feature>IOT_DMAP_DRIVER</Feature>
       <Feature>IOT_CP210x_MAKERDRIVER</Feature>
       <Feature>IOT_FTSER2K_MAKERDRIVER</Feature>
+      <Feature>IOT_GENERIC_POP</Feature>
       <Feature>IOT_POWER_SETTINGS</Feature>
       <!-- Following two required for Appx Installation -->
       <Feature>IOT_UAP_OOBE</Feature>
@@ -61,7 +62,8 @@
       <Feature>IOT_WDTF</Feature>
       <Feature>IOT_CRT140</Feature>
       <Feature>IOT_DIRECTX_TOOLS</Feature>
-      <Feature>PRODUCTION_CORE</Feature>
+      <Feature>IOT_BERTHA</Feature>
+      <Feature>IOT_ALLJOYN_APP</Feature>
       <Feature>IOT_NANORDPSERVER</Feature>
       <Feature>IOT_SHELL_HOTKEY_SUPPORT</Feature>
       <Feature>IOT_APPLICATIONS</Feature>
@@ -71,7 +73,6 @@
       <!-- Inclide BSP Features -->
       <Feature>MBM_DRIVERS</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxMain</Feature>
       <Feature>OEM_CustomCmd</Feature>
       <Feature>OEM_ProvAuto</Feature>
     </OEM>

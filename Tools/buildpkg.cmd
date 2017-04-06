@@ -40,6 +40,11 @@ if /I [%1] == [All] (
     echo Building all provisioning packages
     call buildprovpkg.cmd all
 
+    echo Signing all binaries
+    REM call signbinaries.cmd ppkg %COMMON_DIR%
+    REM signing bsp only, not ppkgs
+    call signbinaries.cmd bsp %SRC_DIR%
+    
     echo Building all packages under %COMMON_DIR%\Packages
     dir %COMMON_DIR%\Packages\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
 
@@ -50,11 +55,13 @@ if /I [%1] == [All] (
 
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
 
-    echo Building all packages under %BSPSRC_DIR%
+    echo Building all bsp packages under %BSPSRC_DIR%
     dir %BSPSRC_DIR%\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
 
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
 
+    echo Building FeatureMerger
+    call buildfm.cmd all
 
 ) else if /I [%1] == [Clean] (
     call buildprovpkg.cmd clean
@@ -85,7 +92,9 @@ if /I [%1] == [All] (
                 goto Usage
             ) else (
                 if !RESULT! NEQ "" (
-                dir "!RESULT!\*.pkg.xml" /S /B > %PKGLOG_DIR%\packagelist.txt
+                   echo Signing all binaries in !RESULT!
+                   call signbinaries.cmd bsp !RESULT!
+                   dir "!RESULT!\*.pkg.xml" /S /B > %PKGLOG_DIR%\packagelist.txt
                 )
             )
         )
@@ -96,6 +105,7 @@ if /I [%1] == [All] (
 )
 if exist %PKGLOG_DIR%\packagelist.txt ( del %PKGLOG_DIR%\packagelist.txt )
 if exist %PKGLOG_DIR%\packagedir.txt ( del %PKGLOG_DIR%\packagedir.txt )
+
 endlocal
 popd
 exit /b

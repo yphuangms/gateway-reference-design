@@ -19,10 +19,10 @@ if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
 if [%2] == [] goto Usage
-if /I NOT [%2] == [Retail] ( if /I NOT [%2] == [Test] goto Usage )
+if /I not [%2] == [Retail] ( if /I not [%2] == [Test] goto Usage )
 
 REM Checking prerequisites
-if NOT DEFINED SRC_DIR (
+if not defined SRC_DIR (
     echo Environment not defined. Call setenv
     goto End
 )
@@ -30,7 +30,9 @@ if NOT DEFINED SRC_DIR (
 set PRODUCT=%1
 set PRODSRC_DIR=%SRC_DIR%\Products\%PRODUCT%
 set PRODBLD_DIR=%BLD_DIR%\%1\%2
+
 if not defined MSPACKAGE ( set "MSPACKAGE=%KITSROOT%MSPackages" )
+set IMGAPP_CUST=
 
 if not exist %SRC_DIR%\Products\%PRODUCT% (
    echo %PRODUCT% not found. Available products listed below
@@ -47,17 +49,28 @@ if exist %PRODSRC_DIR%\oemcustomization.cmd (
 )
 
 if exist %PRODSRC_DIR%\prov\customizations.xml (
-    if NOT exist %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg (
-    REM Create the provisioning ppkg
-        call createprovpkg.cmd %PRODSRC_DIR%\prov\customizations.xml %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg
-    )
+    call createprovpkg.cmd %PRODSRC_DIR%\prov\customizations.xml %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg
 	call buildpkg.cmd Provisioning.Auto
 )
 
-echo Creating Image...
-call imggen.cmd "%PRODBLD_DIR%\Flash.FFU" "%PRODSRC_DIR%\%2OEMInput.xml" "%MSPACKAGE%" %BSP_ARCH%
+if exist %PRODSRC_DIR%\imagecustomizations.xml (
+	set IMGAPP_CUST=/OEMCustomizationXML:"%PRODSRC_DIR%\imagecustomizations.xml" /OEMVersion:"%BSP_VERSION%"
+)
 
-if errorlevel 1 goto Error
+echo Creating Image...
+REM call ImageApp with the specified parameters
+call ImageApp "%PRODBLD_DIR%\Flash.ffu" "%PRODSRC_DIR%\%2OEMInput.xml" "%MSPACKAGE%" /CPUType:%BSP_ARCH% %IMGAPP_CUST%
+
+if %ERRORLEVEL% neq 0 goto Error
+
+REM call DevNodeClean
+if "%ProgramW6432%"=="" (
+   REM run x86
+   call DeviceNodeCleanup.x86.exe
+) ELSE (
+   REM run x64
+   call DeviceNodeCleanup.x64.exe
+)
 
 echo Build End Time : %TIME%
 echo Image creation completed

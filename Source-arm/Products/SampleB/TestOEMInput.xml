@@ -27,17 +27,17 @@
   </Resolutions>
   <AdditionalFMs>
     <!-- Including BSP feature manifest -->
-    <!-- Using CustomRPi2 BSP -->
-    <AdditionalFM>%BSPSRC_DIR%\CustomRpi2\Packages\CustomRPi2FM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\CustomRPi2FM.xml</AdditionalFM>
     <!-- Including OEM feature manifest -->
-    <AdditionalFM>%COMMON_DIR%\Packages\OEMCommonFM.xml</AdditionalFM>
-    <AdditionalFM>%SRC_DIR%\Packages\OEMFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMCommonFM.xml</AdditionalFM>
+    <AdditionalFM>%BLD_DIR%\MergedFMs\OEMFM.xml</AdditionalFM>
     <!-- Including the test features -->
     <AdditionalFM>%AKROOT%\FMFiles\arm\IoTUAPNonProductionPartnerShareFM.xml</AdditionalFM>
   </AdditionalFMs>
   <Features>
     <Microsoft>
       <Feature>IOT_EFIESP</Feature>
+	  <Feature>IOT_EFIESP_BCD_MBR</Feature>	  
       <Feature>IOT_DMAP_DRIVER</Feature>
       <Feature>IOT_CP210x_MAKERDRIVER</Feature>
       <Feature>IOT_FTSER2K_MAKERDRIVER</Feature>
@@ -55,6 +55,13 @@
       <Feature>IOT_DISABLE_UMCI</Feature>
       <Feature>IOT_ENABLE_TESTSIGNING</Feature>
       <Feature>IOT_TOOLKIT</Feature>
+      <!-- Debug Features -->
+      <Feature>IOT_KDSERIAL_SETTINGS</Feature>
+      <Feature>IOT_UMDFDBG_SETTINGS</Feature>
+      <Feature>IOT_WDTF</Feature>
+      <Feature>IOT_CRT140</Feature>
+      <Feature>IOT_DIRECTX_TOOLS</Feature>
+      <Feature>PRODUCTION_CORE</Feature>
       <Feature>IOT_NANORDPSERVER</Feature>
       <Feature>IOT_SHELL_HOTKEY_SUPPORT</Feature>
       <Feature>IOT_APPLICATIONS</Feature>
@@ -65,9 +72,9 @@
       <Feature>RPI2_DRIVERS</Feature>
       <Feature>CustomRPI2_DRIVERS</Feature>
       <!-- Include OEM features -->
-      <Feature>OEM_AppxMain</Feature>
+      <Feature>OEM_IoTCoreDefaultApp</Feature>
       <Feature>OEM_CustomCmd</Feature>
-      <Feature>OEM_ProvManual</Feature>
+      <Feature>OEM_ProvAuto</Feature>
     </OEM>
   </Features>
   <Product>Windows 10 IoT Core</Product>

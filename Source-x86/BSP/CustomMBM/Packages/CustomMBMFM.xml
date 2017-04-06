@@ -11,8 +11,8 @@
     <!-- GPT BCD Settings : Include IOT_EFIESP_BCD in OEMInput xml file-->
     <!-- Device Info/ Device Targeting Info : Include IOT_GENERIC_POP in OEMInput xml-->
     <!-- Mandatory device drivers : None -->
-    <!-- Device specific customisations if any : None -->
-    <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBM.Customization.cab" />
+    <!-- Device specific customisations if any : -->
+    <PackageFile Path="%PKGBLD_DIR%" Name="%OEM_NAME%.MBM.Customization.cab" />
   </BasePackages>
   <OEMDevicePlatformPackages>
     <!-- GPT 4GB layout  -->
@@ -20,6 +20,7 @@
     <!-- GPT 2GB layout - select this by specifying the SOC field in the OEMInput xml file -->
     <PackageFile Device="CustomMBM_2GB" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT2GB.cab"/>
   </OEMDevicePlatformPackages>
+
   <DeviceLayoutPackages>
     <!-- GPT 4GB layout  -->
     <PackageFile SOC="CustomMBM" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT4GB.cab"/>
@@ -31,7 +32,7 @@
     <MSFeatureGroups />
     <OEM>
       <!-- Optional Device Drivers -->
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBM.GPIO.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.MBM.GPIO.cab">
         <FeatureIDs>
           <FeatureID>MBM_GPIO_DRIVER</FeatureID>
         </FeatureIDs>
@@ -42,22 +43,22 @@
           <FeatureID>CustomMBM_Drivers</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBM.UART.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.BYT.UART.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBM.I2C.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.BYT.I2C.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBM.SPI.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.BYT.SPI.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>
       </PackageFile>
-      <PackageFile Path="$(mspackageroot)\Retail\$(cputype)\$(buildtype)" Name="Intel.MBM.GRFX.cab">
+      <PackageFile Path="%BSPPKG_DIR%" Name="Intel.GFX.Build1227.cab">
         <FeatureIDs>
           <FeatureID>MBM_DRIVERS</FeatureID>
         </FeatureIDs>

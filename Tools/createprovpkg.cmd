@@ -29,6 +29,7 @@ REM Start processing command
 set STORE_DIR=%KITSROOT%\Assessment and Deployment Kit\Imaging and Configuration Designer\x86
 
 echo Creating Provisioning Package using %1
+cd %~dp1
 call icd.exe /Build-ProvisioningPackage /CustomizationXML:"%1" /PackagePath:%2 /StoreFile:"%STORE_DIR%\Microsoft-IoTUAP-Provisioning.dat,%STORE_DIR%\Microsoft-Common-Provisioning.dat" +Overwrite
 if errorlevel 1 goto Error
 
