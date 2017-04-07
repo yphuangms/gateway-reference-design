@@ -12,7 +12,7 @@ echo    [/?] .................. Displays this usage string.
 echo    Example:
 echo        signbinaries bsp %BSPSRC_DIR%
 echo        signbinaries all %BSPSRC_DIR%
- 
+
 exit /b 1
 
 :START
@@ -24,6 +24,11 @@ if [%1] == [] goto Usage
 if [%2] == [] goto Usage
 if not exist "%2" goto Usage
 
+if /I [%SIGNFILES%] == [NONE] (
+    echo. SIGNFILES set to NONE. Signing skipped.
+    exit /b 0
+)
+
 if /i [%1] == [all] (
     set SIGNFILES=dll sys ppkg
 ) else if /i [%1] == [bsp] (
@@ -33,11 +38,11 @@ if /i [%1] == [all] (
 )
 if exist "%PKGLOG_DIR%\signbinaries.log" (del "%PKGLOG_DIR%\signbinaries.log")
 
-echo.Processing %2 
+echo.Processing %2
 for %%A in (%SIGNFILES%) do (
     echo. [%%A files]
     dir /s /b %2\*.%%A > %PKGLOG_DIR%\filelist.txt 2>nul
-    
+
     for %%Q in (%PKGLOG_DIR%\filelist.txt) do if %%~zQ gtr 0 (
         for /f "delims=" %%i in (%PKGLOG_DIR%\filelist.txt) do (
             echo.   Signing %%i
@@ -47,5 +52,5 @@ for %%A in (%SIGNFILES%) do (
         echo.   No %%A files
     )
 )
-endlocal 
+endlocal
 exit /b 0
