@@ -5,13 +5,15 @@
 goto START
 
 :Usage
-echo Usage: appx2pkg input.appx [fga/bgt/none] [CompName.SubCompName]
+echo Usage: appx2pkg input.appx [fga/bgt/none] [CompName.SubCompName] [skipcert]
 echo    input.appx.............. Required, input .appx file
 echo    fga/bgt/none............ Required, Startup ForegroundApp / Startup BackgroundTask / No startup
-echo    CompName.SubCompName.... Optional, default is Appx.AppxName
+echo    CompName.SubCompName.... Optional, default is Appx.AppxName; Mandatory if you want to specify skipcert
+echo    skipcert................ Optional, specify this to skip adding cert information to pkg xml file
 echo    [/?].................... Displays this usage string.
 echo    Example:
 echo        appx2pkg C:\test\sample_1.0.0.0_arm.appx none
+endlocal
 exit /b 1
 
 :START
@@ -69,6 +71,7 @@ if [%3] == [] (
         set COMP_NAME=%%i
         set SUB_NAME=%%j
     )
+    if /I [%4] == [skipcert] ( set SKIPCERT=1)
 )
 
 REM Start processing command
@@ -87,7 +90,9 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
     dir /b "%FILE_PATH%\*%ARCH%*.appx" > "%FILE_PATH%\appx_deplist.txt" 2>nul
 )
 
-dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
+if not defined SKIPCERT (
+    dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
+)
 dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
 
 
@@ -103,7 +108,9 @@ set /p NEWGUID=<%PRODSRC_DIR%\uuid.txt
 del %PRODSRC_DIR%\uuid.txt
 call :CREATE_CUSTFILE
 
-del "%FILE_PATH%\appx_cerlist.txt"
+if not defined SKIPCERT (
+    del "%FILE_PATH%\appx_cerlist.txt"
+)
 del "%FILE_PATH%\appx_license.txt"
 del "%FILE_PATH%\appx_deplist.txt"
 del "%FILE_PATH%\appx_info.txt"
@@ -171,19 +178,24 @@ if /i "%ADK_VERSION%" LSS "16190" (
     call :PRINT_TO_CUSTFILE "        </Policies>"
 )
 REM Printing Certificates
-for %%B in ("%FILE_PATH%\appx_cerlist.txt") do if %%~zB gtr 0 (
-    call :PRINT_TO_CUSTFILE "        <Certificates>"
-    call :PRINT_TO_CUSTFILE "          <RootCertificates>"
-    for /f "useback delims=" %%A in ("%FILE_PATH%\appx_cerlist.txt") do (
-        call :PRINT_TO_CUSTFILE "            <RootCertificate CertificateName="%%~nA" Name="%%~nA">"
-        call :PRINT_TO_CUSTFILE "              <CertificatePath>%%A</CertificatePath>"
-        call :PRINT_TO_CUSTFILE "            </RootCertificate>"
+if not defined SKIPCERT (
+    for %%B in ("%FILE_PATH%\appx_cerlist.txt") do if %%~zB gtr 0 (
+        call :PRINT_TO_CUSTFILE "        <Certificates>"
+        call :PRINT_TO_CUSTFILE "          <RootCertificates>"
+        for /f "useback delims=" %%A in ("%FILE_PATH%\appx_cerlist.txt") do (
+            call :PRINT_TO_CUSTFILE "            <RootCertificate CertificateName="%%~nA" Name="%%~nA">"
+            call :PRINT_TO_CUSTFILE "              <CertificatePath>%%A</CertificatePath>"
+            call :PRINT_TO_CUSTFILE "            </RootCertificate>"
+        )
+        call :PRINT_TO_CUSTFILE "          </RootCertificates>"
+        call :PRINT_TO_CUSTFILE "        </Certificates>"
+    ) else (
+      echo. No Certificates. Skipping Certificate section.
     )
-    call :PRINT_TO_CUSTFILE "          </RootCertificates>"
-    call :PRINT_TO_CUSTFILE "        </Certificates>"
 ) else (
-  echo. No Certificates. Skipping Certificate section.
+  echo. SkipCert defined. Skipping Certificate section.
 )
+
 REM Print startup configuration
 if [%STARTUP%] == [fga] (
     call :PRINT_TO_CUSTFILE "        <StartupApp>"
