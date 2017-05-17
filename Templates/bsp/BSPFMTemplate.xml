@@ -19,16 +19,16 @@
 
   <DeviceLayoutPackages>
     <!-- GPT 4GB layout  -->
-    <PackageFile Device="{BSP}_Device" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT4GB.cab"/>
+    <PackageFile SOC="{BSP}_SOC" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT4GB.cab"/>
     <!-- GPT 2GB layout - select this by specifying the SOC field in the OEMInput xml file -->
-    <PackageFile Device="{BSP}_2GB" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT2GB.cab"/>
+    <PackageFile SOC="{BSP}_SOC2GB" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT2GB.cab"/>
   </DeviceLayoutPackages>
 
   <OEMDevicePlatformPackages>
     <!-- GPT 4GB layout  -->
-    <PackageFile SOC="{BSP}_Soc" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT4GB.cab"/>
+    <PackageFile Device="{BSP}_Device" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT4GB.cab"/>
     <!-- GPT 2GB layout - select this by specifying the SOC field in the OEMInput xml file -->
-    <PackageFile SOC="{BSP}_2GB" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT2GB.cab"/>
+    <PackageFile Device="{BSP}_Device2GB" Path="%PKGBLD_DIR%" Name="%OEM_NAME%.DeviceLayout.GPT2GB.cab"/>
   </OEMDevicePlatformPackages>
 
   <Features>
