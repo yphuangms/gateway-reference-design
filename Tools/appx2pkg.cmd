@@ -100,6 +100,10 @@ echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
 call :CREATE_PKGFILE
 
+if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (
+    call convertpkg.cmd "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" >nul 2>nul
+)
+
 echo. Authoring %CUSTOMIZATIONS%.xml
 if exist "%FILE_PATH%\%CUSTOMIZATIONS%.xml" (del "%FILE_PATH%\%CUSTOMIZATIONS%.xml" )
 REM Get a new GUID for the Provisioning config file
