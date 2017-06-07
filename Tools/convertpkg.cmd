@@ -38,6 +38,13 @@ if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
 
+REM Add variables for pkg2wm
+set PKGGEN_VAR=_RELEASEDIR=$(_RELEASEDIR);PROD=$(PROD);PRJDIR=$(PRJDIR);COMDIR=$(COMDIR);BSPVER=$(BSPVER)
+set PKGGEN_VAR=%PKGGEN_VAR%;BSPARCH=$(BSPARCH);OEMNAME=$(OEMNAME)
+REM if you encounter the following error, add the symbol here
+REM (PkgBldr.Common) : error : Undefined variable runtime.clipAppLicenseInstall
+set PKGGEN_VAR=%PKGGEN_VAR%;runtime.clipAppLicenseInstall=$(runtime.clipAppLicenseInstall)
+
 if /I [%1] == [All] (
 
     echo Converting all packages under %COMMON_DIR%\Packages
@@ -72,7 +79,7 @@ if /I [%1] == [All] (
             dir "%1\*.pkg.xml" /S /b > %PKGLOG_DIR%\packagelist.txt 2>nul
         ) else (
             REM Check if its in BSP path
-			cd /D "%BSPSRC_DIR%"
+            cd /D "%BSPSRC_DIR%"
             dir "%1" /S /B > %PKGLOG_DIR%\packagedir.txt 2>nul
             set /P RESULT=<%PKGLOG_DIR%\packagedir.txt
             if not defined RESULT (
@@ -111,7 +118,7 @@ if %~z1 gtr 0 (
        set NAME=%%~dpni
        set NAME=!NAME:~0,-4!
        REM echo Name: !NAME!
-       call pkggen.exe "%%i" /convert:pkg2wm /output:"!NAME!.wm.xml" /useLegacyName:true /foroempkg:true /variables:"_RELEASEDIR=$(_RELEASEDIR);PROD=$(PROD);PRJDIR=$(PRJDIR);COMDIR=$(COMDIR);BSPVER=$(BSPVER);BSPARCH=$(BSPARCH);OEMNAME=$(OEMNAME)"
+       call pkggen.exe "%%i" /convert:pkg2wm /output:"!NAME!.wm.xml" /useLegacyName:true /foroempkg:true /variables:"%PKGGEN_VAR%"
        if not errorlevel 0 ( echo.%CLRRED%Error : Failed to create package. See %PKGLOG_DIR%\%%~ni.log%CLREND%)
     )
 ) else (
