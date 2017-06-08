@@ -51,6 +51,7 @@ for %%A in (%SIGNFILES%) do (
     ) else (
         echo.   %CLRYEL%No %%A files.%CLREND%
     )
+    del "%2\filelist.txt" >nul
 )
 endlocal
 exit /b 0
