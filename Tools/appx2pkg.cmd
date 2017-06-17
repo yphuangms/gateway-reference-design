@@ -93,8 +93,17 @@ if exist "%FILE_PATH%\Dependencies\%ARCH%" (
 if not defined SKIPCERT (
     dir /b "%FILE_PATH%\*.cer" > "%FILE_PATH%\appx_cerlist.txt" 2>nul
 )
-dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
 
+dir /b "%FILE_PATH%\*License*.xml" > "%FILE_PATH%\appx_license.txt" 2>nul
+set /P LICENSE_FILE=<"%FILE_PATH%\appx_license.txt"
+if defined LICENSE_FILE (
+    for /f "tokens=8,9 delims==, " %%i in (%FILE_PATH%\%LICENSE_FILE%) do (
+        if [%%i] == [LicenseID] (
+            set LICENSE_ID=%%j
+        )
+    )
+    echo.  LicenseProductID : !LICENSE_ID!
+)
 
 echo. Authoring %COMP_NAME%.%SUB_NAME%.pkg.xml
 if exist "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" (del "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" )
@@ -135,19 +144,6 @@ REM Printing script files inclusion
 call :PRINT_TEXT "            <File Source="%COMP_NAME%.%SUB_NAME%.ppkg" "
 echo                   DestinationDir="$(runtime.windows)\Provisioning\Packages" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 call :PRINT_TEXT "                  Name="%COMP_NAME%.%SUB_NAME%.ppkg" />"
-
-REM Print license file if present
-for %%B in ("%FILE_PATH%\appx_license.txt") do if %%~zB gtr 0 (
-    for /f "useback delims=" %%A in ("%FILE_PATH%\appx_license.txt") do (
-        call :PRINT_TEXT "            <File Source="%%A" "
-        echo                   DestinationDir="$(runtime.clipAppLicenseInstall)" >> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
-        call :PRINT_TEXT "                  Name="%%A" />"
-    )
-
-) else (
-  echo. No License file. Skipping License section.
-)
-
 call :PRINT_TEXT "         </Files>"
 call :PRINT_TEXT "      </OSComponent>"
 call :PRINT_TEXT "   </Components>"
@@ -228,7 +224,9 @@ REM Printing Dependencies
 for %%B in ("%FILE_PATH%\appx_deplist.txt") do if %%~zB gtr 0 (
     call :PRINT_TO_CUSTFILE "              <DependencyAppxFiles>"
     for /f "useback delims=" %%A in ("%FILE_PATH%\appx_deplist.txt") do (
-        call :PRINT_TO_CUSTFILE "                <Dependency Name="%%A">%DEP_PATH%\%%A</Dependency>"
+        if [%%A] NEQ [%LONG_NAME%.appx] (
+            call :PRINT_TO_CUSTFILE "                <Dependency Name="%%A">%DEP_PATH%\%%A</Dependency>"
+        )
     )
     call :PRINT_TO_CUSTFILE "              </DependencyAppxFiles>"
 ) else (
@@ -237,6 +235,16 @@ for %%B in ("%FILE_PATH%\appx_deplist.txt") do if %%~zB gtr 0 (
 call :PRINT_TO_CUSTFILE "              <DeploymentOptions>Force target application shutdown</DeploymentOptions>"
 call :PRINT_TO_CUSTFILE "            </Application>"
 call :PRINT_TO_CUSTFILE "          </UserContextApp>"
+
+REM Print license file if present
+if defined LICENSE_FILE (
+    call :PRINT_TO_CUSTFILE "          <UserContextAppLicense>"
+    call :PRINT_TO_CUSTFILE "            <LicenseInstall LicenseProductId=%LICENSE_ID% Name=%LICENSE_ID%>.\%LICENSE_FILE%</LicenseInstall>"
+    call :PRINT_TO_CUSTFILE "          </UserContextAppLicense>"
+) else (
+  echo. No License file. Skipping License section.
+)
+
 call :PRINT_TO_CUSTFILE "        </UniversalAppInstall>"
 
 call :PRINT_TO_CUSTFILE "      </Common>"
