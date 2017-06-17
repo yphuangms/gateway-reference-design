@@ -32,7 +32,7 @@ REM Input validation
 if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
-if /I not [%2] == [Retail] ( if /I not [%2] == [Test] goto Usage )
+if not [%2] == [] ( if /I not [%2] == [Retail] ( if /I not [%2] == [Test] goto Usage ) )
 
 if /I [%1] == [All] (
     echo Creating Images for all products under Products
