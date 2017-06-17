@@ -42,8 +42,8 @@ if /I [%1] == [All] (
 
     REM echo Signing binaries in %COMMON_DIR%
     REM call signbinaries.cmd ppkg %COMMON_DIR%
-    echo Signing binaries in %PKGSRC_DIR%
-    call signbinaries.cmd bsp %PKGSRC_DIR%
+    REM echo Signing binaries in %PKGSRC_DIR%
+    REM call signbinaries.cmd bsp %PKGSRC_DIR%
 
     echo Building all packages under %COMMON_DIR%\Packages
     dir %COMMON_DIR%\Packages\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
@@ -56,9 +56,10 @@ if /I [%1] == [All] (
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
 
     REM Comment the below line to force re-signing of the bsp drivers
-    set SIGNFILES=NONE
-    echo Building all bsps without re-signing
-    call buildbsp all %2
+    echo Building all bsp packages
+    dir %BSPSRC_DIR%\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
+    call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
+    call buildfm.cmd all %2
 
 ) else if /I [%1] == [Clean] (
     call buildprovpkg.cmd clean
@@ -83,9 +84,7 @@ if /I [%1] == [All] (
             REM Check if its in BSP path
             cd /D "%BSPSRC_DIR%"
             if exist "%1" (
-                echo.%1 is a bsp folder. Invoking buildbsp without re-signing
-                set SIGNFILES=NONE
-                call buildbsp.cmd %1 %2
+                dir "%1\*.pkg.xml" /S /b > %PKGLOG_DIR%\packagelist.txt 2>nul
             ) else (
                 dir "%1" /S /B > %PKGLOG_DIR%\packagedir.txt 2>nul
                 set /P RESULT=<%PKGLOG_DIR%\packagedir.txt

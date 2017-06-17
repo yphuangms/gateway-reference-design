@@ -63,6 +63,10 @@ if exist "%KITSROOT%\CoreSystem" (
     dir /B /AD "%KITSROOT%CoreSystem" > %IOTADK_ROOT%\wdkversion.txt
     set /P WDK_VERSION=<%IOTADK_ROOT%\wdkversion.txt
     del %IOTADK_ROOT%\wdkversion.txt
+)
+
+if defined WDK_VERSION (
+    for /f "tokens=3 delims=." %%A in ("%WDK_VERSION%") do ( set WDK_VERSION=%%A )
 ) else (
     set WDK_VERSION=NotFound
 )
@@ -86,7 +90,6 @@ if exist "%KITSROOT%\MSPackages" (
     )
     del %IOTADK_ROOT%\corekitversion.txt
 ) else (
-    set KIT_VERSION=NotFound
     set COREKIT_VER=NotFound
     echo.%CLRYEL%Warning : Core kit packages not found. Image creation will fail.%CLREND%
 )
@@ -102,6 +105,7 @@ REM Change to Working directory
 cd /D %IOTADK_ROOT%\Tools
 call setOEM.cmd
 doskey /macrofile=alias.txt
+set IOT_ADDON_VERSION=3.0
 
 echo IOTADK_ROOT : %IOTADK_ROOT%
 echo ADK_VERSION : %ADK_VERSION%
