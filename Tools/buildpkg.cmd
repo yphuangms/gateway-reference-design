@@ -42,8 +42,8 @@ if /I [%1] == [All] (
 
     REM echo Signing binaries in %COMMON_DIR%
     REM call signbinaries.cmd ppkg %COMMON_DIR%
-    echo Signing binaries in %PKGSRC_DIR%
-    call signbinaries.cmd bsp %PKGSRC_DIR%
+    REM echo Signing binaries in %PKGSRC_DIR%
+    REM call signbinaries.cmd bsp %PKGSRC_DIR%
 
     echo Building all packages under %COMMON_DIR%\Packages
     dir %COMMON_DIR%\Packages\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
