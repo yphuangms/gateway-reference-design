@@ -10,10 +10,10 @@
   <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
     <Customizations>
       <Common>
-        <ApplicationManagement>
-          <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
-        </ApplicationManagement> 
         <Policies>
+          <ApplicationManagement>
+            <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
+          </ApplicationManagement>
           <Connectivity>
             <AllowBluetooth>Yes</AllowBluetooth>
             <AllowNFC>Yes</AllowNFC>
