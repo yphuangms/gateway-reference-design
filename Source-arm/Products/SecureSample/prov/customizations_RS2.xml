@@ -17,6 +17,7 @@
         </Accounts>
         <ApplicationManagement>
           <AllowAppStoreAutoUpdate>Allowed</AllowAppStoreAutoUpdate>
+          <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
         </ApplicationManagement>
         <Policies>
           <Security>

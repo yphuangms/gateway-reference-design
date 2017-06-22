@@ -12,9 +12,16 @@
       <Common>
         <Accounts>
           <ComputerAccount>
-            <ComputerName>ContosoSecureSample</ComputerName>
+            <ComputerName>ContosoSecure</ComputerName>
           </ComputerAccount>
         </Accounts>
+<<<<<<< HEAD
+=======
+        <ApplicationManagement>
+          <AllowAppStoreAutoUpdate>Allowed</AllowAppStoreAutoUpdate>
+          <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
+        </ApplicationManagement>
+>>>>>>> 440939a... Fixing provisioning file to enable default app to run in retail image
         <Policies>
           <ApplicationManagement>
             <AllowAppStoreAutoUpdate>Allowed</AllowAppStoreAutoUpdate>
