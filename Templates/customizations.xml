@@ -18,6 +18,7 @@
         <Policies>
           <ApplicationManagement>
             <AllowAppStoreAutoUpdate>Allowed</AllowAppStoreAutoUpdate>
+            <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
           </ApplicationManagement>
           <Security>
             <AllowAddProvisioningPackage>Yes</AllowAddProvisioningPackage>
