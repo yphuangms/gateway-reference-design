@@ -57,6 +57,7 @@ del %IOTADK_ROOT%\adkversion.txt
 
 REM Remove temporary variables
 set KITPATH=
+set KIT_VERSION=
 
 REM Check for WDK Presence
 if exist "%KITSROOT%\CoreSystem" (
