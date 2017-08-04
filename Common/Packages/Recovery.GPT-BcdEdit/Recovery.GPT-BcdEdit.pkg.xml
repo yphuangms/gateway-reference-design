@@ -11,7 +11,7 @@
   <Components>
     <OSComponent>
       <Files>
-          <File Source="Recovery.BcdEdit.cmd" DestinationDir="$(runtime.root)\Customizations" />
+          <File Source="Recovery.BcdEdit.cmd" DestinationDir="$(runtime.root)\RecoveryConfig" />
       </Files>
     </OSComponent>
   </Components>

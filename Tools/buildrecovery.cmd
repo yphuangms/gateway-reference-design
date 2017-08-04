@@ -28,6 +28,23 @@ if not defined PKGBLD_DIR (
 )
 
 if not defined FFUNAME ( set FFUNAME=Flash)
+set PRODUCT=%1
+
+if not exist %SRC_DIR%\Products\%PRODUCT% (
+   echo %PRODUCT% not found. Available products listed below
+   dir /b /AD %SRC_DIR%\Products
+   goto Usage
+)
+
+if not exist %SRC_DIR%\Products\%PRODUCT%\prodconfig.txt (
+    echo %CLRRED%Error:Please create prodconfig.txt with BSP info.%CLREND%
+    goto Usage
+)
+
+for /f "tokens=1,2 delims== " %%i in (%SRC_DIR%\Products\%PRODUCT%\prodconfig.txt) do (
+    set %%i=%%j
+)
+
 set OUTPUTDIR=%BLD_DIR%\%1\%2
 set IMG_FILE=%OUTPUTDIR%\%FFUNAME%.ffu
 
@@ -54,16 +71,37 @@ for /f "tokens=3,4,* skip=9 delims= " %%i in (%OUTPUTDIR%\mountlog.txt) do (
 )
 
 echo Mounted at %MOUNT_PATH% as %DISK_DRIVE%..
+
+set DISK_NR=%DISK_DRIVE:~-1%
+if defined EFI_PAR_NR (
+    echo sel dis %DISK_NR% > %OUTPUTDIR%\diskpartassign.txt
+    echo sel par %EFI_PAR_NR% >> %OUTPUTDIR%\diskpartassign.txt
+    echo assign letter=x >> %OUTPUTDIR%\diskpartassign.txt
+    echo exit >> %OUTPUTDIR%\diskpartassign.txt
+
+    echo sel dis %DISK_NR% > %OUTPUTDIR%\diskpartunassign.txt
+    echo sel par %EFI_PAR_NR% >> %OUTPUTDIR%\diskpartunassign.txt
+    echo remove letter=x >> %OUTPUTDIR%\diskpartunassign.txt
+    echo exit >> %OUTPUTDIR%\diskpartunassign.txt
+
+    echo Extracting EFIESP wim
+    diskpart < %OUTPUTDIR%\diskpartassign.txt
+    dism /Capture-Image /ImageFile:%MOUNT_PATH%\mmos\efiesp.wim /CaptureDir:X:\ /Name:"\EFIESP"
+    diskpart < %OUTPUTDIR%\diskpartunassign.txt
+)
+
 echo Extracting data wim
 dism /Capture-Image /ImageFile:%MOUNT_PATH%\mmos\data.wim /CaptureDir:%MOUNT_PATH%Data\ /Name:"DATA" /Compress:max
+
 echo Extracting MainOS wim, this can take a while too..
 dism /Capture-Image /ImageFile:%MOUNT_PATH%\mmos\mainos.wim /CaptureDir:%MOUNT_PATH% /Name:"MainOS" /Compress:max
 
 if exist %BSPSRC_DIR%\%BSP%\Packages\Recovery.WinPE\winpe.wim (
-    echo Copying winpe.wim..
-    copy %BSPSRC_DIR%\%BSP%\Packages\Recovery.WinPE\winpe.wim %MOUNT_PATH%\mmos
+     echo Copying winpe.wim..
+     copy %BSPSRC_DIR%\%BSP%\Packages\Recovery.WinPE\winpe.wim %MOUNT_PATH%\mmos >nul
+     copy %BSPSRC_DIR%\%BSP%\Packages\Recovery.WinPE\startrecovery.cmd %MOUNT_PATH%\mmos >nul
 ) else (
-    echo.%CLRRED%Error:WinPE file not found. Recovery functionality will not work.%CLREND% 
+     echo.%CLRRED%Error:WinPE file not found. Recovery functionality will not work.%CLREND% 
 )
 
 echo %BSP_VERSION% > %MOUNT_PATH%\mmos\RecoveryImageVersion.txt
