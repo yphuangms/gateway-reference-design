@@ -26,6 +26,8 @@ REM Input validation
 if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
+set WORK_DIR=%1
+set OUTPUT=%WORK_DIR%\OCP
 
 if not exist "%BLD_DIR%\%2\%3" ( goto Usage )
 if not defined FFUNAME ( set FFUNAME=Flash)
@@ -38,7 +40,7 @@ if not exist "%BLD_DIR%\%2\%3\%FFUNAME%.UpdateInput.xml" (
     echo. %FFUNAME%.UpdateInput.xml not found. Build the image before exporting.
     exit /b 1
 )
-if not exist "%1" ( mkdir "%1" )
+if not exist "%OUTPUT%" ( mkdir "%OUTPUT%" )
 setlocal
 
 if /I [%4] == [MS] (
@@ -49,7 +51,7 @@ if /I [%4] == [MS] (
     set MSPKG=1
     set OEMPKG=1
 )
-if exist ("%1\packagelist.txt") del "%1\packagelist.txt"
+if exist ("%WORK_DIR%\packagelist.txt") del "%WORK_DIR%\packagelist.txt"
 
 for /f "tokens=1,2,3 delims=<,> skip=5" %%A in (%BLD_DIR%\%2\%3\%FFUNAME%.UpdateInput.xml) do (
     if [%%C] == [] (
@@ -59,21 +61,44 @@ for /f "tokens=1,2,3 delims=<,> skip=5" %%A in (%BLD_DIR%\%2\%3\%FFUNAME%.Update
         echo.%%C | findstr /C:"MSPackages" >nul && (
             if defined MSPKG (
                 echo. [MS package] : %%C
-                copy "%%C" "%1%" >nul
-                echo.%%C >> "%1\packagelist.txt"
+                copy "%%C" "%OUTPUT%" >nul
+                echo.%%C >> "%WORK_DIR%\packagelist.txt"
             )
         ) || (
             if defined OEMPKG (
                 echo. [OEM package] : %%C
-                copy "%%C" "%1%" >nul
-                echo.%%C >> "%1\packagelist.txt"
+                copy "%%C" "%OUTPUT%" >nul
+                echo.%%C >> "%WORK_DIR%\packagelist.txt"
             )
         )
     )
 )
-copy "%IOTADK_ROOT%\Templates\installupdates.cmd" %1\installupdates.cmd >nul
+copy "%IOTADK_ROOT%\Templates\installupdates.cmd" %WORK_DIR%\installupdates.cmd >nul
 echo. Exporting BSP DB
-copy "%BLD_DIR%\%2\%3\%FFUNAME%.BSPDB.xml" %1 >nul
+copy "%BLD_DIR%\%2\%3\%FFUNAME%.BSPDB.xml" %OUTPUT% >nul
+
+findstr /C:"OwnerType" %OUTPUT%\%FFUNAME%.BSPDB.xml > %WORK_DIR%\pkgbspdb.txt
+if exist %WORK_DIR%\pkgbsplist.txt (del %WORK_DIR%\pkgbsplist.txt)
+for /f "tokens=3,8,9,10,11,13 delims=>= " %%A in (%WORK_DIR%\pkgbspdb.txt) do (
+    if /I [%%B] == [Version] (
+        echo %%~A.cab,%%~C >> %WORK_DIR%\pkgbsplist.txt
+    ) else if /I [%%D] == [Version] (
+        echo %%~A.cab,%%~E >> %WORK_DIR%\pkgbsplist.txt
+    ) else (
+          echo %%~A.cab,%%~F >> %WORK_DIR%\pkgbsplist.txt
+    )
+)
+del %WORK_DIR%\pkgbspdb.txt
+
+echo. Making BSP DB cab
+call makecab %OUTPUT%\%FFUNAME%.BSPDB.xml %OUTPUT%\%FFUNAME%.BSPDB.cab >nul
+echo. Signing BSP DB cab
+call sign.cmd %OUTPUT%\%FFUNAME%.BSPDB.cab >nul
+del %OUTPUT%\%FFUNAME%.BSPDB.xml
+echo. Creating zip file
+if exist %WORK_DIR%\OCP.zip (del %WORK_DIR%\OCP.zip )
+powershell.exe -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('%OUTPUT%','%WORK_DIR%\OCP.zip'); }"
+
 endlocal
 exit /b
 
