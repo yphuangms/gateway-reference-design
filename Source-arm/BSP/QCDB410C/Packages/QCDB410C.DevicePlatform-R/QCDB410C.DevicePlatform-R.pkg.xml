@@ -2,7 +2,7 @@
 <Package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   Owner="$(OEMNAME)"
   Component="QCDB410C"
-  SubComponent="DeviceLayout-R"
+  SubComponent="DevicePlatform-R"
   OwnerType="OEM"
   ReleaseType="Production"
   Platform="$(BSPARCH)" xmlns="urn:Microsoft.WindowsPhone/PackageSchema.v8.00">
@@ -10,9 +10,9 @@
     <OSComponent>
       <Files>
         <File
-          Source="DeviceLayout.xml"
+          Source="OEMDevicePlatform.xml"
           DestinationDir="$(runtime.windows)\ImageUpdate"
-          Name="DeviceLayout.xml" />
+          Name="OEMDevicePlatform.xml" />
       </Files>
     </OSComponent>
   </Components>
