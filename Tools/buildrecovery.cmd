@@ -107,7 +107,7 @@ if exist %BSPSRC_DIR%\%BSP%\Packages\Recovery.WinPE\winpe.wim (
 echo %BSP_VERSION% > %MOUNT_PATH%\mmos\RecoveryImageVersion.txt
 
 echo Unmounting %DISK_DRIVE%
-wpimage dismount -physicaldrive %DISK_DRIVE% -imagepath %IMG_RECOVERY_FILE%
+wpimage dismount -physicaldrive %DISK_DRIVE% -imagepath %IMG_RECOVERY_FILE% -nosign
 REM del %OUTPUTDIR%\mountlog.txt
 
 endlocal
