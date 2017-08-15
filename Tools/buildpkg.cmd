@@ -50,6 +50,11 @@ if /I [%1] == [All] (
 
     call :SUB_PROCESSLIST %PKGLOG_DIR%\packagelist.txt %2
 
+    if exist %COMMON_DIR%\OCPUpdate (
+        echo Building OCPUpdate for GA
+        call %COMMON_DIR%\OCPUpdate\buildocpupdate.cmd GA
+    )
+    
     echo Building all packages under %PKGSRC_DIR%
     dir %PKGSRC_DIR%\*.pkg.xml /S /b > %PKGLOG_DIR%\packagelist.txt
 

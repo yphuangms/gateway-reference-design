@@ -73,6 +73,8 @@ set /p NEWGUID=<%PRODSRC_DIR%\uuid.txt
 del %PRODSRC_DIR%\uuid.txt
 
 powershell -Command "(gc %IOTADK_ROOT%\Templates\customizations.xml) -replace '{Product}', '%PRODUCT%' -replace 'GUID', '%NEWGUID%' -replace '{OEMNAME}', '%OEM_NAME%' | Out-File %PRODSRC_DIR%\prov\customizations.xml -Encoding utf8"
+REM Store BSP info for the product for later used
+echo BSP=%BSPNAME%> %PRODSRC_DIR%\prodconfig.txt
 
 echo %1 product directories ready
 goto End

@@ -48,9 +48,13 @@ for /f "tokens=1,2,3 delims=:,!, " %%i in (%FILE_PATH%\appx_info.txt) do (
 )
 if not defined PROV_VERSION ( set PROV_VERSION=1.0)
 if not defined PROV_RANK ( set PROV_RANK=0)
+if not defined PROV_PATH ( 
+    set PROV_PATH="$(runtime.windows)\Provisioning\Packages"
+)
 
 echo. Provisioning package version : %PROV_VERSION%
 echo.                      rank    : %PROV_RANK%
+echo.                      path    : %PROV_PATH%
 
 for %%A in (%STARTUP_OPTIONS%) do (
     if [%%A] == [%2] (
@@ -170,7 +174,7 @@ call :PRINT_TEXT "      <OSComponent>"
 call :PRINT_TEXT "         <Files>"
 REM Printing script files inclusion
 call :PRINT_TEXT "            <File Source="%COMP_NAME%.%SUB_NAME%.ppkg""
-echo                   DestinationDir="$(runtime.windows)\Provisioning\Packages">> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
+echo                   DestinationDir=%PROV_PATH%>> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 call :PRINT_TEXT "                  Name="%COMP_NAME%.%SUB_NAME%.ppkg" />"
 call :PRINT_TEXT "         </Files>"
 call :PRINT_TEXT "      </OSComponent>"

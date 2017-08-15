@@ -25,14 +25,14 @@ if %wowRegKeyPathFound% EQU 0 (
   if %regKeyPathFound% EQU 0 (
     echo.%CLRRED%Error:No Windows Kits found. Install ADK.%CLREND%
     pause
-    exit /b 
+    exit /b
   ) else (
     set regKeyPath=HKLM\Software\Microsoft\Windows Kits\Installed Roots
   )
 ) else (
     set regKeyPath=HKLM\Software\Wow6432Node\Microsoft\Windows Kits\Installed Roots
 )
-  
+
 for /F "skip=2 tokens=2*" %%i in ('REG QUERY "%regKeyPath%" /v %KitsRootRegValueName%') do (SET KITPATH=%%jAssessment and Deployment Kit\Deployment Tools)
 REM Cleanup local variables
 set regKeyPathFound=
@@ -57,6 +57,7 @@ del %IOTADK_ROOT%\adkversion.txt
 
 REM Remove temporary variables
 set KITPATH=
+set KIT_VERSION=
 
 REM Check for WDK Presence
 if exist "%KITSROOT%\CoreSystem" (
@@ -105,7 +106,7 @@ REM Change to Working directory
 cd /D %IOTADK_ROOT%\Tools
 call setOEM.cmd
 doskey /macrofile=alias.txt
-set IOT_ADDON_VERSION=3.0
+set IOT_ADDON_VERSION=3.1
 
 echo IOTADK_ROOT : %IOTADK_ROOT%
 echo ADK_VERSION : %ADK_VERSION%

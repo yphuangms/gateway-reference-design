@@ -12,11 +12,12 @@
       <Common>
         <!--Accounts>
           <ComputerAccount>
-            <ComputerName>{OEMNAME}{Product}</ComputerName>
+            <ComputerName>{Product}</ComputerName>
           </ComputerAccount>
         </Accounts-->
         <ApplicationManagement>
           <AllowAppStoreAutoUpdate>Allowed</AllowAppStoreAutoUpdate>
+            <AllowAllTrustedApps>Yes</AllowAllTrustedApps>
         </ApplicationManagement>
         <!--Policies>
           <Security>

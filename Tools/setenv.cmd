@@ -37,6 +37,7 @@ set PATH=%KITSROOT%tools\bin\i386;%PATH%
 set AKROOT=%KITSROOT%
 set WPDKCONTENTROOT=%KITSROOT%
 set PKG_CONFIG_XML=%KITSROOT%Tools\bin\i386\pkggen.cfg.xml
+set WINPE_ROOT=%KITSROOT%Assessment and Deployment Kit\Windows Preinstallation Environment
 
 set ARCH=%1
 set BSP_ARCH=%1
@@ -64,7 +65,9 @@ set PKGLOG_DIR=%PKGBLD_DIR%\logs
 set TOOLS_DIR=%IOTADK_ROOT%\Tools
 
 REM Set the location of the BSP packages, currently set to the build folder. Override this to point to actual location.
-set BSPPKG_DIR=%PKGBLD_DIR%
+if not defined BSPPKG_DIR (
+    set BSPPKG_DIR=%PKGBLD_DIR%
+)
 
 call setversion.cmd
 
