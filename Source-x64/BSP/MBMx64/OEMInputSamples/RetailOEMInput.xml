@@ -47,7 +47,7 @@
       <Feature>IOT_ALLJOYN_APP</Feature>
     </Microsoft>
     <OEM>
-      <!-- Inclide BSP Features -->
+      <!-- Include BSP Features -->
       <Feature>MBMx64_DRIVERS</Feature>
       <!-- Include OEM features -->
       <Feature>OEM_CustomCmd</Feature>

@@ -48,8 +48,8 @@
     </Microsoft>
     <OEM>
       <!-- Include BSP Features -->
-      <Feature>RPi2_DRIVERS</Feature>
-      <Feature>RPi3_DRIVERS</Feature>
+      <Feature>RPI2_DRIVERS</Feature>
+      <Feature>RPI3_DRIVERS</Feature>
       <!-- Include OEM features -->
       <Feature>OEM_CustomCmd</Feature>
       <Feature>OEM_ProvAuto</Feature>
