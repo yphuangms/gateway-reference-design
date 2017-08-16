@@ -65,13 +65,16 @@ set PKGLOG_DIR=%PKGBLD_DIR%\logs
 set TOOLS_DIR=%IOTADK_ROOT%\Tools
 
 REM Set the location of the BSP packages, currently set to the build folder. Override this to point to actual location.
-set BSPPKG_DIR=%PKGBLD_DIR%
+if not defined BSPPKG_DIR (
+    set BSPPKG_DIR=%PKGBLD_DIR%
+)
 
 REM Temporary fix to support RS2 ADK while migrating to next release
 if /i "%ADK_VERSION%" LSS "16190" (
     set CUSTOMIZATIONS=customizations_RS2
 ) else (
     set CUSTOMIZATIONS=customizations
+    set UNIVERSAL_BSP=1
 )
 
 call setversion.cmd
