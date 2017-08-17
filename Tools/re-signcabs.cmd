@@ -53,6 +53,8 @@ if %~z1 gtr 0 (
            echo.--------- signbinaries----------- >> %OUTDIR%\%%~ni_resign.log
            call signbinaries.cmd bsp %OUTDIR%\%%~ni >> %OUTDIR%\%%~ni_resign.log
        )
+       echo.--------- pkgsigntool update----------- >> %OUTDIR%\%%~ni_resign.log
+       call pkgsigntool update %OUTDIR%\%%~ni >> %OUTDIR%\%%~ni_resign.log
        echo.--------- makecat----------- >> %OUTDIR%\%%~ni_resign.log
        call makecat -v %OUTDIR%\%%~ni\content.cdf >> %OUTDIR%\%%~ni_resign.log
        echo.--------- signcat----------- >> %OUTDIR%\%%~ni_resign.log
