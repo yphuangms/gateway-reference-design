@@ -9,7 +9,7 @@
     <Components>
        <OSComponent>
           <RegKeys>
-             <RegKey KeyName="$(hklm.control)\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\0001)">
+             <RegKey KeyName="$(hklm.control)\Class\{4d36e972-e325-11ce-bfc1-08002be10318}\0001">
                 <RegValue Name="MaxRCBs" Value="64" Type="REG_SZ"/>
                 <RegValue Name="MaxTCBs" Value="64" Type="REG_SZ"/>
              </RegKey>
