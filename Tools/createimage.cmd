@@ -45,6 +45,8 @@ echo Creating %1 %2 Image
 echo Build Start Time : %TIME%
 
 echo Building Packages with product specific contents
+call buildpkg.cmd Registry.Version
+
 if exist %PRODSRC_DIR%\oemcustomization.cmd (
     call buildpkg.cmd Custom.Cmd
 )
@@ -52,6 +54,12 @@ if exist %PRODSRC_DIR%\oemcustomization.cmd (
 if exist %PRODSRC_DIR%\prov\%CUSTOMIZATIONS%.xml (
     call createprovpkg.cmd %PRODSRC_DIR%\prov\%CUSTOMIZATIONS%.xml %PRODSRC_DIR%\prov\%PRODUCT%Prov.ppkg
     call buildpkg.cmd Provisioning.Auto
+)
+
+if exist %PRODSRC_DIR%\OCPUpdate (
+    echo.Building DeviceTargeting packages
+    call buildpkg.cmd %PRODSRC_DIR%\OCPUpdate
+    call buildfm.cmd ocp %PRODUCT%
 )
 
 if exist %PRODSRC_DIR%\imagecustomizations.xml (
