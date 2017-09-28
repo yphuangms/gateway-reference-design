@@ -59,12 +59,14 @@ if [%BSP_ARCH%] == [arm] (
         )
         del %BSPDIR%\driverlist.txt
     ) else (
-       echo %BSPDIR% does not exist,no drivers added. Provide BSP source directory.
+       echo No drivers added. Provide valid BSP source directory to add drivers.
     )
 )
 echo Copying files into WinPE
-copy "%IOTADK_ROOT%\Templates\recovery\startnet.cmd" %MOUNTDIR%\windows\system32\startnet.cmd >nul
+copy "%IOTADK_ROOT%\Templates\recovery\startnet.cmd" %MOUNTDIR%\windows\system32\ >nul
+copy "%IOTADK_ROOT%\Templates\recovery\startnet_recovery.cmd" %MOUNTDIR%\windows\system32\ >nul
 copy "%IOTADK_ROOT%\Templates\recovery\diskpart_assign.txt" %MOUNTDIR%\windows\system32\ >nul
+copy "%IOTADK_ROOT%\Templates\recovery\diskpart_format.txt" %MOUNTDIR%\windows\system32\ >nul
 copy "%IOTADK_ROOT%\Templates\recovery\diskpart_remove.txt" %MOUNTDIR%\windows\system32\ >nul
 
 echo Saving and unmounting WinPE
