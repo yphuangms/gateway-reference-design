@@ -241,7 +241,8 @@
       <!-- PARTITION_BASIC_DATA_GUID -->
       <Type>{ebd0a0a2-b9e5-4433-87c0-68b6b72699c7}</Type>
       <!-- Accounts for 400MB free + 50 MB boot growth + 256MB page file as defined in registry by package src\baseos\prod\packages\arm\armmemory -->
-      <MinFreeSectors>512000</MinFreeSectors>
+	  <!-- Increasing the MinFreeSectors to 512MB -->
+      <MinFreeSectors>1048576</MinFreeSectors>
       <ByteAlignment>0x800000</ByteAlignment>
       <ClusterSize>0x1000</ClusterSize>
       <FileSystem>NTFS</FileSystem>
@@ -267,7 +268,8 @@
   </Partitions>
 
   <!-- END MICROSOFT PARTITIONS -->
-
+  <!-- Adding Version tag to allow IoTUAP specific validations -->
+  <VersionTag>IoTUAP</VersionTag>
   <SectorSize>512</SectorSize>
   <ChunkSize>128</ChunkSize>
   <DefaultPartitionByteAlignment>0x200000</DefaultPartitionByteAlignment>
