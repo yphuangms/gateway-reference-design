@@ -20,7 +20,7 @@
       <Name>MainOS</Name>
       <Type>0x07</Type>
       <FileSystem>NTFS</FileSystem>
-      <MinFreeSectors>512000</MinFreeSectors>
+      <MinFreeSectors>1048576</MinFreeSectors>
       <ByteAlignment>0x800000</ByteAlignment>
       <ClusterSize>0x1000</ClusterSize>
     </Partition>
