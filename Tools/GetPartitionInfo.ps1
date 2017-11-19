@@ -30,7 +30,7 @@ $dlxDoc = [xml] (get-content $inputXML);
 Write-Host "PartitionName,ID,Type,TotalSectors,FileSystem,Drive";
 $Partitions = $dlxDoc.GetElementsByTagName("Partition");
 $count = 1;
-
+$guids = "{c12a7328-f81f-11d2-ba4b-00a0c93ec93b}","{ebd0a0a2-b9e5-4433-87c0-68b6b72699c7}","0x0C","0x07";
 
 Foreach ($Partition in $Partitions)
 {
@@ -43,7 +43,7 @@ Foreach ($Partition in $Partitions)
     if(!$ParFS)
     {
         $ParFS="NA";
-        if (($ParType -eq '{c12a7328-f81f-11d2-ba4b-00a0c93ec93b}') -or ($ParType -eq '{ebd0a0a2-b9e5-4433-87c0-68b6b72699c7}')) {
+        if ( $guids -contains "$ParType") {
             $ParDrive= GetFreeDriveLetter;
             $drivesinuse+= $ParDrive;
         }
