@@ -18,11 +18,6 @@ exit /b 1
 
 :START
 
-if /i "%ADK_VERSION%" LSS "16211" (
-    echo.%CLRRED%Error: ADK version %ADK_VERSION% does not support this. This feature is supported from ADK version 16212 or above.%CLREND%
-    exit /b 1
-)
-
 pushd
 setlocal ENABLEDELAYEDEXPANSION
 
@@ -102,14 +97,18 @@ REM ----------------------------------------------------------------------------
 :SUB_PROCESSLIST
 
 if %~z1 gtr 0 (
+    echo. %CLRYEL%.pkg.xml files found. Review generated .wm.xml files for correctness%CLREND%
     for /f "delims=" %%i in (%1) do (
        echo. Converting %%~nxi
        set NAME=%%~dpni
        set NAME=!NAME:~0,-4!
        REM echo Name: !NAME!
        call pkggen.exe "%%i" /convert:pkg2wm /output:"!NAME!.wm.xml" /useLegacyName:true /foroempkg:true /variables:"%PKGGEN_VAR%" >nul
-       if not errorlevel 0 ( echo.%CLRRED%Error : Failed to create package. See %PKGLOG_DIR%\%%~ni.log%CLREND%)
+       REM Rename the pkg.xml file to _pkg.xml file
+       move "%%i" "!NAME!._pkg.xml" >nul
     )
+) else (
+    echo. No .pkg.xml files found.
 )
 
 exit /b

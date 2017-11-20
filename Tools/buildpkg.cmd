@@ -75,7 +75,6 @@ if /I [%1] == [All] (
     if [%~x1] == [.xml] (
         echo %1 > %PKGLOG_DIR%\packagelist.txt
     ) else (
-        call convertpkg %1
         if exist "%PKGSRC_DIR%\%1" (
             REM Enabling support for multiple .wm.xml files in one directory.
             dir "%PKGSRC_DIR%\%1\*.wm.xml" /S /b > %PKGLOG_DIR%\packagelist.txt
