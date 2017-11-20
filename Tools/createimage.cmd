@@ -75,15 +75,17 @@ if exist %SRC_DIR%\BSP\%PROD_BSP%\tools\ci_hook.cmd (
 )
 
 call buildpkg.cmd Registry.Version %PKG_VER%
+call buildprovpkg.cmd %PRODUCT%
+call buildpkg.cmd %COMMON_DIR%\ProdPackages
 
-if exist %PRODSRC_DIR%\oemcustomization.cmd (
-    call buildpkg.cmd Custom.Cmd
-)
+REM if exist %PRODSRC_DIR%\oemcustomization.cmd (
+    REM call buildpkg.cmd Custom.Cmd
+REM )
 
-if exist %PRODSRC_DIR%\prov\%CUSTOMIZATIONS%.xml (
-    call buildprovpkg.cmd %PRODUCT%
-    call buildpkg.cmd Provisioning.Auto
-)
+REM if exist %PRODSRC_DIR%\prov\%CUSTOMIZATIONS%.xml (
+    REM call buildprovpkg.cmd %PRODUCT%
+    REM call buildpkg.cmd Provisioning.Auto
+REM )
 
 if exist %PRODSRC_DIR%\CUSConfig (
     echo.Building DeviceTargeting packages

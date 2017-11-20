@@ -71,12 +71,12 @@ if not defined RELEASE_DIR (
 )
 
 echo Creating %INPUT_FILE% Package with version %PKG_VER% for %PRODUCT%
-
+set PPKG_FILE=%INPUT_FILE:.wm.xml=.ppkg%
 REM check if customizations.xml is present, if so create provisioning package
 if exist "%CUSTOMIZATIONS%.xml" (
-    if not exist "%INPUT%.ppkg" (
-        echo  Creating %INPUT%.ppkg...
-        call createprovpkg.cmd %CUSTOMIZATIONS%.xml %INPUT%.ppkg
+    if not exist "%PPKGBLD_DIR%\%PPKG_FILE%" (
+        echo  Creating %PPKG_FILE%...
+        call createprovpkg.cmd %CUSTOMIZATIONS%.xml %PPKGBLD_DIR%\%PPKG_FILE% > %PPKGBLD_DIR%\logs\%PPKG_FILE%.log
    )
 )
 
@@ -86,7 +86,7 @@ if not exist "%INPUT%.wm.xml" (
 
 set BUILDTIME=%date:~-2,2%%date:~4,2%%date:~7,2%-%time:~0,2%%time:~3,2%
 
-call pkggen.exe "%INPUT%.wm.xml" /output:"%PKGBLD_DIR%" /version:%PKG_VER% /build:fre /cpu:%BSP_ARCH% /variables:"_RELEASEDIR=%RELEASE_DIR%\;PROD=%PRODUCT%;PRJDIR=%SRC_DIR%;COMDIR=%COMMON_DIR%;BSPVER=%PKG_VER%;BSPARCH=%BSP_ARCH%;OEMNAME=%OEM_NAME%;BUILDTIME=%BUILDTIME%;" /onecore /universalbsp
+call pkggen.exe "%INPUT%.wm.xml" /output:"%PKGBLD_DIR%" /version:%PKG_VER% /build:fre /cpu:%BSP_ARCH% /variables:"_RELEASEDIR=%RELEASE_DIR%\;PROD=%PRODUCT%;PRJDIR=%SRC_DIR%;COMDIR=%COMMON_DIR%;BSPVER=%PKG_VER%;BSPARCH=%BSP_ARCH%;OEMNAME=%OEM_NAME%;BUILDTIME=%BUILDTIME%;BLDDIR=%BLD_DIR%" /onecore /universalbsp
 
 if errorlevel 0 (
     echo Package creation completed

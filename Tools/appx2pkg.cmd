@@ -208,7 +208,7 @@ call :PRINT_TEXT "   <Components>"
 call :PRINT_TEXT "      <OSComponent>"
 call :PRINT_TEXT "         <Files>"
 REM Printing script files inclusion
-call :PRINT_TEXT "            <File Source="%COMP_NAME%.%SUB_NAME%.ppkg""
+call :PRINT_TEXT "            <File Source="$(BLDDIR)\ppkgs\%COMP_NAME%.%SUB_NAME%.ppkg""
 echo                   DestinationDir=%PROV_PATH%>> "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml"
 call :PRINT_TEXT "                  Name="%COMP_NAME%.%SUB_NAME%.ppkg" />"
 call :PRINT_TEXT "         </Files>"

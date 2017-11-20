@@ -40,7 +40,7 @@ if [%1] == [] goto Usage
 
 REM Add variables for pkg2wm
 set PKGGEN_VAR=_RELEASEDIR=$(_RELEASEDIR);PROD=$(PROD);PRJDIR=$(PRJDIR);COMDIR=$(COMDIR);BSPVER=$(BSPVER)
-set PKGGEN_VAR=%PKGGEN_VAR%;BSPARCH=$(BSPARCH);OEMNAME=$(OEMNAME);BUILDTIME=$(BUILDTIME)
+set PKGGEN_VAR=%PKGGEN_VAR%;BSPARCH=$(BSPARCH);OEMNAME=$(OEMNAME);BUILDTIME=$(BUILDTIME);BLDDIR=%BLD_DIR%
 REM if you encounter the following error, add the symbol here
 REM (PkgBldr.Common) : error : Undefined variable runtime.clipAppLicenseInstall
 set PKGGEN_VAR=%PKGGEN_VAR%;runtime.clipAppLicenseInstall=$(runtime.clipAppLicenseInstall)
@@ -64,6 +64,8 @@ if /I [%1] == [All] (
         ) else if exist "%1" (
             REM Enabling support for multiple .pkg.xml files in one directory.
             dir "%1\*.pkg.xml" /S /b > %PKGLOG_DIR%\packagelist.txt 2>nul
+        ) else if exist "%COMMON_DIR%\ProdPackages\%1" (
+            REM Nothing to do here. Skip
         ) else (
             REM Check if its in BSP path
             cd /D "%BSPSRC_DIR%"
