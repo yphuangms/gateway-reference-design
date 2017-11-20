@@ -165,8 +165,8 @@ for %%Z in ("%FILE_PATH%\appx_cerlist.txt") do if %%~zZ gtr 0 (
     )
 )
 
-echo. Authoring %CUSTOMIZATIONS%.xml
-if exist "%FILE_PATH%\%CUSTOMIZATIONS%.xml" (del "%FILE_PATH%\%CUSTOMIZATIONS%.xml" )
+echo. Authoring customizations.xml
+if exist "%FILE_PATH%\customizations.xml" (del "%FILE_PATH%\customizations.xml" )
 if not defined NEWGUID (
     REM Get a new GUID for the Provisioning config file
     powershell -Command "[System.Guid]::NewGuid().toString() | Out-File %PRODSRC_DIR%\uuid.txt -Encoding ascii"
@@ -176,7 +176,7 @@ if not defined NEWGUID (
 call :CREATE_CUSTFILE
 
 copy "%FILE_PATH%\%FILE_NAME%%FILE_TYPE%" "%OUTPUT_PATH%\%SHORT_FILE_NAME%%FILE_TYPE%" >nul 2>nul
-move "%FILE_PATH%\%CUSTOMIZATIONS%.xml" "%OUTPUT_PATH%\%CUSTOMIZATIONS%.xml" >nul 2>nul
+move "%FILE_PATH%\customizations.xml" "%OUTPUT_PATH%\customizations.xml" >nul 2>nul
 REM move "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.pkg.xml" >nul 2>nul
 move "%FILE_PATH%\%COMP_NAME%.%SUB_NAME%.wm.xml" "%OUTPUT_PATH%\%COMP_NAME%.%SUB_NAME%.wm.xml" >nul 2>nul
 
@@ -262,14 +262,14 @@ REM Print startup configuration
 if [%STARTUP%] == [fga] (
     call :PRINT_TO_CUSTFILE "        <StartupApp>"
     call :PRINT_TO_CUSTFILE "          <Default>"
-    echo            %PACKAGE_FNAME%^^!%ENTRY% >> "%FILE_PATH%\%CUSTOMIZATIONS%.xml"
+    echo            %PACKAGE_FNAME%^^!%ENTRY% >> "%FILE_PATH%\customizations.xml"
     call :PRINT_TO_CUSTFILE "          </Default>"
     call :PRINT_TO_CUSTFILE "        </StartupApp>"
 ) else if [%STARTUP%] == [bgt] (
     call :PRINT_TO_CUSTFILE "        <StartupBackgroundTasks>"
     call :PRINT_TO_CUSTFILE "          <ToAdd>"
     call :PRINT_TO_CUSTFILE "            <Add PackageName="
-    echo             "%PACKAGE_FNAME%^!%ENTRY%" >> "%FILE_PATH%\%CUSTOMIZATIONS%.xml"
+    echo             "%PACKAGE_FNAME%^!%ENTRY%" >> "%FILE_PATH%\customizations.xml"
     call :PRINT_TO_CUSTFILE "            ></Add>"
     call :PRINT_TO_CUSTFILE "          </ToAdd>"
     call :PRINT_TO_CUSTFILE "        </StartupBackgroundTasks>"
@@ -324,5 +324,5 @@ exit /b
 
 :PRINT_TO_CUSTFILE
 for /f "useback tokens=*" %%a in ('%1') do set TEXT=%%~a
-echo !TEXT!>> "%FILE_PATH%\%CUSTOMIZATIONS%.xml"
+echo !TEXT!>> "%FILE_PATH%\customizations.xml"
 exit /b

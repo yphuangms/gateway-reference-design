@@ -64,25 +64,25 @@ endlocal
 exit /b
 
 :SUB_PROCESSLIST
-if exist "%COMMON_PKG%\%1\%CUSTOMIZATIONS%.xml" (
+if exist "%COMMON_PKG%\%1\customizations.xml" (
     set CUSTOMXMLPATH=%COMMON_PKG%\%1
     set PPKGNAME=%1
-) else if exist "%PKGSRC_DIR%\%1\%CUSTOMIZATIONS%.xml" (
+) else if exist "%PKGSRC_DIR%\%1\customizations.xml" (
     set CUSTOMXMLPATH=%PKGSRC_DIR%\%1
     set PPKGNAME=%1
-) else if exist "%PRODUCTS_DIR%\%1\prov\%CUSTOMIZATIONS%.xml" (
+) else if exist "%PRODUCTS_DIR%\%1\prov\customizations.xml" (
     set CUSTOMXMLPATH=%PRODUCTS_DIR%\%1\prov
     set PPKGNAME=%1Prov
-) else if exist "%1\%CUSTOMIZATIONS%.xml" (
+) else if exist "%1\customizations.xml" (
     set CUSTOMXMLPATH=%1
     set PPKGNAME=Prov
 ) else (
-    if [%2] == [Report] ( echo. Skipping %1 : %CUSTOMIZATIONS%.xml not found )
+    if [%2] == [Report] ( echo. Skipping %1 : customizations.xml not found )
     exit /b
 )
 
 echo. Processing %1
-call createprovpkg.cmd %CUSTOMXMLPATH%\%CUSTOMIZATIONS%.xml %PPKGBLD_DIR%\%PPKGNAME%.ppkg > %PPKGBLD_DIR%\logs\%PPKGNAME%.ppkg.log
+call createprovpkg.cmd %CUSTOMXMLPATH%\customizations.xml %PPKGBLD_DIR%\%PPKGNAME%.ppkg > %PPKGBLD_DIR%\logs\%PPKGNAME%.ppkg.log
 if errorlevel 1 ( echo.%CLRRED%Error : Failed to create %PPKGNAME%.ppkg. See %PPKGBLD_DIR%\%PPKGNAME%.ppkg.log%CLREND% )
 
 exit /b

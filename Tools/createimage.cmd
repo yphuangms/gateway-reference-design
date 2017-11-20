@@ -82,7 +82,7 @@ REM if exist %PRODSRC_DIR%\oemcustomization.cmd (
     REM call buildpkg.cmd Custom.Cmd
 REM )
 
-REM if exist %PRODSRC_DIR%\prov\%CUSTOMIZATIONS%.xml (
+REM if exist %PRODSRC_DIR%\prov\customizations.xml (
     REM call buildprovpkg.cmd %PRODUCT%
     REM call buildpkg.cmd Provisioning.Auto
 REM )
