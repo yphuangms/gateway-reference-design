@@ -5,7 +5,7 @@ goto START
 :Usage
 echo Usage: partitioninfo [BSP] [SOCID]
 echo    BSP........ Required, BSP Name
-echo    SOCID       Optional, SOC ID for the GPT device layout in the BSPFM.xml file
+echo    SOCID       Optional, SOC ID for the device layout in the BSPFM.xml file
 echo    [/?]....... Displays this usage string.
 echo    Example:
 echo        partitioninfo QCDB410C QCDB410C_R
@@ -20,16 +20,19 @@ if [%1] == [/?] goto Usage
 if [%1] == [-?] goto Usage
 if [%1] == [] goto Usage
 
-REM Some Constants https://msdn.microsoft.com/en-us/library/windows/desktop/aa365449(v=vs.85).aspx
-set GUID_GPT_BASIC_DATA=ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
-set GUID_GPT_SYSTEM=c12a7328-f81f-11d2-ba4b-00a0c93ec93b
-set GUID_GPT_LDM_METADATA=5808c8aa-7e8f-42e0-85d2-e1e90434cfb3
-set GUID_GPT_MSFT_RECOVERY=de94bba4-06d1-4d40-a16a-bfd50179d6ac
-
 if not exist "%BSPSRC_DIR%\%1" (
     echo %1 is not a valid BSP.
     goto Usage
 )
+
+REM Some Constants https://msdn.microsoft.com/en-us/library/windows/desktop/aa363990(v=vs.85).aspx
+set GUID_MBR_NTFS=0x07
+set GUID_MBR_FAT32=0x0C
+
+REM Some Constants https://msdn.microsoft.com/en-us/library/windows/desktop/aa365449(v=vs.85).aspx
+set GUID_GPT_BASIC_DATA=ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+set GUID_GPT_SYSTEM=c12a7328-f81f-11d2-ba4b-00a0c93ec93b
+
 
 set BSP=%1
 set SOCNAME=%2
@@ -103,6 +106,19 @@ for /f "skip=1 tokens=1,2,3,4,5,6 delims=,{} " %%i in (%WINPEFILES%\devicelayout
         echo.set DL_%%i=%%n>> %PCSETDRIVECMD%
     )
 )
+REM set the guids for GPT/MBR based on the mainos type
+if /I [%TYPE_MainOS%] == [0x07] (
+    echo. MBR Device Layout...
+    set GUID_BASIC_DATA=%GUID_MBR_NTFS%
+    set GUID_SYSTEM=%GUID_MBR_FAT32%
+
+) else (
+    echo. GPT Device Layout..
+    REM Some Constants https://msdn.microsoft.com/en-us/library/windows/desktop/aa365449(v=vs.85).aspx
+    set GUID_BASIC_DATA=%GUID_GPT_BASIC_DATA%
+    set GUID_SYSTEM=%GUID_GPT_SYSTEM%
+
+) 
 
 REM validate device layout
 echo. Validating device layout...
@@ -112,7 +128,7 @@ if not defined PARID_MMOS (
     exit /b 1
 )
 REM check MMOS file system is not NTFS
-if [%FS_MMOS%] == [NTFS] (
+if /I [%FS_MMOS%] == [NTFS] (
     echo. %CLRYEL%Warning: Recovery partition is NTFS. Change to FAT32 if you are using Bitlocker%CLREND%
 )
 REM Check if EFIESP partition type is proper
@@ -120,8 +136,8 @@ if not defined PARID_EFIESP (
     echo. %CLRRED%Error: EFIESP partition is not defined%CLREND%
     exit /b 1
 )
-if [%TYPE_EFIESP%] NEQ [%GUID_GPT_SYSTEM%] (
-    echo. %CLRYEL%Warning: EFIESP partition should be set to GPT_SYSTEM_GUID %GUID_GPT_SYSTEM% for Bitlocker to work%CLREND%
+if /I [%TYPE_EFIESP%] NEQ [%GUID_SYSTEM%] (
+    echo. %CLRYEL%Warning: EFIESP partition should be set to GPT_SYSTEM_GUID %GUID_SYSTEM% for Bitlocker to work%CLREND%
 )
 
 echo. EFIESP:%PARID_EFIESP% MainOS:%PARID_MainOS% MMOS:%PARID_MMOS% Data:%PARID_Data%
@@ -153,7 +169,7 @@ if exist %OUTFILE% (del %OUTFILE%)
 echo. Generationg restore_junction.cmd
 call :PRINT_TEXT "REM Script to restore junctions"
 for /f "tokens=1,2 delims=, " %%i in (%MOUNT_LIST%) do (
-    if [!TYPE_%%i!] == [%GUID_GPT_BASIC_DATA%] (
+    if /I [!TYPE_%%i!] == [%GUID_BASIC_DATA%] (
         REM echo. Processing %%i
         call :PRINT_TEXT "REM restoring %%i junction"
         call :PRINT_TEXT "mountvol %%j:\ /L > volumeguid_%%i.txt"
@@ -187,13 +203,13 @@ for /f "tokens=1,2 delims=, " %%i in (%2) do (
     )
     call :PRINT_TEXT "sel par !PARID_%%i!"
     if /I [%3] == [assign] ( 
-        if [!TYPE_%%i!] NEQ [%GUID_GPT_SYSTEM%] if [!TYPE_%%i!] NEQ [%GUID_GPT_BASIC_DATA%] (
-            call :PRINT_TEXT "set id=%GUID_GPT_BASIC_DATA%"
+        if /I [!TYPE_%%i!] NEQ [%GUID_SYSTEM%] if /I [!TYPE_%%i!] NEQ [%GUID_BASIC_DATA%] (
+            call :PRINT_TEXT "set id=%GUID_BASIC_DATA%"
         )
     )
     call :PRINT_TEXT "%3 letter=%%j noerr"
     if /I [%3] == [remove] (
-        if [!TYPE_%%i!] NEQ [%GUID_GPT_SYSTEM%] if [!TYPE_%%i!] NEQ [%GUID_GPT_BASIC_DATA%] (
+        if /I [!TYPE_%%i!] NEQ [%GUID_SYSTEM%] if /I [!TYPE_%%i!] NEQ [%GUID_BASIC_DATA%] (
             call :PRINT_TEXT "set id=!TYPE_%%i!"
         )
     )
