@@ -19,6 +19,23 @@ if [%BSP_ARCH%] neq [amd64] (
 )
 
 set DST_DIR=%BSPSRC_DIR%\APLx64
+pushd
+cd /D %DST_DIR%
+del /s /q *.wm.xml >nul 2>nul
+dir *.inf /b /s > %DST_DIR%\inflist.txt
+
+for /f "delims=" %%i in (%DST_DIR%\inflist.txt) do (
+    cd %%~pi
+    for %%A in (.) do ( set FILENAME=%%~nxA)
+    move !FILENAME!.pkg.xml !FILENAME!._pkg.xml >nul 2>nul
+    echo Processing %%~nxi 
+    call inf2pkg.cmd %%i !FILENAME! Intel
+)
+
+popd
+del %DST_DIR%\inflist.txt
+
+call convertpkg %DST_DIR%
 
 echo Fixing the BSPFM.xml file 
 powershell -Command "(gc %DST_DIR%\Packages\APLx64FM.XML) -replace 'Intel.APL64.OEM', '%%OEM_NAME%%.APL64.OEM' -replace 'Intel.APL64.Device', '%%OEM_NAME%%.APL64.Device' -replace 'FeatureIdentifierPackage=\"true\"', '' | Out-File %DST_DIR%\Packages\APLx64FM.xml -Encoding utf8"
