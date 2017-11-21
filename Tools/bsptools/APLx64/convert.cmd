@@ -37,6 +37,8 @@ del %DST_DIR%\inflist.txt
 
 call convertpkg %DST_DIR%
 
+del /s /q %DST_DIR%\*._pkg.xml >nul 2>nul
+
 echo Fixing the BSPFM.xml file 
 powershell -Command "(gc %DST_DIR%\Packages\APLx64FM.XML) -replace 'Intel.APL64.OEM', '%%OEM_NAME%%.APL64.OEM' -replace 'Intel.APL64.Device', '%%OEM_NAME%%.APL64.Device' -replace 'FeatureIdentifierPackage=\"true\"', '' | Out-File %DST_DIR%\Packages\APLx64FM.xml -Encoding utf8"
 echo Fixing the TestOEMInput.xml file
