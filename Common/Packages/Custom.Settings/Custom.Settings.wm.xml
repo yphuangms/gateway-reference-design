@@ -10,7 +10,7 @@
         ownerType="OEM" />
     <regKeys>
         <!-- CrashControl Settings -->
-        <regKey keyName="$(hklm.software)\CurrentControlSet\Control\CrashControl">
+        <regKey keyName="$(hklm.system)\CurrentControlSet\Control\CrashControl">
             <regValue name="AutoReboot" type="REG_DWORD" value="1" />
             <regValue name="DisplayDisabled" type="REG_DWORD" value="1" />
             <!-- Following are optional CrashDump is by default enabled
