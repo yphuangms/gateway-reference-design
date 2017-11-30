@@ -62,8 +62,13 @@ set BSPSRC_DIR=%SRC_DIR%\BSP
 set PKGUPD_DIR=%SRC_DIR%\Updates
 set BLD_DIR=%IOTADK_ROOT%\Build\%BSP_ARCH%
 set PKGBLD_DIR=%BLD_DIR%\pkgs
+set PPKGBLD_DIR=%BLD_DIR%\ppkgs
 set PKGLOG_DIR=%PKGBLD_DIR%\logs
 set TOOLS_DIR=%IOTADK_ROOT%\Tools
+
+if not exist %PPKGBLD_DIR% ( mkdir %PPKGBLD_DIR% )
+if not exist %PPKGBLD_DIR%\logs ( mkdir %PPKGBLD_DIR%\logs )
+if not exist %PKGLOG_DIR% ( mkdir %PKGLOG_DIR% )
 
 REM Set the location of the BSP packages, currently set to the build folder. Override this to point to actual location.
 if not defined BSPPKG_DIR (
