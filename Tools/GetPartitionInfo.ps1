@@ -40,20 +40,12 @@ Foreach ($Partition in $Partitions)
     $ParFS=$Partition.FileSystem;
     $ParDrive='-';
     if(!$ParSize){ $ParSize=0;}
-    if(!$ParFS)
-    {
-        $ParFS="NA";
-        if ( $guids -contains "$ParType") {
-            $ParDrive= GetFreeDriveLetter;
-            $drivesinuse+= $ParDrive;
-        }
-    }
-    else
-    {
-        $ParDrive=GetFreeDriveLetter;
+    if(!$ParFS){ $ParFS="NA";}
+    if ( $guids -contains "$ParType") {
+        $ParDrive= GetFreeDriveLetter;
         $drivesinuse+= $ParDrive;
     }
-
     Write-Host "$ParName,$count,$ParType,$ParSize,$ParFS,$ParDrive";
     $count= $count + 1;
-}
+} 
+
