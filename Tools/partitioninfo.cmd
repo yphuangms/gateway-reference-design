@@ -202,17 +202,7 @@ for /f "tokens=1,2 delims=, " %%i in (%2) do (
         exit /b 1
     )
     call :PRINT_TEXT "sel par !PARID_%%i!"
-    if /I [%3] == [assign] ( 
-        if /I [!TYPE_%%i!] NEQ [%GUID_SYSTEM%] if /I [!TYPE_%%i!] NEQ [%GUID_BASIC_DATA%] (
-            call :PRINT_TEXT "set id=%GUID_BASIC_DATA%"
-        )
-    )
     call :PRINT_TEXT "%3 letter=%%j noerr"
-    if /I [%3] == [remove] (
-        if /I [!TYPE_%%i!] NEQ [%GUID_SYSTEM%] if /I [!TYPE_%%i!] NEQ [%GUID_BASIC_DATA%] (
-            call :PRINT_TEXT "set id=!TYPE_%%i!"
-        )
-    )
     echo.>> "%OUTFILE%"
 )
 call :PRINT_TEXT "lis vol"
