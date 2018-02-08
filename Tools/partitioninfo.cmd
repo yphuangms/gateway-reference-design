@@ -211,6 +211,7 @@ for /f "tokens=1,2 delims=, " %%i in (%2) do (
             )
         ) else (
             call :PRINT_TEXT "%3 letter=%%j noerr"
+        )
     ) else (
         call :PRINT_TEXT "%3 noerr"
     )
