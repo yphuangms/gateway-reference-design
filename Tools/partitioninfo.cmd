@@ -204,7 +204,11 @@ for /f "tokens=1,2 delims=, " %%i in (%2) do (
     call :PRINT_TEXT "sel par !PARID_%%i!"
     if [%3] == [assign] (
         if [%%i] == [MainOS] (
-            call :PRINT_TEXT "%3 letter=C noerr"
+            if [%1] == [0] (
+                call :PRINT_TEXT "%3 letter=C noerr"
+            ) else (
+                call :PRINT_TEXT "%3 letter=%%j noerr"
+            )
         ) else (
             call :PRINT_TEXT "%3 letter=%%j noerr"
         )
