@@ -21,5 +21,7 @@ if exist c:\IoTSec\setup.bitlocker.cmd  (
     call c:\IoTSec\setup.bitlocker.cmd
 )
 
-
+REM Set the crashdump file locations to data partition, set on every boot.
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\CrashControl" /v DedicatedDumpFile /t REG_SZ /d C:\Data\DedicatedDumpFile.sys /f
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\CrashControl" /v DumpFile /t REG_SZ /d C:\Data\MEMORY.DMP /f
 

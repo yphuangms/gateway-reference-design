@@ -35,6 +35,10 @@ for /f "delims=" %%i in (%DST_DIR%\inflist.txt) do (
 popd
 del %DST_DIR%\inflist.txt
 
+call convertpkg %DST_DIR%
+
+del /s /q %DST_DIR%\*._pkg.xml >nul 2>nul
+
 echo Fixing the BSPFM.xml file 
 powershell -Command "(gc %DST_DIR%\Packages\BSWx64FM.XML) -replace 'Intel.BSW64.OEM', '%%OEM_NAME%%.BSW64.OEM' -replace 'Intel.BSW64.Device', '%%OEM_NAME%%.BSW64.Device' -replace 'FeatureIdentifierPackage=\"true\"', '' | Out-File %DST_DIR%\Packages\BSWx64FM.xml -Encoding utf8"
 echo Fixing the TestOEMInput.xml file

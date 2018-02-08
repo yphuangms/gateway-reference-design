@@ -147,7 +147,7 @@ REM Output diskpart_assign.txt
 echo. Generationg diskpart_assign.txt
 set OUTFILE=%WINPEFILES%\diskpart_assign.txt
 if exist %OUTFILE% (del %OUTFILE%)
-call :GENDISKPART 0 %MOUNT_LIST% assign
+call :GENDISKPART 0 %PC_MOUNTLIST% assign
 set OUTFILE=%WINPEDIR%\pc_diskpart_assign.txt
 if exist %OUTFILE% (del %OUTFILE%)
 call :GENDISKPART DISKNR %PC_MOUNTLIST% assign
@@ -156,7 +156,7 @@ REM Output diskpart_remove.txt
 echo. Generationg diskpart_remove.txt
 set OUTFILE=%WINPEFILES%\diskpart_remove.txt
 if exist %OUTFILE% (del %OUTFILE%)
-call :GENDISKPART 0 %MOUNT_LIST% remove
+call :GENDISKPART 0 %PC_MOUNTLIST% remove
 set OUTFILE=%WINPEDIR%\pc_diskpart_remove.txt
 if exist %OUTFILE% (del %OUTFILE%)
 call :GENDISKPART DISKNR %PC_MOUNTLIST% remove
@@ -202,16 +202,18 @@ for /f "tokens=1,2 delims=, " %%i in (%2) do (
         exit /b 1
     )
     call :PRINT_TEXT "sel par !PARID_%%i!"
-    if /I [%3] == [assign] ( 
-        if /I [!TYPE_%%i!] NEQ [%GUID_SYSTEM%] if /I [!TYPE_%%i!] NEQ [%GUID_BASIC_DATA%] (
-            call :PRINT_TEXT "set id=%GUID_BASIC_DATA%"
+    if [%3] == [assign] (
+        if [%%i] == [MainOS] (
+            if [%1] == [0] (
+                call :PRINT_TEXT "%3 letter=C noerr"
+            ) else (
+                call :PRINT_TEXT "%3 letter=%%j noerr"
+            )
+        ) else (
+            call :PRINT_TEXT "%3 letter=%%j noerr"
         )
-    )
-    call :PRINT_TEXT "%3 letter=%%j noerr"
-    if /I [%3] == [remove] (
-        if /I [!TYPE_%%i!] NEQ [%GUID_SYSTEM%] if /I [!TYPE_%%i!] NEQ [%GUID_BASIC_DATA%] (
-            call :PRINT_TEXT "set id=!TYPE_%%i!"
-        )
+    ) else (
+        call :PRINT_TEXT "%3 noerr"
     )
     echo.>> "%OUTFILE%"
 )
