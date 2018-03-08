@@ -1,0 +1,61 @@
+{
+  "endpoint": {
+    "Endpoint": {
+      "EndpointUrl": "opc.tcp://localhost:51210/UA/SampleServer",
+      "SecurityMode": "SignAndEncrypt_3",
+      "SecurityPolicyUri": "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15",
+      "UserIdentityTokens": [
+        {
+          "PolicyId": "0",
+          "TokenType": "Anonymous_0",
+          "IssuedTokenType": null,
+          "IssuerEndpointUrl": null,
+          "SecurityPolicyUri": "http://opcfoundation.org/UA/SecurityPolicy#None"
+        },
+        {
+          "PolicyId": "1",
+          "TokenType": "UserName_1",
+          "IssuedTokenType": null,
+          "IssuerEndpointUrl": null,
+          "SecurityPolicyUri": "http://opcfoundation.org/UA/SecurityPolicy#Basic256"
+        },
+        {
+          "PolicyId": "2",
+          "TokenType": "Certificate_2",
+          "IssuedTokenType": null,
+          "IssuerEndpointUrl": null,
+          "SecurityPolicyUri": "http://opcfoundation.org/UA/SecurityPolicy#Basic256"
+        }
+      ],
+      "TransportProfileUri": "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary",
+      "SecurityLevel": 4
+    },
+    "UpdateBeforeConnect": true,
+    "SelectedUserTokenPolicy": 0
+  },
+  "timestamp": "2018-03-05T18:23:40.1643636+08:00",
+  "sessionname": "SampleServer",
+  "publishinterval": 1000,
+  "monitoredlist": [
+    {
+      "nodeid": "nsu=http://test.org/UA/Data/;i=11170",
+      "displayname": "SByteValue",
+      "description": "temperature"
+    },
+    {
+      "nodeid": "nsu=http://test.org/UA/Data/;i=11176",
+      "displayname": "ByteValue",
+      "description": "humidity"
+    },
+    {
+      "nodeid": "nsu=http://test.org/UA/Data/;i=11188",
+      "displayname": "UInt16Value",
+      "description": "co2"
+    },
+    {
+      "nodeid": "nsu=http://test.org/UA/Data/;i=10216",
+      "displayname": "BooleanValue",
+      "description": "ledred"
+    }
+  ]
+}

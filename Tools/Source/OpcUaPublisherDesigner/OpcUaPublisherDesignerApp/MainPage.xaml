@@ -1,0 +1,162 @@
+﻿<Page
+    x:Class="PublisherDesignerApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SiteDesignerApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <SplitView x:Name="Splitter" IsPaneOpen="True" Grid.Column="1" DisplayMode="Overlay"  Grid.Row="1" >
+            <SplitView.Pane>
+                <RelativePanel Margin="10,0,0,0">
+                    <TextBlock x:Name="SampleTitle" Text="Tools:" Style="{StaticResource SampleHeaderTextStyle}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                    <Button Grid.Column="0" x:Name="btnAppSetup" Content="Open Profile" Click="btnAppSetup_Click"
+                                RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="SampleTitle"
+                                BorderThickness="2"
+                                Margin="0,5,0,0"/>
+                    <StackPanel x:Name="panelAppSetup" BorderThickness="2" Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="btnAppSetup" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnCleanAppData" Content="Clean App Data" Click="btnCleanAppData_Click"
+                                    RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="SampleTitle"
+                                    BorderThickness="2"
+                                    Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <Grid HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                            <TextBlock Text="Profile:" Style="{StaticResource TagLineTextStyle}" TextWrapping="Wrap" Margin="0,10,0,0" HorizontalAlignment="Left" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <!--
+                                <Button x:Name="btnImportProfile" Margin="3" HorizontalAlignment="Right" Click="btnImportProfile_Click" ToolTipService.ToolTip="Import Profile">
+                                    <Button.Content>
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button x:Name="btnExportProfile" Margin="3" HorizontalAlignment="Right" Click="btnExportProfile_Click" ToolTipService.ToolTip="Export Profile">
+                                    <Button.Content>
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE898;"/>
+                                    </Button.Content>
+                                </Button>
+                                -->
+                                <Button x:Name="btnProfileDelete" Margin="3" HorizontalAlignment="Right" Click="btnProfileDelete_Click" ToolTipService.ToolTip="Delete Profile">
+                                    <Button.Content>
+                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;"/>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                        <ComboBox x:Name="listSiteProfileIds" Visibility="Visible"
+                              Background="Transparent" BorderThickness="2" SelectionChanged="listSiteProfileIds_SelectionChanged"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,10,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock x:Name="txtSourceTitle" Text="Site Name:" Style="{StaticResource TagLineTextStyle}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtSourceId" Margin="20,10,0,10" Text="" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Left" IsReadOnly="True"/>
+                        <!--
+                        <CheckBox x:Name="chkIsDataSource" Content="Is Data Source" IsChecked="false" HorizontalAlignment="Left" IsEnabled="False"></CheckBox>
+                        -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,5,0,0">                        
+                            <Button Grid.Column="0" x:Name="btnAppSetupSave" Content=" Save " Click="btnAppSetupSave_Click"  HorizontalAlignment="Stretch" 
+                                    BorderThickness="2"
+                                    Margin="0,0,5,0" />
+                            <Button Grid.Column="0" x:Name="btnAppSetupCancel" Content="Cancel" Click="btnAppSetupCancel_Click"  HorizontalAlignment="Stretch" 
+                                    BorderThickness="2"
+                                    Margin="0,0,5,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid x:Name="panelFunctionMenu" Visibility="Visible" Margin="20,0,20,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="panelAppSetup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" x:Name="panelMainFunctions"  Orientation="Vertical">
+                            <TextBlock x:Name="txtMainFunctionsTitle" Text="Current Profile:" Style="{StaticResource TagLineTextStyle}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            <!--
+                            <Button x:Name="btnSessionMgmt" Content="Sessions" Click="btnSessionMgmt_Click"
+                                HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
+                                BorderThickness="2"
+                                Margin="0,5,0,0"
+                                Visibility="Visible" />
+                            -->
+                        </StackPanel>
+                        <Button Grid.Row="1" x:Name="btnReload" Content="Reload" Click="btnReload_Click"
+                            HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
+                            BorderThickness="2"
+                            Margin="0,5,0,0"
+                            Visibility="Visible" />
+                    </Grid>
+                    <Button x:Name="btnShowDeviceInfo" RelativePanel.Above="DeviceInfo"
+                                    Click="btnShowDeviceInfo_Click"
+                                    BorderThickness="2" HorizontalAlignment="Left"
+                                    Margin="5,5,0,5">
+                        <Button.Content>
+                            <FontIcon x:Name="iconShowDeviceInfo" FontFamily="Segoe MDL2 Assets" Glyph="&#xE010;"/>
+                        </Button.Content>
+                    </Button>
+                    <StackPanel x:Name="DeviceInfo" Visibility="Collapsed" RelativePanel.Above="AdvancedInfo">
+                        <TextBlock x:Name="txtDeviceId" Text="DeviceId: " Style="{StaticResource CopyrightTextStyle}"
+                                   Margin="10,10,0,0"
+                                   TextWrapping="Wrap" Visibility="Collapsed" />
+                        <TextBlock x:Name="txtNetworkInfo" Text="IP: " Style="{StaticResource CopyrightTextStyle}"
+                                   Margin="10,10,0,10"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <StackPanel x:Name="AdvancedInfo" Visibility="Collapsed" RelativePanel.Above="FooterPanel">
+                        <TextBlock x:Name="txtPreviousExecState" Text="PreviousExecutionState" Style="{StaticResource CopyrightTextStyle}"
+                                   Margin="10,10,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <StackPanel x:Name="FooterPanel" Orientation="Vertical" RelativePanel.AlignBottomWithPanel="True" Visibility="Collapsed">
+                        <Image Source="Assets/company-logo.png" AutomationProperties.Name="App Logo" Stretch="None" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <TextBlock x:Name="Copyright" Text="&#xA9; Microsoft Corporation. All rights reserved." Style="{StaticResource CopyrightTextStyle}"
+                                   Margin="10,10,0,0"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </RelativePanel>
+            </SplitView.Pane>
+            <Frame x:Name="ContentFrame"  Margin="0,5,0,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </SplitView>
+
+        <StackPanel x:Name="HeaderPanel" Orientation="Horizontal">
+            <Border Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" Grid.Row="0">
+                <ToggleButton x:Name="btnTogglePanel" Style="{StaticResource SymbolButton}" Click="Button_Click" VerticalAlignment="Top" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
+                    <ToggleButton.Content>
+                        <FontIcon x:Name="Hamburger" FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Margin="0,10,0,0"/>
+                    </ToggleButton.Content>
+                </ToggleButton>
+            </Border>
+            <Image x:Name="ProductLogo" Stretch="None" Source="Assets/product-logo.png" Margin="0,15,0,0" />
+            <TextBlock x:Name="Header" Text="Sample App" Style="{StaticResource TagLineTextStyle}" Margin="0,15,0,0" />
+        </StackPanel>
+
+        <Grid Grid.Row="2" x:Name="StatusPanel" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="50">
+            <Border x:Name="StatusBorder" Margin="0,0,0,0" MaxHeight="50">
+                <ScrollViewer VerticalScrollMode="Auto"  VerticalScrollBarVisibility="Auto" MaxHeight="50">
+                    <TextBlock x:Name="StatusBlock" FontWeight="Bold" 
+                                   MaxWidth="{Binding ElementName=Splitter, Path=ActualWidth}" Margin="5,5,5,20" TextWrapping="Wrap" DoubleTapped="StatusBlock_DoubleTapped" />
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="3" x:Name="DebugPanel" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MaxHeight="100">
+            <Border x:Name="DebugOutputBorder" Margin="0,0,0,0" >
+                <ScrollViewer VerticalScrollMode="Auto"  VerticalScrollBarVisibility="Auto" >
+                    <TextBlock x:Name="DebugOutputBlock" FontWeight="Bold" 
+                                   MaxWidth="{Binding ElementName=Splitter, Path=ActualWidth}" Margin="2,2,2,2" TextWrapping="NoWrap" />
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        <MediaElement x:Name="SpeechMedia"/>
+    </Grid>
+</Page>

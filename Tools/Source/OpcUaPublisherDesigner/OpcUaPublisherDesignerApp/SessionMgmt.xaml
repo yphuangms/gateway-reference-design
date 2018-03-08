@@ -1,0 +1,84 @@
+﻿<Page
+    x:Class="PublisherDesignerApp.SessionMgmtPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PublisherDesignerApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:SessionStatusColorConverter x:Key="SessionStatusColorConverter" />
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <!--
+                    <TextBlock x:Name="txtSiteStatus" Margin="3" Text="" TextAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtSiteProfileStatus" Margin="3" Text="" TextAlignment="Left" VerticalAlignment="Center"/>
+                    -->
+                <TextBlock FontSize="18" FontWeight="Bold" x:Name="txtSessionStatus" Margin="3" Text="Sessions:" TextAlignment="Left" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button x:Name="btnExportPublisherNodes" Margin="3" HorizontalAlignment="Right" Click="btnExportPublisherNodes_Click"  ToolTipService.ToolTip="Export PublisherNodes">
+                    <Button.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE898;"/>
+                    </Button.Content>
+                </Button>
+                <Button Name="btnNewSession" HorizontalAlignment="Right" Margin="3" ToolTipService.ToolTip="New Session" Click="btnNewSession_Click" >
+                    <Button.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;"/>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Grid Grid.Row="1" Margin="10" MinHeight="100" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="White" BorderThickness="1">
+                <ScrollViewer x:Name="svSessionStatus" VerticalScrollMode="Enabled" HorizontalScrollMode="Enabled">
+                    <ListView  x:Name="listviewSessionStatus" SelectionMode="Single" SelectionChanged="listviewSessionStatus_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:SessionStatusInfo">
+                                <Grid Margin="2" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" MaxWidth="300" MinWidth="50" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Grid.Column="0" Foreground="SkyBlue" FontFamily="Segoe MDL2 Assets" Glyph="&#xE212;" Margin="3"/>
+                                    <Grid Grid.Column="1" Background="SkyBlue" RequestedTheme="Light" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                        <TextBlock  FontSize="12" FontWeight="Bold" Text="{x:Bind SourceUrl, Mode=OneWay}" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="20" ></TextBlock>
+                                    </Grid>
+                                    <TextBox Grid.Column="2" Name="tbSessionName" FontSize="16" Text="{x:Bind Name, Mode=OneWay}" Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="20" IsReadOnly="True" BorderBrush="Transparent" GotFocus="tbSessionName_GotFocus" TextChanged="tbSessionName_TextChanged"></TextBox>
+                                    <Button Grid.Column="3" Name="btnFunc" HorizontalAlignment="Right" Margin="3" ToolTipService.ToolTip="Function Menu" Tag="Menu" Click="Menu_Click" >
+                                        <Button.Content>
+                                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE10C;"/>
+                                        </Button.Content>
+                                        <Button.Flyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem Text="Edit" Click="ViewSessionDetail_Click"/>
+                                                <MenuFlyoutItem Text="Rename" Click="RenameSession_Click"/>
+                                                <MenuFlyoutSeparator />
+                                                <MenuFlyoutItem Text="Delete" Click="DeleteSession_Click"/>
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="BorderBrush" Value="LightGray"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,9 @@
+﻿{
+  "SourceSessions": [
+    {
+      "SessionName": "LocalSampleServer1",
+      "ProfilePath": "session_LocalSampleServer1.json",
+      "SourceType": "UA Sample Server"
+    }
+  ]
+}
