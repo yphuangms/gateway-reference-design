@@ -12,78 +12,9 @@ using Windows.Storage;
 
 namespace PublisherDesignerApp
 {
-    class JsonConfigConverter : JsonConverter
-    {
-        private List<string> m_export_properties = new List<string>()
-        {
-        "['timestamp']",
-        "['endpoint'].['Endpoint'].['EndpointUrl']",
-        "['endpoint'].['Endpoint'].['SecurityMode']",
-        "['endpoint'].['Endpoint'].['SecurityPolicyUri']",
-        "['endpoint'].['Endpoint'].['UserIdentityTokens'][*]",
-        "['endpoint'].['Endpoint'].['TransportProfileUri']",
-        "['endpoint'].['Endpoint'].['SecurityLevel']",
-        "['endpoint'].['UpdateBeforeConnect']",
-        "['endpoint'].['SelectedUserTokenPolicy']",
-        "['sessionname']",
-        "['publishinterval']",
-        "['monitoredlist'].[*]"
-        };
-        
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(OpcuaSessionConfig));
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            // just a shell of JObject
-            JObject jo = JObject.Parse(@"{""endpoint"":{""Endpoint"":{}}}");
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new StringEnumConverter());
-            JToken root = JToken.FromObject(value, JsonSerializer.Create(settings));
-            foreach (string prop in m_export_properties)
-            {
-                JArray jarr = new JArray();
-                var tokens = root.SelectTokens(prop);
-                bool is_array = prop[prop.Length - 2] == '*';
-                string name;
-                JObject obj = getObjectbyPath(jo, prop, out name);
-                foreach (JToken t in tokens)
-                {
-                    if (!is_array)
-                    {
-                        obj.Add(name, t);
-                    }
-                    else
-                    {
-                        jarr.Add(t);
-                    }
-                }
-                if (is_array)
-                    obj.Add(name, jarr);
-            }
-            jo.WriteTo(writer);
-        }
-        private JObject getObjectbyPath(JObject obj, string path, out string name)
-        {
-            JObject result = obj;
-            string[] subpath = path.Split("[]'.*".ToCharArray());
-            subpath = subpath.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            int i = 0;
-            for (; i < subpath.Length - 1; i++)
-            {
-                result = result[subpath[i]] as JObject;
-            }
-            name = subpath[i];
-            return result;
-        }
-    }
+    /// <summary>
+    /// Monitored opcua node description
+    /// </summary>
     public class MonitoredNode
     {
         public string nodeid { get; set; }
@@ -96,6 +27,10 @@ namespace PublisherDesignerApp
             description = desc;
         }
     }
+
+    /// <summary>
+    /// Opcua session settings
+    /// </summary>
     public class OpcuaSessionConfig
     {
         public static ApplicationInstance OpcuaApplication;
@@ -124,8 +59,6 @@ namespace PublisherDesignerApp
                 await application.CheckApplicationInstanceCertificate(false, 0);
 
                 OpcuaApplication = application;
-                // run the application interactively.
-                //Window.Current.Content = new ClientPage(application.ApplicationConfiguration.CreateMessageContext(), application, null, application.ApplicationConfiguration);
 
                 isSuccess = true;
             }
@@ -146,7 +79,7 @@ namespace PublisherDesignerApp
         {
             JsonConverter[] ConvList = new JsonConverter[]
             {
-                new JsonConfigConverter(),
+                new SessionConfigConverter()
                 //new StringEnumConverter { CamelCaseText = true }
             };
             string output = JsonConvert.SerializeObject(this, ConvList);
@@ -175,6 +108,79 @@ namespace PublisherDesignerApp
                 }
             }
             return result;
+        }
+
+        class SessionConfigConverter : JsonConverter
+        {
+            private List<string> m_export_properties = new List<string>()
+            {
+            "['timestamp']",
+            "['endpoint'].['Endpoint'].['EndpointUrl']",
+            "['endpoint'].['Endpoint'].['SecurityMode']",
+            "['endpoint'].['Endpoint'].['SecurityPolicyUri']",
+            "['endpoint'].['Endpoint'].['UserIdentityTokens'][*]",
+            "['endpoint'].['Endpoint'].['TransportProfileUri']",
+            "['endpoint'].['Endpoint'].['SecurityLevel']",
+            "['endpoint'].['UpdateBeforeConnect']",
+            "['endpoint'].['SelectedUserTokenPolicy']",
+            "['sessionname']",
+            "['publishinterval']",
+            "['monitoredlist'].[*]"
+            };
+        
+            public override bool CanConvert(Type objectType)
+            {
+                return (objectType == typeof(OpcuaSessionConfig));
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                // just a shell of JObject
+                JObject jo = JObject.Parse(@"{""endpoint"":{""Endpoint"":{}}}");
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new StringEnumConverter());
+                JToken root = JToken.FromObject(value, JsonSerializer.Create(settings));
+                foreach (string prop in m_export_properties)
+                {
+                    JArray jarr = new JArray();
+                    var tokens = root.SelectTokens(prop);
+                    bool is_array = prop[prop.Length - 2] == '*';
+                    string name;
+                    JObject obj = getObjectbyPath(jo, prop, out name);
+                    foreach (JToken t in tokens)
+                    {
+                        if (!is_array)
+                        {
+                            obj.Add(name, t);
+                        }
+                        else
+                        {
+                            jarr.Add(t);
+                        }
+                    }
+                    if (is_array)
+                        obj.Add(name, jarr);
+                }
+                jo.WriteTo(writer);
+            }
+            private JObject getObjectbyPath(JObject obj, string path, out string name)
+            {
+                JObject result = obj;
+                string[] subpath = path.Split("[]'.*".ToCharArray());
+                subpath = subpath.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                int i = 0;
+                for (; i < subpath.Length - 1; i++)
+                {
+                    result = result[subpath[i]] as JObject;
+                }
+                name = subpath[i];
+                return result;
+            }
         }
     }
 }
