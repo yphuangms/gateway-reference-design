@@ -107,7 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PublisherNodeModel.cs" />
+    <Compile Include="PublishedNodeModel.cs" />
     <Compile Include="SerializationUtil.cs" />
     <Compile Include="SessionConfig.cs" />
     <Compile Include="SessionStatus.cs" />
@@ -131,10 +131,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PublisherDesignerApp.Endpoints.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Properties\Default.rd.xml">
       <SubType>Designer</SubType>
     </Content>

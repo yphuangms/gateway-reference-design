@@ -12,7 +12,7 @@
   <ApplicationUri>urn:localhost:PublisherDesigner:Sample.PublisherDesignerApp</ApplicationUri>
   
   <!-- A globally unique URI for the product (usually assigned by the product vendor) -->
-  <ProductUri>http://opcfoundation.org/UA/PublisherDesignerApp/</ProductUri>
+  <ProductUri>http://sample.org/UA/PublisherDesignerApp/</ProductUri>
     
   <!-- Indicates the type of application (Client, Server or ClientServer). -->
   <ApplicationType>Client_1</ApplicationType>
@@ -405,7 +405,7 @@
   -->
   
   <TraceConfiguration>
-    <OutputFilePath>%LocalFolder%\Logs\Opc.Ua.SampleClient.log.txt</OutputFilePath>
+    <OutputFilePath>%LocalFolder%\Logs\PublisherDesignerApp.log.txt</OutputFilePath>
     <DeleteOnLoad>true</DeleteOnLoad>
     <!-- Show Only Errors -->
     <!-- <TraceMasks>1</TraceMasks> -->

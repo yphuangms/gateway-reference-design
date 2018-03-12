@@ -17,19 +17,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" x:Name="gridMessageDlg" Background="DarkGreen" BorderBrush="White" BorderThickness="1" Visibility="Collapsed" MaxHeight="100">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <ScrollViewer>
-                    <TextBlock Grid.Column="0" x:Name="txtMessage" HorizontalAlignment="Stretch" Margin="3" Visibility="Visible" TextWrapping="Wrap" MaxHeight="100" />
-                </ScrollViewer>
-                <Button Grid.Column="1" x:Name="btnMessageDlg" Margin="3" Click="btnMessageDlg_Click" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE10A;"/>
-                </Button>
-            </Grid>
-
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <TextBlock FontSize="18" FontWeight="Bold" Text="Session Name: " HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <TextBox FontSize="14" x:Name="txtSessionName"  Text="[Session Name]" MinWidth="250" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="0,0,10,0" IsReadOnly="True"/>

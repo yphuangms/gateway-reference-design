@@ -11,8 +11,8 @@ namespace PublisherDesignerApp
     {
         public const string PROFILEROOT = "Profiles";
         public const string DEFAULT_SESSIONCONFIGPATH = "SessionConfig.json";
-        public const string DEFAULT_PUBLISHERNODESPATH = "publishednodes.json";
-        public static SiteProfileManager DefaultSiteManager { private set; get; }
+        public const string DEFAULT_PUBLISHEDNODESPATH = "publishednodes.json";
+        public static SiteProfileManager DefaultSiteProfileManager { private set; get; }
         public string SiteProfileId { private set; get; } = String.Empty;
         public SessionConfig sessionConfig { private set; get; } = new SessionConfig();
 
@@ -24,7 +24,7 @@ namespace PublisherDesignerApp
 
         public static void SetDefault(SiteProfileManager siteManager)
         {
-            DefaultSiteManager = siteManager;
+            DefaultSiteProfileManager = siteManager;
         }
 
         public static async Task<SiteProfileManager> Open(string profileId, bool createIfNotExist = false)
@@ -158,7 +158,7 @@ namespace PublisherDesignerApp
             return isSuccess;
         }
 
-        public async Task<bool> SavePublisherNodes(string filePath = null)
+        public async Task<bool> SavePublishedNodes(string filePath = null)
         {
             bool isSuccess = false;
             try
@@ -166,7 +166,7 @@ namespace PublisherDesignerApp
                 string path = filePath;
 
                 if (String.IsNullOrEmpty(path))
-                    path = DEFAULT_PUBLISHERNODESPATH;
+                    path = DEFAULT_PUBLISHEDNODESPATH;
 
                 List<PublisherConfigurationFileEntry> publisherConfig = new List<PublisherConfigurationFileEntry>(sessionConfig.sessions.Count);
 
@@ -210,9 +210,9 @@ namespace PublisherDesignerApp
                 string path = filePath;
 
                 if (String.IsNullOrEmpty(path))
-                    path = DEFAULT_PUBLISHERNODESPATH;
+                    path = DEFAULT_PUBLISHEDNODESPATH;
 
-                List<PublisherNode> publisherNodes = new List<PublisherNode>(sessionConfig.sessions.Count);
+                List<PublishedNode> publisherNodes = new List<PublishedNode>(sessionConfig.sessions.Count);
                 foreach (var session in sessionConfig.sessions)
                 {
                     var settingpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, GetFullPath(SiteProfileId, session.profilePath));
@@ -220,13 +220,17 @@ namespace PublisherDesignerApp
 
                     foreach (var item in sessionSetting.monitoredlist)
                     {
-                        PublisherNode node = new PublisherNode();
-                        node.EndpointUrl = sessionSetting.endpoint.EndpointUrl.ToString();
-                        node.NodeId = new PublisherNodeId();
-                        node.NodeId.Identifier = item.nodeid;
-                        node.Name = item.description;
-                        node.Tag = item.displayname;
-                        node.UseSecurity = (sessionSetting.endpoint.Description.SecurityMode != Opc.Ua.MessageSecurityMode.None);
+                        PublishedNode node = new PublishedNode()
+                        {
+                            EndpointUrl = sessionSetting.endpoint.EndpointUrl.ToString(),
+                            NodeId = new PublishedNodeId()
+                            {
+                                Identifier = item.nodeid
+                            },
+                            Name = item.description,
+                            Tag = item.displayname,
+                            UseSecurity = (sessionSetting.endpoint.Description.SecurityMode != Opc.Ua.MessageSecurityMode.None)
+                        };
                         publisherNodes.Add(node);
                     }
                 }

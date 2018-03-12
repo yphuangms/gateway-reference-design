@@ -21,6 +21,7 @@ namespace PublisherDesignerApp
         public static int DebugLevel = 0;
         public static string SiteProfileId = "";
 
+        // assume only one possible living session at a time
         public static SessionMgmt_OpcuaPage unclosedSession = null;
 
         /// <summary>
@@ -107,9 +108,9 @@ namespace PublisherDesignerApp
         }
 
         /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
+        /// Invoked when application execution is being suspended.
+        /// -- close living opcua sessions
+        /// -- exlicitly close applicaiton
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
@@ -128,6 +129,9 @@ namespace PublisherDesignerApp
             });
         }
 
+        /// <summary>
+        /// Load application settings (user preference)
+        /// </summary>
         public static void LoadAppSettings()
         {
             SiteProfileId = ApplicationData.Current.LocalSettings.Values["SiteProfileId"] as string;
@@ -135,11 +139,17 @@ namespace PublisherDesignerApp
                 SiteProfileId = "";
         }
 
+        /// <summary>
+        /// Save application settings (user preference)
+        /// </summary>
         public static void SaveAppSettings()
         {
              ApplicationData.Current.LocalSettings.Values["SiteProfileId"] = SiteProfileId;
         }
-
+        
+        /// <summary>
+        /// Clean all application data at app storage
+        /// </summary>
         public static async Task CleanAppData()
         {
             await ApplicationData.Current.ClearAsync(ApplicationDataLocality.Local);

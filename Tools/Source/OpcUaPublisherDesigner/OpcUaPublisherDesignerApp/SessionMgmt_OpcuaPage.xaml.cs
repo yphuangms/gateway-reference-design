@@ -1,14 +1,19 @@
-﻿/* Copyright (c) 1996-2016, OPC Foundation. All rights reserved.
-   The source code in this file is covered under a dual-license scenario:
-     - RCL: for OPC Foundation members in good-standing
-     - GPL V2: everybody else
-   RCL license terms accompanied with this source code. See http://opcfoundation.org/License/RCL/1.00/
-   GNU General Public License as published by the Free Software Foundation;
-   version 2 of the License are accompanied with this source code. See http://opcfoundation.org/License/GPLv2
-   This source code is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+﻿//=================================
+// partial source code copied from
+// https://github.com/OPCFoundation/UA-.NETStandard/blob/master/SampleApplications/Samples/Client/ClientPage.xaml.cs
+// license of original ClientPage.xaml.cs:
+    /* Copyright (c) 1996-2016, OPC Foundation. All rights reserved.
+       The source code in this file is covered under a dual-license scenario:
+         - RCL: for OPC Foundation members in good-standing
+         - GPL V2: everybody else
+       RCL license terms accompanied with this source code. See http://opcfoundation.org/License/RCL/1.00/
+       GNU General Public License as published by the Free Software Foundation;
+       version 2 of the License are accompanied with this source code. See http://opcfoundation.org/License/GPLv2
+       This source code is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    */
+//=================================
 
 using Opc.Ua;
 using Opc.Ua.Client;
@@ -16,6 +21,7 @@ using Opc.Ua.Client.Controls;
 using Opc.Ua.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -30,14 +36,12 @@ using Windows.UI.Xaml.Navigation;
 namespace PublisherDesignerApp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Session/Subscription management page (Opcua session only)
     /// </summary>
     public partial class SessionMgmt_OpcuaPage : Page
     {
-        #region Private Fields
         private Session m_design_session;
         private ApplicationInstance m_application;
-        //private Opc.Ua.Server.StandardServer m_server;
         private ConfiguredEndpointCollection m_endpoints;
         private ApplicationConfiguration m_configuration;
         private ServiceMessageContext m_context;
@@ -45,9 +49,17 @@ namespace PublisherDesignerApp
         private static string m_cert_sub_path = @"OPC Foundation\CertificateStores\UA Applications\certs";
         private string m_local = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
         private string m_cert_full_path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, m_cert_sub_path);
-        private static string m_sessionConfig_file = "Opc.Ua.SampleClient.json";
-        private string m_sessionConfig_full_path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, m_sessionConfig_file);
-        #endregion
+        private string m_sessionConfig_full_path = String.Empty;
+
+        enum SESSIONMGMT_ACTION
+        {
+            NEW,
+            EDIT,
+            UNKNOWN
+        };
+
+        private SESSIONMGMT_ACTION sessionMgmtAction = SESSIONMGMT_ACTION.EDIT; // 0: new, 1: edit, 2:...
+        private SessionInfo sessionInfo;
 
         public SessionMgmt_OpcuaPage()
         {
@@ -59,36 +71,25 @@ namespace PublisherDesignerApp
             CloseSessionView_OpcuaClient(false);
         }
 
-        public bool IsSessionAlive()
-        {
-            return (m_design_session != null);
-        }
-
+        /// <summary>
+        /// On page unloaded
+        /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             CloseSessionView_OpcuaClient(false);
-            //Window.Current.VisibilityChanged -= Current_VisibilityChanged;
             App.unclosedSession = null;
             base.OnNavigatedFrom(e);
         }
 
-        enum SESSIONMGMT_ACTION
-        {
-            NEW,
-            EDIT,
-            UNKNOWN
-        };
 
-        private SESSIONMGMT_ACTION sessionMgmtAction = SESSIONMGMT_ACTION.EDIT; // 0: new, 1: edit, 2:...
-        private SessionInfo sessionInfo;
+        /// <summary>
+        /// On page loaded
+        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             App.unclosedSession = this;
-            //Window.Current.VisibilityChanged += Current_VisibilityChanged;
-
-            //m_sessionConfig_full_path = e.Parameter as string;
 
             sessionInfo = e.Parameter as SessionInfo;        
             
@@ -116,8 +117,6 @@ namespace PublisherDesignerApp
 
             if (!configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates)
             {
-                // disable auto accept
-                // need to import certificate
                 configuration.CertificateValidator.CertificateValidation += new CertificateValidationEventHandler(CertificateValidator_CertificateValidation);
             }
         
@@ -130,8 +129,9 @@ namespace PublisherDesignerApp
             SessionsCTRL.AddressSpaceCtrl = BrowseCTRL;
             SessionsCTRL.NodeSelected += SessionCtrl_NodeSelected;
 
-            // get list of cached endpoints.
+           
             // disable cached endpoints from Opc.Ua.SampleClient.Config.xml
+            //// get list of cached endpoints.
             //m_endpoints = m_configuration.LoadCachedEndpoints(true);
             m_endpoints = new ConfiguredEndpointCollection();
             m_endpoints.DiscoveryUrls = configuration.ClientConfiguration.WellKnownDiscoveryUrls;
@@ -161,13 +161,11 @@ namespace PublisherDesignerApp
             // exception dialog
             GuiUtils.ExceptionMessageDlg += ExceptionMessageDlg;
 
-            //m_task = EndpointConnect(true);   
             EndpointSelectorCTRL.IsEnabled = false;
             BrowseCTRL.IsEnabled = false;
             SessionsCTRL.IsEnabled = false;
 
             txtSessionName.Text = sessionInfo.sessionName;
-            //txtSessionType.Text = "(" + sessionInfo.sourceType.ToString() + ")";
 
             if (sessionMgmtAction == SESSIONMGMT_ACTION.NEW)
             {
@@ -193,350 +191,20 @@ namespace PublisherDesignerApp
             }
         }
 
-        //private void Current_VisibilityChanged(object sender, VisibilityChangedEventArgs e)
-        //{
-        //    if (!e.Visible)
-        //    {
-        //        //if (m_design_session != null)
-        //            //CloseSessionView_OpcuaClient(false);
-        //    }
-        //}
+        //-------------------------
+        // Opcua Session Functions
+        //-------------------------
 
-        void RemoveAllClickEventsFromButton()
+        public bool IsSessionAlive()
         {
-            //CommandBTN.Click -= ContextMenu_OnDelete;
-            //CommandBTN.Click -= ContextMenu_OnCancelSubscription;
-            //CommandBTN.Click -= ContextMenu_OnDisconnect;
-            //CommandBTN.Click -= ContextMenu_OnReport;
+            return (m_design_session != null);
         }
 
-        private void SessionCtrl_NodeSelected(object sender, TreeNodeActionEventArgs e)
-        {
-            if (e.Node != null)
-            {
-                MonitoredItem item = e.Node as MonitoredItem;
-                if (e.Node is MonitoredItem)
-                {
-                    //CommandBTN.Visibility = Visibility.Visible;
-                    //CommandBTN.Content = "Delete";
-                    //RemoveAllClickEventsFromButton();
-                    //CommandBTN.Click += ContextMenu_OnDelete;
-                    //CommandBTN.Tag = e.Node;
-
-                    btnDelSubscription.IsEnabled = true;
-                    btnDelSubscription.Tag = e.Node;
-                }
-                else
-                {
-                    btnDelSubscription.IsEnabled = false;
-                    btnDelSubscription.Tag = null;
-                }
-                //else if (e.Node is Subscription)
-                //{
-                //    CommandBTN.Visibility = Visibility.Visible;
-                //    CommandBTN.Content = "Cancel";
-                //    RemoveAllClickEventsFromButton();
-                //    CommandBTN.Click += ContextMenu_OnCancelSubscription;
-                //    CommandBTN.Tag = e.Node;
-                //}
-                //else if (e.Node is Session)
-                //{
-                //    CommandBTN.Visibility = Visibility.Visible;
-                //    CommandBTN.Content = "Disconnect";
-                //    RemoveAllClickEventsFromButton();
-                //    CommandBTN.Click += ContextMenu_OnDisconnect;
-                //    CommandBTN.Tag = e.Node;
-
-                //    // Update current session object
-                //    m_design_session = (Session)e.Node;
-                //}
-                //else
-                //{
-                //    RemoveAllClickEventsFromButton();
-                //    CommandBTN.Visibility = Visibility.Collapsed;
-                //    CommandBTN.Tag = null;
-                //}
-            }
-        }
-
-        private void BrowseCTRL_NodeSelected(object sender, TreeNodeActionEventArgs e)
-        {
-            if (e.Node != null)
-            {
-                ReferenceDescription reference = e.Node as ReferenceDescription;
-                if (reference != null && reference.NodeClass == NodeClass.Variable)
-                {
-                    //CommandBTN.Visibility = Visibility.Visible;
-                    //CommandBTN.Content = "Add";
-                    //RemoveAllClickEventsFromButton();
-                    //CommandBTN.Click += ContextMenu_OnReport;
-                    //CommandBTN.Tag = e.Node;
-
-                    btnAddSubscription.IsEnabled = true;
-                    btnAddSubscription.Tag = e.Node;
-                }
-                else
-                {
-                    //RemoveAllClickEventsFromButton();
-                    //CommandBTN.Visibility = Visibility.Collapsed;
-                    //CommandBTN.Tag = null;
-
-                    btnAddSubscription.IsEnabled = true;
-                    btnAddSubscription.Tag = e.Node;
-                }
-            }
-        }
-
-        private void ContextMenu_OnDisconnect(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                CloseSessionView_OpcuaClient();
-                //SessionsCTRL.Delete(CommandBTN.Tag as Session);
-                //ServerUrlTB.Text = "None";
-                //ServerStatusTB.Text = "";
-            }
-            catch (Exception exception)
-            {
-                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-            }
-        }
-
-        private void ContextMenu_OnCancelSubscription(object sender, RoutedEventArgs e)
-        {
-            Button CommandBTN = sender as Button;
-            try
-            {
-                foreach (MonitoredItem x in (CommandBTN.Tag as Subscription).MonitoredItems)
-                {
-                    SessionsCTRL.Delete(x);
-                }
-                SessionsCTRL.Delete(CommandBTN.Tag as Subscription);
-            }
-            catch (Exception exception)
-            {
-                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-            }
-        }
-
-        private void ContextMenu_OnDelete(object sender, RoutedEventArgs e)
-        {
-            Button CommandBTN = sender as Button;
-            try
-            {
-                var monitoredItem = CommandBTN.Tag as MonitoredItem;
-                if (monitoredItem == null)
-                    return;
-                var subscription = monitoredItem.Subscription;
-                SessionsCTRL.Delete(monitoredItem);
-                if (subscription.MonitoredItemCount == 0)
-                {
-                    // Remove subscription if no more items
-                    CommandBTN.Tag = subscription;
-                    ContextMenu_OnCancelSubscription(sender, e);
-                }
-            }
-            catch (Exception exception)
-            {
-                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-            }
-        }
-
-        private async void ContextMenu_OnReport(object sender, RoutedEventArgs e)
-        {
-            Button CommandBTN = sender as Button;
-
-            try
-            {
-                // can only subscribe to local variables. 
-                ReferenceDescription reference = CommandBTN.Tag as ReferenceDescription;
-
-                string userInputDisplayName = await GetUserInputDisplayName(reference.DisplayName.ToString());
-                if (String.IsNullOrEmpty(userInputDisplayName))
-                    userInputDisplayName = reference.DisplayName.ToString();
-
-                if (m_design_session != null && reference != null)
-                {
-                    CreateMonitoredItem(userInputDisplayName,
-                        m_design_session, null, reference.NodeId, reference.DisplayName.ToString(), MonitoringMode.Reporting);
-                }
-            }
-            catch (Exception exception)
-            {
-                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-            }
-        }
-
-        private async Task<string> GetUserInputDisplayName(string defaultDisplayName = "")
-        {
-            TextBox txtNameInput = new TextBox();
-            txtNameInput.AcceptsReturn = false;
-            txtNameInput.Height = 26;
-            txtNameInput.Text = defaultDisplayName;
-            ContentDialog inputDialog = new ContentDialog();
-            inputDialog.Content = txtNameInput;
-            inputDialog.Title = "Subscribed Item DisplayName";
-            inputDialog.IsSecondaryButtonEnabled = true;
-            inputDialog.PrimaryButtonText = "Cancel";
-            inputDialog.SecondaryButtonText = "OK";
-            if (await inputDialog.ShowAsync() == ContentDialogResult.Secondary)
-                return txtNameInput.Text;
-            else
-                return "";
-        }
-
-        void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            ManualResetEvent ev = new ManualResetEvent(false);
-            Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                async () =>
-                {
-                    await GuiUtils.HandleCertificateValidationError(this, validator, e);
-                    if (e.Accept)
-                    {
-                        MessageDialog showDialog = new MessageDialog("Would you like to save this certificate?");
-                        showDialog.Commands.Add(new UICommand("Save") { Id = 0 });
-                        showDialog.Commands.Add(new UICommand("Cancel") { Id = 1 });
-                        showDialog.DefaultCommandIndex = 1;
-                        showDialog.CancelCommandIndex = 1;
-                        var result = await showDialog.ShowAsync();
-
-                        if ((int)result.Id == 0)
-                        {
-                            try
-                            {
-                                byte[] cert = e.Certificate.Export(System.Security.Cryptography.X509Certificates.X509ContentType.Cert);
-                                string issuerName = e.Certificate.GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, true);
-                                string filePath = Path.Combine(m_cert_full_path, String.Format("{0} [{1}].der", issuerName, e.Certificate.Thumbprint));
-                                File.WriteAllBytes(filePath, cert);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                        }
-                    }
-                    ev.Set();
-                }
-                ).AsTask().Wait();
-            ev.WaitOne();
-        }
-
-        async Task EndpointSelectorCTRL_ConnectEndpoint(object sender, ConnectEndpointEventArgs e)
-        {
-            try
-            {
-                // disable Connect while connecting button
-                EndpointSelectorCTRL.IsEnabled = false;
-                // Connect
-                CloseSessionView_OpcuaClient();
-                e.UpdateControl = await Connect(e.Endpoint);
-
-                if (e.UpdateControl)
-                {
-                    //if (m_design_session != null)
-                    //{
-                    //    SessionsCTRL.AddNode(m_design_session);
-                    //}
-
-                    gridEndpointSelector.Visibility = Visibility.Visible;
-                    txtEndpointSelector.Text = m_design_session.Endpoint.EndpointUrl.ToString();
-                    EndpointSelectorCTRL.Visibility = Visibility.Collapsed;
-
-                    BrowseCTRL.IsEnabled = true;
-                    SessionsCTRL.IsEnabled = true;
-                    EnableSessionOpButtons(true);
-                }                
-            }
-            catch (Exception exception)
-            {
-                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-                e.UpdateControl = false;
-            }
-            finally
-            {
-                // enable Connect button
-                EndpointSelectorCTRL.IsEnabled = !e.UpdateControl;
-            }
-        }
-
-        private void EndpointSelectorCTRL_OnChange(object sender, EventArgs e)
-        {
-            return;
-            //try
-            //{
-            //    m_endpoints.Save();
-            //}
-            //catch (Exception exception)
-            //{
-            //    GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-            //}
-        }
 
         /// <summary>
-        /// Connects to a server.
-        /// </summary>
-        public async Task<bool> Connect(ConfiguredEndpoint endpoint)
-        {
-            bool result = false;
-            if (endpoint == null)
-            {
-                return false;
-            }
-            // connect dialogs
-            Session session = await SessionsCTRL.Connect(endpoint, m_sessionConfig?.sessionname);
-
-            if (session != null)
-            {
-                if (m_sessionConfig != null)
-                {
-                    NamespaceTable namespaceTable = new NamespaceTable();
-                    DataValue namespaceArrayNodeValue = session.ReadValue(VariableIds.Server_NamespaceArray);
-                    namespaceTable.Update(namespaceArrayNodeValue.GetValue<string[]>(null));
-
-                    m_sessionConfig.endpoint = session.ConfiguredEndpoint;
-                    foreach (MonitoredNode x in m_sessionConfig.monitoredlist)
-                    {
-                        CreateMonitoredItem(x.description,
-                                session, null, ExpandedNodeId.Parse(x.nodeid, namespaceTable), x.displayname, MonitoringMode.Reporting);
-                    }
-                }
-                m_design_session = session;
-                // BrowseCTRL.SetView(session, BrowseViewType.Objects, null);
-
-                result = true;
-            }
-            else
-            {
-                //try
-                //{
-                //    await EndpointConnect(false);
-                //    if (m_design_session != null)
-                //        SessionsCTRL.AddNode(m_design_session);
-                //}
-                //catch (Exception exception)
-                //{
-                //    GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
-                //}
-            }
-
-            return result;
-        }
-
-        async void ExceptionMessageDlg(string message)
-        {
-            await Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                () =>
-            {
-                //MessageDlg dialog = new MessageDlg(message);
-                //await dialog.ShowAsync();
-                gridMessageDlg.Visibility = Visibility.Visible;
-                txtMessage.Text = message;
-            });
-        }
-
-        public void CreateMonitoredItem(string userInputName,
+        /// create and add monitored item in subscription list
+        /// <summary>
+        private void CreateMonitoredItem(string userInputName,
            Session session, Subscription subscription, ExpandedNodeId exNodeId, string displayName, MonitoringMode mode)
         {
             if (subscription == null)
@@ -557,54 +225,25 @@ namespace PublisherDesignerApp
                 session.AddSubscription(subscription);
             }
 
-            //-- concat selected node displayname with parent node displayname
-            //Browser browser = new Browser(session);
-            //browser.BrowseDirection = BrowseDirection.Inverse;
-            //ReferenceDescriptionCollection inversecollection = browser.Browse(nodeId);
-            //string parentDisplayName = (inversecollection.Count > 0)? inversecollection[0].DisplayName.ToString() : "";
-
             // add the new monitored item.
-            MonitoredItem monitoredItem = new MonitoredItem(subscription.DefaultItem);
-
-            monitoredItem.StartNodeId = (NodeId)exNodeId;
-            monitoredItem.AttributeId = Attributes.Value;
-            //monitoredItem.DisplayName = String.Format("{0} ({1}.{2} - {3})", userInputName, parentDisplayName,  displayName, nodeId.ToString());
-            monitoredItem.DisplayName = String.Format("{0} ({1} - {2})", userInputName, displayName, exNodeId.ToString());
-            monitoredItem.MonitoringMode = mode;
-            monitoredItem.SamplingInterval = mode == MonitoringMode.Sampling ? 1000 : 0;
-            monitoredItem.QueueSize = 0;
-            monitoredItem.DiscardOldest = true;
+            MonitoredItem monitoredItem = new MonitoredItem(subscription.DefaultItem)
+            {
+                StartNodeId = (NodeId)exNodeId,
+                AttributeId = Attributes.Value,
+                DisplayName = String.Format("{0} ({1} - {2})", userInputName, displayName, exNodeId.ToString()),
+                MonitoringMode = mode,
+                SamplingInterval = mode == MonitoringMode.Sampling ? 1000 : 0,
+                QueueSize = 0,
+                DiscardOldest = true
+            };
             
             subscription.AddItem(monitoredItem);
             subscription.ApplyChanges();
         }
 
-        private Session Opcua_EndpointDisconnect()
-        {
-            Session deletedSession = m_design_session;
-            if (m_design_session != null)
-            {
-                m_design_session.Close();
-                //SessionsCTRL.Delete(m_design_session);
-                m_design_session = null;
-            }
-            return deletedSession;
-        }
-
-        private async Task<Session> Opcua_EndpointConnect(string sessionname, Uri endpointUrl, int preferredSecurityLevel = -1)
-        {
-            Session opcua_session = null;
-            if (m_sessionConfig != null)
-            {
-                EndpointDescription selectedEndpoint = SelectUaTcpEndpoint(DiscoverEndpoints(m_configuration, endpointUrl, 600), preferredSecurityLevel);
-                ConfiguredEndpoint configuredEndpoint = new ConfiguredEndpoint(selectedEndpoint.Server, EndpointConfiguration.Create(m_configuration));
-                configuredEndpoint.Update(selectedEndpoint);
-                Session session = await Opcua_EndpointConnect(sessionname, configuredEndpoint);
-                return session;
-            }
-            return null;
-        }
-
+        /// <summary>
+        /// open server connection and load subscription list
+        /// <summary>
         private async Task<Session> Opcua_EndpointConnect(string sessionname, ConfiguredEndpoint configuredEndpoint)
         {
             Session opcua_session = null;
@@ -643,71 +282,60 @@ namespace PublisherDesignerApp
             return opcua_session;
         }
 
-        private EndpointDescriptionCollection DiscoverEndpoints(ApplicationConfiguration config, Uri discoveryUrl, int timeout)
+        /// <summary>
+        /// close server connection
+        /// <summary>
+        private Session Opcua_EndpointDisconnect()
         {
-            EndpointConfiguration configuration = EndpointConfiguration.Create(config);
-            configuration.OperationTimeout = timeout;
-
-            using (DiscoveryClient client = DiscoveryClient.Create(
-                discoveryUrl,
-                EndpointConfiguration.Create(config)))
+            Session deletedSession = m_design_session;
+            if (m_design_session != null)
             {
-                try
-                {
-                    EndpointDescriptionCollection endpoints = client.GetEndpoints(null);
-                    ReplaceLocalHostWithRemoteHost(endpoints, discoveryUrl);
-                    return endpoints;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Opc.Ua.Client.SampleModule: Could not fetch endpoints from url: {0}", discoveryUrl);
-                    Console.WriteLine("Opc.Ua.Client.SampleModule: Reason = {0}", e.Message);
-                    throw e;
-                }
+                m_design_session.Close();
+
+                m_design_session = null;
             }
+            return deletedSession;
         }
 
-        private void ReplaceLocalHostWithRemoteHost(EndpointDescriptionCollection endpoints, Uri discoveryUrl)
+        /// <summary>
+        /// read specified node data from server 
+        /// <summary>
+        private object Read_Node(NodeId nodeid)
         {
-            foreach (EndpointDescription endpoint in endpoints)
+            DataValueCollection results;
+            DiagnosticInfoCollection diagnosticInfos;
+            ReadValueIdCollection valuesToRead = new ReadValueIdCollection();
+
+            ReadValueId valueToRead = new ReadValueId();
+
+            valueToRead.NodeId = nodeid;
+            valueToRead.AttributeId = Attributes.Value;
+
+            valuesToRead.Add(valueToRead);
+
+            m_design_session.Read(
+                null,
+                0,
+                TimestampsToReturn.Neither,
+                valuesToRead,
+                out results,
+                out diagnosticInfos);
+
+            object val = results.Last().Value;
+            string message_value = String.Format("Read from node: '{0}'({1}) = '{2}'", "", nodeid.ToString(), val);
+
+            if (!StatusCode.IsGood(results.Last().StatusCode))
             {
-                endpoint.EndpointUrl = Utils.ReplaceLocalhost(endpoint.EndpointUrl, discoveryUrl.DnsSafeHost);
-                StringCollection updatedDiscoveryUrls = new StringCollection();
-
-                foreach (string url in endpoint.Server.DiscoveryUrls)
-                {
-                    updatedDiscoveryUrls.Add(Utils.ReplaceLocalhost(url, discoveryUrl.DnsSafeHost));
-                }
-
-                endpoint.Server.DiscoveryUrls = updatedDiscoveryUrls;
+                string message_status = String.Format("Error! Read from node ({0}) status code: {1}", nodeid.ToString(), results.Last().StatusCode);
+                Debug.WriteLine(message_status);
             }
+            return val;
         }
 
-        private EndpointDescription SelectUaTcpEndpoint(EndpointDescriptionCollection endpointCollection, int prefferedSecurityLevel = -1)
-        {
-            EndpointDescription bestEndpoint = null;
-            foreach (EndpointDescription endpoint in endpointCollection)
-            {
-                if (endpoint.TransportProfileUri == Profiles.UaTcpTransport)
-                {
-                    if (prefferedSecurityLevel >= 0 && endpoint.SecurityLevel == prefferedSecurityLevel)
-                    {
-                        bestEndpoint = endpoint;
-                        break;
-                    }
-
-                    if ((bestEndpoint == null) ||
-                        (endpoint.SecurityLevel > bestEndpoint.SecurityLevel))
-                    {
-                        bestEndpoint = endpoint;
-                    }
-                }
-            }
-
-            return bestEndpoint;
-        }
-
-        private async Task<OpcuaSessionConfig> SaveSessionConfig(string targetfile, string sesssionName, Session session)
+        /// <summary>
+        /// save server connection settings and node subscription list to app storage
+        /// <summary>
+        private OpcuaSessionConfig SaveSessionConfig(string targetfile, string sesssionName, Session session)
         {
             OpcuaSessionConfig sessionConfig = null;
             if (session != null)
@@ -750,43 +378,122 @@ namespace PublisherDesignerApp
             return sessionConfig;
         }
 
-        private object Read_Node(NodeId nodeid)
+        //-------------------------
+        // UI Helper Functions
+        //-------------------------
+
+        /// <summary>
+        /// UI: Popup dialog to ask user to input friendly name for a selected node.
+        /// </summary>
+        private async Task<string> GetUserInputDisplayName(string defaultDisplayName = "")
         {
-            DataValueCollection results;
-            DiagnosticInfoCollection diagnosticInfos;
-            ReadValueIdCollection valuesToRead = new ReadValueIdCollection();
-
-            ReadValueId valueToRead = new ReadValueId();
-
-            valueToRead.NodeId = nodeid;
-            //RUN_LED
-            //valueToRead.NodeId = new NodeId("ns=2;i=99");
-            valueToRead.AttributeId = Attributes.Value;
-            //valueToRead.Handle = item;
-
-            valuesToRead.Add(valueToRead);
-
-            m_design_session.Read(
-                null,
-                0,
-                TimestampsToReturn.Neither,
-                valuesToRead,
-                out results,
-                out diagnosticInfos);
-
-            object val = results.Last().Value;
-            string message_value = String.Format("Read from node: '{0}'({1}) = '{2}'", "", nodeid.ToString(), val);
-            //UtilLog.DefaultLog.Log(message_value);
-
-            if (!StatusCode.IsGood(results.Last().StatusCode))
-            {
-                string message_status = String.Format("Error! Read from node ({0}) status code: {1}", nodeid.ToString(), results.Last().StatusCode);
-                //UtilLog.DefaultLog.Log(message_status);
-            }
-            return val;
+            TextBox txtNameInput = new TextBox();
+            txtNameInput.AcceptsReturn = false;
+            txtNameInput.Height = 26;
+            txtNameInput.Text = defaultDisplayName;
+            ContentDialog inputDialog = new ContentDialog();
+            inputDialog.Content = txtNameInput;
+            inputDialog.Title = "Subscribed Item DisplayName";
+            inputDialog.IsSecondaryButtonEnabled = true;
+            inputDialog.PrimaryButtonText = "Cancel";
+            inputDialog.SecondaryButtonText = "OK";
+            if (await inputDialog.ShowAsync() == ContentDialogResult.Secondary)
+                return txtNameInput.Text;
+            else
+                return "";
         }
 
-        // manage single session only
+        /// <summary>
+        /// UI: handle server certificate validation
+        ///     and prompt for user interaction if required.
+        /// </summary>
+        void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
+        {
+            ManualResetEvent ev = new ManualResetEvent(false);
+            Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                async () =>
+                {
+                    await GuiUtils.HandleCertificateValidationError(this, validator, e);
+                    if (e.Accept)
+                    {
+                        MessageDialog showDialog = new MessageDialog("Would you like to save this certificate?");
+                        showDialog.Commands.Add(new UICommand("Save") { Id = 0 });
+                        showDialog.Commands.Add(new UICommand("Cancel") { Id = 1 });
+                        showDialog.DefaultCommandIndex = 1;
+                        showDialog.CancelCommandIndex = 1;
+                        var result = await showDialog.ShowAsync();
+
+                        if ((int)result.Id == 0)
+                        {
+                            try
+                            {
+                                byte[] cert = e.Certificate.Export(System.Security.Cryptography.X509Certificates.X509ContentType.Cert);
+                                string issuerName = e.Certificate.GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType.SimpleName, true);
+                                string filePath = Path.Combine(m_cert_full_path, String.Format("{0} [{1}].der", issuerName, e.Certificate.Thumbprint));
+                                File.WriteAllBytes(filePath, cert);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+                    }
+                    ev.Set();
+                }
+                ).AsTask().Wait();
+            ev.WaitOne();
+        }
+
+        
+        /// <summary>
+        /// UI: control visibility of buttons
+        /// <summary>
+        private void EnableSessionOpButtons(bool enable)
+        {
+            btnImportCert.IsEnabled = enable;
+            btnReload.IsEnabled = enable;
+            btnSave.IsEnabled = enable;
+            btnCancel.IsEnabled = enable;
+        }
+
+        /// <summary>
+        /// UI: connects to a specified server endpoint, and create subscription list according to configuration 
+        /// </summary>
+        private async Task<bool> Connect(ConfiguredEndpoint endpoint)
+        {
+            bool result = false;
+            if (endpoint == null)
+            {
+                return false;
+            }
+            // connect dialogs
+            Session session = await SessionsCTRL.Connect(endpoint, m_sessionConfig?.sessionname);
+
+            if (session != null)
+            {
+                if (m_sessionConfig != null)
+                {
+                    NamespaceTable namespaceTable = new NamespaceTable();
+                    DataValue namespaceArrayNodeValue = session.ReadValue(VariableIds.Server_NamespaceArray);
+                    namespaceTable.Update(namespaceArrayNodeValue.GetValue<string[]>(null));
+
+                    m_sessionConfig.endpoint = session.ConfiguredEndpoint;
+                    foreach (MonitoredNode x in m_sessionConfig.monitoredlist)
+                    {
+                        CreateMonitoredItem(x.description,
+                                session, null, ExpandedNodeId.Parse(x.nodeid, namespaceTable), x.displayname, MonitoringMode.Reporting);
+                    }
+                }
+                m_design_session = session;
+
+                result = true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// UI: open server session, and display contents from server 
+        /// <summary>
         private async Task OpenSessionView_OpcuaClient()
         {
             try
@@ -794,9 +501,8 @@ namespace PublisherDesignerApp
                 var sessionname = "NewSession";
                 if (sessionMgmtAction == SESSIONMGMT_ACTION.EDIT)
                 {
-                    sessionname = m_sessionConfig.sessionname;
+                    sessionname = sessionInfo.sessionName;
                 }
-                //var session = await Opcua_EndpointConnect(sessionname, m_sessionConfig.endpoint.EndpointUrl, m_sessionConfig.endpoint.Description.SecurityLevel);
                 var session = await Opcua_EndpointConnect(sessionname, m_sessionConfig.endpoint);
 
                 if (session != null)
@@ -823,6 +529,9 @@ namespace PublisherDesignerApp
             }
         }
 
+        /// <summary>
+        /// UI: close current server session, and clear related contents from UI
+        /// <summary>
         public void CloseSessionView_OpcuaClient(bool resetUIButton = true)
         {
             Opcua_EndpointDisconnect();
@@ -841,14 +550,209 @@ namespace PublisherDesignerApp
             }
         }
 
-        private void EnableSessionOpButtons(bool enable)
+
+        /// <summary>
+        /// UI: callback to show message dialog from OpcUa session for exception conditions
+        /// <summary>
+        private async void ExceptionMessageDlg(string message)
         {
-            btnImportCert.IsEnabled = enable;
-            btnReload.IsEnabled = enable;
-            btnSave.IsEnabled = enable;
-            btnCancel.IsEnabled = enable;
+            await Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                async () =>
+            {
+                MessageDlg dialog = new MessageDlg(message);
+                await dialog.ShowAsync();
+            });
         }
 
+        //--------------------------
+        // UI Event Handlers
+        //--------------------------
+
+        /// <summary>
+        /// On connect button clicked
+        /// -- connects to a specified server endpoint, close current server connection if any
+        /// </summary>
+        private async Task EndpointSelectorCTRL_ConnectEndpoint(object sender, ConnectEndpointEventArgs e)
+        {
+            try
+            {
+                // disable Connect while connecting button
+                EndpointSelectorCTRL.IsEnabled = false;
+                // Connect
+                CloseSessionView_OpcuaClient();
+                e.UpdateControl = await Connect(e.Endpoint);
+
+                if (e.UpdateControl)
+                {
+                    gridEndpointSelector.Visibility = Visibility.Visible;
+                    txtEndpointSelector.Text = m_design_session.Endpoint.EndpointUrl.ToString();
+                    EndpointSelectorCTRL.Visibility = Visibility.Collapsed;
+
+                    BrowseCTRL.IsEnabled = true;
+                    SessionsCTRL.IsEnabled = true;
+                    EnableSessionOpButtons(true);
+                }                
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
+                e.UpdateControl = false;
+            }
+            finally
+            {
+                // enable Connect button
+                EndpointSelectorCTRL.IsEnabled = !e.UpdateControl;
+            }
+        }
+
+        /// <summary>
+        /// On endpoint selection changed.
+        /// </summary>
+        private void EndpointSelectorCTRL_OnChange(object sender, EventArgs e)
+        {
+            // do notohing
+            return;
+        }
+        /// <summary>
+        /// On node selected in subscription list
+        /// </summary>
+        private void SessionCtrl_NodeSelected(object sender, TreeNodeActionEventArgs e)
+        {
+            if (e.Node != null)
+            {
+                MonitoredItem item = e.Node as MonitoredItem;
+                if (e.Node is MonitoredItem)
+                {
+                    btnDelSubscription.IsEnabled = true;
+                    btnDelSubscription.Tag = e.Node;
+                }
+                else
+                {
+                    btnDelSubscription.IsEnabled = false;
+                    btnDelSubscription.Tag = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// On node selected in source tree block
+        /// </summary>
+        private void BrowseCTRL_NodeSelected(object sender, TreeNodeActionEventArgs e)
+        {
+            if (e.Node != null)
+            {
+                ReferenceDescription reference = e.Node as ReferenceDescription;
+                if (reference != null && reference.NodeClass == NodeClass.Variable)
+                {
+                    btnAddSubscription.IsEnabled = true;
+                    btnAddSubscription.Tag = e.Node;
+                }
+                else
+                {
+                    btnAddSubscription.IsEnabled = true;
+                    btnAddSubscription.Tag = e.Node;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Respond to button click to close server connection
+        /// -- refresh content display accordingly
+        /// </summary>
+        private void ContextMenu_OnDisconnect(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CloseSessionView_OpcuaClient();
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
+            }
+        }
+
+        /// <summary>
+        /// Respond to button click to delete whole subscription list
+        /// -- refresh content display accordingly
+        /// </summary>
+        private void ContextMenu_OnCancelSubscription(object sender, RoutedEventArgs e)
+        {
+            Button CommandBTN = sender as Button;
+            try
+            {
+                foreach (MonitoredItem x in (CommandBTN.Tag as Subscription).MonitoredItems)
+                {
+                    SessionsCTRL.Delete(x);
+                }
+                SessionsCTRL.Delete(CommandBTN.Tag as Subscription);
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
+            }
+        }
+
+        /// <summary>
+        /// Respond to button click to delete node from subscription list
+        /// -- refresh content display accordingly
+        /// </summary>
+        private void ContextMenu_OnDelete(object sender, RoutedEventArgs e)
+        {
+            Button CommandBTN = sender as Button;
+            try
+            {
+                var monitoredItem = CommandBTN.Tag as MonitoredItem;
+                if (monitoredItem == null)
+                    return;
+                var subscription = monitoredItem.Subscription;
+                SessionsCTRL.Delete(monitoredItem);
+                if (subscription.MonitoredItemCount == 0)
+                {
+                    // Remove subscription if no more items
+                    CommandBTN.Tag = subscription;
+                    ContextMenu_OnCancelSubscription(sender, e);
+                }
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
+            }
+        }
+
+        /// <summary>
+        /// Respond to button click to add node to subscription list
+        /// -- refresh content display accordingly
+        /// </summary>
+        private async void ContextMenu_OnReport(object sender, RoutedEventArgs e)
+        {
+            Button CommandBTN = sender as Button;
+
+            try
+            {
+                // can only subscribe to local variables. 
+                ReferenceDescription reference = CommandBTN.Tag as ReferenceDescription;
+
+                string userInputDisplayName = await GetUserInputDisplayName(reference.DisplayName.ToString());
+                if (String.IsNullOrEmpty(userInputDisplayName))
+                    userInputDisplayName = reference.DisplayName.ToString();
+
+                if (m_design_session != null && reference != null)
+                {
+                    CreateMonitoredItem(userInputDisplayName,
+                        m_design_session, null, reference.NodeId, reference.DisplayName.ToString(), MonitoringMode.Reporting);
+                }
+            }
+            catch (Exception exception)
+            {
+                GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
+            }
+        }
+
+        /// <summary>
+        /// On cancel button clickedUI: cancel all changes made within this page
+        ///     and exit this page, get back to main page
+        /// <summary>
         private void btnCancel_Button_Click(object sender, RoutedEventArgs e)
         {
             EnableSessionOpButtons(false);
@@ -857,6 +761,11 @@ namespace PublisherDesignerApp
             Frame.Navigate(typeof(SessionMgmtPage));
         }
 
+        /// <summary>
+        /// On save button clicked
+        /// -- save server connection settings and node subscription list
+        ///    and exit this page, get back to main page
+        /// <summary>
         private async void btnSave_Button_Click(object sender, RoutedEventArgs e)
         {
             EnableSessionOpButtons(false);
@@ -886,7 +795,7 @@ namespace PublisherDesignerApp
                     m_sessionConfig_full_path = Path.Combine(m_local, SiteProfileManager.GetFullPath(App.SiteProfileId, String.Format(PROFILENAME_TEMPLATE, sessionname)));
                 }
             }
-            config = await SaveSessionConfig(m_sessionConfig_full_path, sessionname, m_design_session);
+            config = SaveSessionConfig(m_sessionConfig_full_path, sessionname, m_design_session);
            
             if (config != null)
             {
@@ -894,12 +803,11 @@ namespace PublisherDesignerApp
                 {
                     if (sessionMgmtAction == SESSIONMGMT_ACTION.NEW)
                     {
-                        //SessionInfo sessioninfo = new SessionInfo();
                         sessionInfo.profilePath = String.Format(PROFILENAME_TEMPLATE, sessionname);
                         sessionInfo.sessionName = sessionname;
                         sessionInfo.sourceType = m_design_session.Endpoint.Server.ApplicationName.ToString();
-                        SiteProfileManager.DefaultSiteManager.sessionConfig.sessions.Add(sessionInfo);
-                        await SiteProfileManager.DefaultSiteManager.SaveSessionConfig();
+                        SiteProfileManager.DefaultSiteProfileManager.sessionConfig.sessions.Add(sessionInfo);
+                        await SiteProfileManager.DefaultSiteProfileManager.SaveSessionConfig();
                     }
                     CloseSessionView_OpcuaClient();
                     Frame.Navigate(typeof(SessionMgmtPage), "RELOAD");
@@ -911,12 +819,14 @@ namespace PublisherDesignerApp
             EnableSessionOpButtons(true);
         }
 
-
+        /// <summary>
+        /// On reload button clicked
+        /// -- reload configuration and refresh UI accordingly
+        /// <summary>
         private void btnReload_Button_Click(object sender, RoutedEventArgs e)
         {
             EnableSessionOpButtons(false);
             CloseSessionView_OpcuaClient();
-            // json configuration
             m_sessionConfig = OpcuaSessionConfig.LoadFromJsonFile(m_sessionConfig_full_path);
 
             EndpointSelectorCTRL.IsEnabled = false;
@@ -926,7 +836,10 @@ namespace PublisherDesignerApp
             var ignored = Task.Run(OpenSessionView_OpcuaClient);
         }
 
-        // import Opcua server ceritifcate and save to local storage
+        /// <summary>
+        /// On import-cert button clicked
+        /// -- import Opcua server ceritifcate and save to local storage
+        /// <summary>
         private async void btnImportCert_Button_Click(object sender, RoutedEventArgs e)
         {
             EnableSessionOpButtons(false);
@@ -951,24 +864,31 @@ namespace PublisherDesignerApp
             EnableSessionOpButtons(true);
         }
 
+        /// <summary>
+        /// On add-subscription button clicked.
+        /// -- add selected node (from source tree) to subscription list
+        /// <summary>
         private void btnAddSubscription_Click(object sender,RoutedEventArgs e)
         {
-
+            // ContextMenu_OnReport(sender, e);
         }
 
+        /// <summary>
+        /// On delete-subscription button clicked
+        /// -- remove selected node from subscription list
+        /// <summary>
         private void btnDelSubscription_Click(object sender,RoutedEventArgs e)
         {
-
+            // ContextMenu_OnDelete(sender, e);
         }
 
+        /// <summary>
+        /// On disconnect button clicked
+        /// -- disconnect current connection
+        /// <summary>
         private void btnEndpointDisconnect_Click(object sender,RoutedEventArgs e)
         {
             CloseSessionView_OpcuaClient();
-        }
-
-        private void btnMessageDlg_Click(object sender,RoutedEventArgs e)
-        {
-            gridMessageDlg.Visibility = Visibility.Collapsed;
         }
     }
 }
