@@ -98,10 +98,9 @@
     <Content Include="PublisherDesignerApp.Config.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DesignerData\session_LocalSampleServer1.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DesignerData\SessionConfig.json" />
+    <None Include="DesignerData\publishednodes.sample.json" />
+    <None Include="DesignerData\session_LocalSampleServer1.json" />
+    <None Include="DesignerData\SessionConfig.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">

@@ -1,7 +1,7 @@
 {
   "endpoint": {
     "Endpoint": {
-      "EndpointUrl": "opc.tcp://localhost:51210/UA/SampleServer",
+      "EndpointUrl": "opc.tcp://computerhostname:51210/UA/SampleServer",
       "SecurityMode": "SignAndEncrypt_3",
       "SecurityPolicyUri": "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15",
       "UserIdentityTokens": [

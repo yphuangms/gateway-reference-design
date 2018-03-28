@@ -213,6 +213,10 @@ namespace Opc.Ua.Client.Controls
                 if (endpoint == null)
                 {
                     EndpointCB.SelectedIndex = m_selectedIndex;
+                    if (EndpointCB.SelectedIndex == 0)
+                    {
+                        EndpointCB_PointerPressed(null, null);
+                    }
                     return;
                 }
 

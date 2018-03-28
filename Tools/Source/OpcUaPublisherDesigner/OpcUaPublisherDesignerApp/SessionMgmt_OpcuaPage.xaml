@@ -72,5 +72,6 @@
                 </StackPanel>
             </Grid>
         </Grid>
+        <ProgressRing x:Name="progringConnection" Width="100" Height="100" />
     </Grid>
 </Page>

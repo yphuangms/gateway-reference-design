@@ -104,7 +104,9 @@ namespace PublisherDesignerApp
                         result = JsonConvert.DeserializeObject<OpcuaSessionConfig>(json);
                     }
                     catch (Exception ex)
-                    { }
+                    {
+                        Utils.Trace(ex, "OpcuaSessionConfig.LoadFromJsonFile() Exception: " + ex.Message);
+                    }
                 }
             }
             return result;

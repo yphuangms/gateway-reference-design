@@ -76,6 +76,7 @@ namespace PublisherDesignerApp
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            GuiUtils.ExceptionMessageDlg -= ExceptionMessageDlg;
             CloseSessionView_OpcuaClient(false);
             App.unclosedSession = null;
             base.OnNavigatedFrom(e);
@@ -438,6 +439,7 @@ namespace PublisherDesignerApp
                             }
                         }
                     }
+                    progringConnection.IsActive = true;
                     ev.Set();
                 }
                 ).AsTask().Wait();
@@ -466,6 +468,7 @@ namespace PublisherDesignerApp
             {
                 return false;
             }
+
             // connect dialogs
             Session session = await SessionsCTRL.Connect(endpoint, m_sessionConfig?.sessionname);
 
@@ -488,6 +491,9 @@ namespace PublisherDesignerApp
 
                 result = true;
             }
+
+            progringConnection.IsActive = false;
+
             return result;
         }
 
@@ -814,6 +820,7 @@ namespace PublisherDesignerApp
                 }
                 catch (Exception ex)
                 {
+                    Utils.Trace(ex, "SessionMgmt_OpcuaPage.btnSave_Button_Click() Exception: " + ex.Message);
                 }
             }
             EnableSessionOpButtons(true);

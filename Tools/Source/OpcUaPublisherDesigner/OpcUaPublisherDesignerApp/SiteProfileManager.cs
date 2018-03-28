@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Opc.Ua;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -69,6 +70,7 @@ namespace PublisherDesignerApp
                         }
                         catch (Exception e)
                         {
+                            Utils.Trace(e, "SiteProfileManager.OpenSiteProfileFolder() Exception: " + e.Message);
                         }
 
                         if (settingsFile == null)
@@ -95,12 +97,14 @@ namespace PublisherDesignerApp
                         }
                         catch (Exception e)
                         {
+                            Utils.Trace(e, "SiteProfileManager.OpenSiteProfileFolder() Exception: " + e.Message);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                Utils.Trace(ex, "SiteProfileManager.OpenSiteProfileFolder() Exception: " + ex.Message);
             }
             return isExisted;
         }
@@ -154,6 +158,7 @@ namespace PublisherDesignerApp
             }
             catch (Exception ex)
             {
+                Utils.Trace(ex, "SiteProfileManager.SaveSessionConfig() Exception: " + ex.Message);
             }
             return isSuccess;
         }
@@ -197,6 +202,7 @@ namespace PublisherDesignerApp
             }
             catch (Exception ex)
             {
+                Utils.Trace(ex, "SiteProfileManager.SavePublishedNodes() Exception: " + ex.Message);
             }
             return isSuccess;
         }
@@ -239,6 +245,7 @@ namespace PublisherDesignerApp
             }
             catch (Exception ex)
             {
+                Utils.Trace(ex, "SiteProfileManager.SavePublisherNodesLegacy() Exception: " + ex.Message);
             }
             return isSuccess;
         }
