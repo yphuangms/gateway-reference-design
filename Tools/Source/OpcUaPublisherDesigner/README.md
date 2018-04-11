@@ -5,7 +5,7 @@ This DesignerApp provides GUI to connect to Opcua servers, select nodes for subs
 
 DesignerApp is an UWP app developed using nuget package from [Opc Foundation OPCUA .NETStandardLibrary](https://github.com/OPCFoundation/UA-.NETStandard) and utilize sample codes from [Client](https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/Controls), [ClientControl](https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/ClientControls) (with minor modification).
 
-##### License
+#### License
 
 * Opcua stack referenced by this app has licensing terms defined here : [Opc Foundation OPCUA .NETStandardLibrary License](http://opcfoundation.github.io/UA-.NETStandard/)
 * Following codes in this project are modified from Opc Foundation OPCUA .NETStardardLibrary samples, hence inherits this license: [Opc Foundation MIT License 1.00](https://opcfoundation.org/license/mit/1.00/)
@@ -13,19 +13,20 @@ DesignerApp is an UWP app developed using nuget package from [Opc Foundation OPC
     * "OpcuaUtil\ClientControls" original source: https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/ClientControls
 * Source code in this project are published under this license: [License.txt](License.txt)
 
-##### System Requirement
+## System Requirement
 
-###### To build and test this app:
+#### To build and test this app:
 * Visual Studio 2017 with latest udpate and Universal Windows App Development Tools option selected.
 * Windows SDK 15063.
 * Windows 10 Desktop version 1703 or later.
-* Enable Developer Mode.
+* Enable "Developer Mode".
 
-###### To install and run this app:
+
+#### To install and run this app:
 * Windows 10 Desktop version 1703 or later.
 * Enable Developer Mode.
 
-##### Build and Test on Local Machine
+## Build and Test on Local Machine
 
 1. Launch Visual Studio 2017. In Solution Explorer, open the solution of this app.
 
@@ -35,9 +36,9 @@ DesignerApp is an UWP app developed using nuget package from [Opc Foundation OPC
 
 4. Press "F5" to start run and debug this app, or "Ctrl+F5" to run this app without debugging.
 
-##### Create App Package for Test and Side-load on Other Machines
+## Create App Package for Test and Side-load on Other Machines
 
-###### To generate app package:
+#### To generate app package:
 1. Launch Visual Studio 2017. In Solution Explorer, open the solution of this app.
 
 2. Right-click the project and choose "Store > Create App Packages...".
@@ -49,17 +50,17 @@ DesignerApp is an UWP app developed using nuget package from [Opc Foundation OPC
   
 4. Once app packages are generated, browse to the containing folder to get app packages.
 
-###### To side load app package on target machine:
+#### To side load app package on target machine:
 
 1. Make sure "Developer Mode" is enabled on target machine.
 2. Copy app package (folder) to target machine, and browse to app package folder.
 3. Find "Add-AppDevPackage.ps1" and right-click on this file and choose "Run with Powershell" to start install.
 4. When installation complete, press "Windows" key and find "Sample.OpcUaPublisherDesignerApp" in app list.
 
-###### [NOTE]
+##### [NOTE]
 When building and generating appx package using above steps, the appx package is only for development/test purpose, and cannot be used for distribution.
 
-##### To Run This App
+## To Run This App
 
 1. Make sure your target Opcua servers are up and running, and the networking between this app and servers is OK.
 2. Launch DesignerApp. Click on left-top corner hamberbur icon to show function menu. Click on "Open Profile" to show profile management panel, and create a profile with a desired name, and press "Save".
@@ -86,9 +87,9 @@ When building and generating appx package using above steps, the appx package is
         ```
 
 
-###### [NOTE]
+##### [NOTE]
 
-When running this app to connect to OpcUa Server on the same machine, you must execute the following command to allow UWP app to access to localhost ports.
+When running this app to connect to Opcua Server on the same machine, you must execute the following command to allow UWP app to access to localhost ports.
 
     
     > CheckNetIsolation.exe LoopbackExempt –a –n=Sample.OpcUaPublisherDesignerApp_040afsa2n4qpw
