@@ -73,7 +73,7 @@ When building and generating appx package using above steps, the appx package is
 5. You may repeat step 4 to add as many server session as you need. All nodes subscribed from these server sessions can then be exported in one configuration file.
 6. In DesignerApp main window, Press "|<-" icon to export all selected nodes to your target json file location.
 7. Copy the exported node selection json file to target IoT Edge device storage, which will be later accessed by OpcPublisher module, for example: ``c:\data\gateway.temp\publishednodes.json``
-8. If you want to export json file directly to target device, for example, an IoT Edge device, you must first enable the network share to target device, and when select export target location, for example "``\\<target_device_ip\data\gateway.temp``", and to save file directly on target machine storage.
+8. If you want to export json file directly to target device, for example, an IoT Edge device, you must first enable the network share to target device, and when select export target location, for example "``\\<target_device_ip\c$\data\gateway.temp``", and to save file directly on target machine storage.
     * To enable network share on your host machine to connect to an IoT Edge device with IoT Core platform:
     
         ```
