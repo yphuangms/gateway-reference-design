@@ -491,9 +491,6 @@ namespace PublisherDesignerApp
 
                 result = true;
             }
-
-            progringConnection.IsActive = false;
-
             return result;
         }
 
@@ -532,6 +529,13 @@ namespace PublisherDesignerApp
             catch (Exception exception)
             {
                 GuiUtils.HandleException(String.Empty, GuiUtils.CallerName(), exception);
+            }
+            finally
+            {
+                var ignored = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, ()=>
+                {
+                    progringConnection.IsActive = false;
+                });
             }
         }
 
@@ -609,6 +613,7 @@ namespace PublisherDesignerApp
             {
                 // enable Connect button
                 EndpointSelectorCTRL.IsEnabled = !e.UpdateControl;
+                progringConnection.IsActive = false;
             }
         }
 
