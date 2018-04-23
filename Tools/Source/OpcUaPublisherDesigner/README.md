@@ -3,11 +3,12 @@ This application is a sample tool to help generating [OpcPublisher](https://gith
 
 This DesignerApp provides GUI to connect to Opcua servers, select nodes for subscription, and then export subscribed nodes into a json file to be consumed by OpcPublisher.
 
-DesignerApp is an UWP app developed using nuget package from [Opc Foundation OPCUA .NETStandardLibrary](https://github.com/OPCFoundation/UA-.NETStandard) and utilize sample codes from [Client](https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/Controls), [ClientControl](https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/ClientControls) (with minor modification).
+DesignerApp is an UWP app developed using nuget package from [OPC Foundation UA .NETStandardLibrary](https://github.com/OPCFoundation/UA-.NETStandard) and utilize sample codes from [Client](https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/Controls), [ClientControl](https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/ClientControls) (with minor modification).
 
 #### License
 
-* Opcua stack referenced by this app has licensing terms defined here : [Opc Foundation OPCUA .NETStandardLibrary License](http://opcfoundation.github.io/UA-.NETStandard/)
+* OPC Foundations's OPC UA reference stack used by this app has licensing terms defined here:
+  * [UA .NET StandardLibrary Stack License](http://opcfoundation.github.io/UA-.NETStandard/)
 * Following codes in this project are modified from Opc Foundation OPCUA .NETStardardLibrary samples, hence inherits this license: [Opc Foundation MIT License 1.00](https://opcfoundation.org/license/mit/1.00/)
     * "OpcuaUtil\Controls" original source: https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/Controls
     * "OpcuaUtil\ClientControls" original source: https://github.com/OPCFoundation/UA-.NETStandard/tree/master/SampleApplications/Samples/ClientControls
